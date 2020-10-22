@@ -48,7 +48,7 @@ lavg_IPW,savg_IPW = bindata([15,-15,180,90],bins,eavg,elon,elat,oro,olon,olat)
 lavg_WPW,savg_WPW = bindata([10,-10,180,120],bins,eavg,elon,elat,oro,olon,olat)
 lavg_DRY,savg_DRY = bindata([5,-5,275,180],bins,eavg,elon,elat,oro,olon,olat)
 
-coord = readdlm(srcdir("GLB-i.txt"),comments=true,comment_char='#')
+coord = readdlm(datadir("GLB-i.txt"),comments=true,comment_char='#')
 x = coord[:,1]; y = coord[:,2];
 
 DTP = prect(15,-15,0,360)
@@ -57,7 +57,7 @@ IPW = prect(15,-15,90,180)
 DRY = prect(5,-5,180,275)
 
 pplt.close(); arr = [[1,1],[2,3],[2,3]];
-f,axs = pplt.subplots(arr,aspect=6,axwidth=6);
+f,axs = pplt.subplots(arr,aspect=6,axwidth=6,sharey=0);
 
 c1 = axs[1].contourf(elon,elat,eavg',levels=0:0.05:0.5,cmap="Blues",extend="max");
 axs[1].plot(x,y,c="k",lw=0.2)

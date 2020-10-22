@@ -12,7 +12,7 @@ WPW = prect(10,-10,120,180)
 IPW = prect(15,-15,90,180)
 DRY = prect(5,-5,180,275)
 
-coord = readdlm(srcdir("GLB-i.txt"),comments=true,comment_char='#')
+coord = readdlm(datadir("GLB-i.txt"),comments=true,comment_char='#')
 x = coord[:,1]; y = coord[:,2];
 
 pplt.close(); f,axs = pplt.subplots(nrows=1,aspect=6,axwidth=6,sharey=0);

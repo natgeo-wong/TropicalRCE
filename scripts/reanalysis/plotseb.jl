@@ -41,7 +41,7 @@ function plotfluxes(
     lavg_WPW,savg_WPW = bindatasfc([10,-10,180,120],bins,var,lon,lat,lsm)
     lavg_DRY,savg_DRY = bindatasfc([5,-5,275,180],bins,var,lon,lat,lsm)
 
-    coord = readdlm(srcdir("GLB-i.txt"),comments=true,comment_char='#')
+    coord = readdlm(datadir("GLB-i.txt"),comments=true,comment_char='#')
     x = coord[:,1]; y = coord[:,2];
 
     DTP = prect(15,-15,0,360)
