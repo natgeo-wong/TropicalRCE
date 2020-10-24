@@ -88,7 +88,7 @@ function plottair()
 
     lprf_DTP,sprf_DTP = getmean([20,-20,270,60],var,lon,lat,nlvl,lsm)
     lprf_IPW,sprf_IPW = getmean([15,-15,180,90],var,lon,lat,nlvl,lsm)
-    lprf_WPW,sprf_WPW = getmean([10,-10,180,120],var,lon,lat,nlvl,lsm)
+    lprf_WPW,sprf_WPW = getmean([5,-10,180,135],var,lon,lat,nlvl,lsm)
     lprf_DRY,sprf_DRY = getmean([5,-5,275,180],var,lon,lat,nlvl,lsm)
 
     pplt.close(); f,axs = pplt.subplots(ncols=3,aspect=0.5,axwidth=2);
