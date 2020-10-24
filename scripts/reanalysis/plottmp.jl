@@ -46,7 +46,7 @@ function plottmp(
 
     lavg_DTP,_ = bindatasfc([20,-20,270,60],lbin,t2m,lon,lat,lsm)
     lavg_IPW,_ = bindatasfc([15,-15,180,90],lbin,t2m,lon,lat,lsm)
-    lavg_WPW,_ = bindatasfc([5,-10,180,135]],lbin,t2m,lon,lat,lsm)
+    lavg_WPW,_ = bindatasfc([5,-10,180,135],lbin,t2m,lon,lat,lsm)
     lavg_DRY,_ = bindatasfc([5,-5,275,180],lbin,t2m,lon,lat,lsm)
 
     coord = readdlm(datadir("GLB-i.txt"),comments=true,comment_char='#')

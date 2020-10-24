@@ -1,7 +1,9 @@
 using DrWatson
 @quickactivate "TropicalRCE"
+using DelimitedFiles
 using GeoRegions
 using NCDatasets
+using StatsBase
 
 using PyCall
 using LaTeXStrings

@@ -1,5 +1,6 @@
 using DrWatson
 @quickactivate "TropicalRCE"
+using DelimitedFiles
 
 using PyCall
 using LaTeXStrings
