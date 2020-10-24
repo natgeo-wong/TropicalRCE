@@ -230,3 +230,24 @@ function bindatasfc(coords,bins,var,lon,lat,lsm)
     return lavg,savg
 
 end
+
+function getmean(coords,var,lon,lat,nlvl,lsm)
+
+    tlon,tlat,rinfo = regiongridvec(coords,lon,lat);
+    rvar = regionextractgrid(var,rinfo)
+    rlsm = regionextractgrid(lsm,rinfo)
+    sprf = zeros(nlvl); lprf = zeros(nlvl)
+
+    for ilvl = 1 : nlvl
+
+        ivar = rvar[:,:,ilvl]
+        lavg = ivar[rlsm.>0.5]; lavg = lavg[.!ismissing.(lavg)]; lavg = lavg[.!isnan.(lavg)]
+        savg = ivar[rlsm.<0.5]; savg = savg[.!ismissing.(savg)]; savg = savg[.!isnan.(savg)]
+        lprf[ilvl] = mean(lavg)
+        sprf[ilvl] = mean(savg)
+
+    end
+
+    return lprf,sprf
+
+end
