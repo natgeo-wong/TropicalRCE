@@ -41,19 +41,19 @@ function plottmp(
 
     _,savg_DTP = bindatasfc([20,-20,270,60],sbin,sst,lon,lat,lsm)
     _,savg_IPW = bindatasfc([15,-15,180,90],sbin,sst,lon,lat,lsm)
-    _,savg_WPW = bindatasfc([10,-10,180,120],sbin,sst,lon,lat,lsm)
+    _,savg_WPW = bindatasfc([5,-10,180,135],sbin,sst,lon,lat,lsm)
     _,savg_DRY = bindatasfc([5,-5,275,180],sbin,sst,lon,lat,lsm)
 
     lavg_DTP,_ = bindatasfc([20,-20,270,60],lbin,t2m,lon,lat,lsm)
     lavg_IPW,_ = bindatasfc([15,-15,180,90],lbin,t2m,lon,lat,lsm)
-    lavg_WPW,_ = bindatasfc([10,-10,180,120],lbin,t2m,lon,lat,lsm)
+    lavg_WPW,_ = bindatasfc([5,-10,180,135]],lbin,t2m,lon,lat,lsm)
     lavg_DRY,_ = bindatasfc([5,-5,275,180],lbin,t2m,lon,lat,lsm)
 
     coord = readdlm(datadir("GLB-i.txt"),comments=true,comment_char='#')
     x = coord[:,1]; y = coord[:,2];
 
     DTP = prect(15,-15,0,360)
-    WPW = prect(10,-10,120,180)
+    WPW = prect(5,-10,135,180)
     IPW = prect(15,-15,90,180)
     DRY = prect(5,-5,180,275)
 

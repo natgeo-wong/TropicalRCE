@@ -8,7 +8,7 @@ pplt = pyimport("proplot");
 include(srcdir("reanalysis.jl"))
 
 DTP = prect(15,-15,0,360)
-WPW = prect(10,-10,120,180)
+WPW = prect(5,-10,135,180)
 IPW = prect(15,-15,90,180)
 DRY = prect(5,-5,180,275)
 
@@ -24,7 +24,7 @@ axs[1].plot(WPW[1],WPW[2],c="k",lw=1)
 axs[1].plot(DRY[1],DRY[2],c="k",lw=1,linestyle="--")
 
 axs[1].text(6  , 5,"DTP",verticalalignment="center",backgroundcolor="gray4")
-axs[1].text(158, 3,"WPW",verticalalignment="center",)
+axs[1].text(155, 3,"WPW",verticalalignment="center",backgroundcolor="gray4")
 axs[1].text(95,-15,"IPW",verticalalignment="center",backgroundcolor="gray4")
 axs[1].text(190,-5,"DRY",verticalalignment="center",backgroundcolor="gray4")
 

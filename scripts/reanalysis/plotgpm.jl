@@ -45,14 +45,14 @@ end
 
 lavg_DTP,savg_DTP = bindata([20,-20,270,60],bins,eavg,elon,elat,oro,olon,olat)
 lavg_IPW,savg_IPW = bindata([15,-15,180,90],bins,eavg,elon,elat,oro,olon,olat)
-lavg_WPW,savg_WPW = bindata([10,-10,180,120],bins,eavg,elon,elat,oro,olon,olat)
+lavg_WPW,savg_WPW = bindata([5,-10,180,135],bins,eavg,elon,elat,oro,olon,olat)
 lavg_DRY,savg_DRY = bindata([5,-5,275,180],bins,eavg,elon,elat,oro,olon,olat)
 
 coord = readdlm(datadir("GLB-i.txt"),comments=true,comment_char='#')
 x = coord[:,1]; y = coord[:,2];
 
 DTP = prect(15,-15,0,360)
-WPW = prect(10,-10,120,180)
+WPW = prect(5,-10,135,180)
 IPW = prect(15,-15,90,180)
 DRY = prect(5,-5,180,275)
 
