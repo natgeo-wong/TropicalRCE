@@ -74,16 +74,17 @@ end
 
 function compilesavepre(varname::AbstractString)
 
-    tds = NCDataset(datadir("reanalysis/era5-TRPx0.25-$varname-1979.nc"))
+    tds = NCDataset(datadir("reanalysis/$varname/era5-TRPx0.25-$varname-1979.nc"))
     lon = tds["longitude"][:]*1
     lat = tds["latitude"][:]*1
     lvl = tds["level"][:]*1
 
     var = zeros(length(lon),length(lat),length(lvl))
+    vnc = replace(varname,"_air"=>"")
 
     for yr = 1979 : 2019
-        yds  = NCDataset(datadir("reanalysis/era5-TRPx0.25-$varname-$(yr).nc"))
-        var += dropdims(mean(yds[varname][:]*1,dims=4),dims=4)
+        yds  = NCDataset(datadir("reanalysis/$varname/era5-TRPx0.25-$varname-$(yr).nc"))
+        var += dropdims(mean(yds[vnc][:]*1,dims=4),dims=4)
         close(yds)
     end
 
@@ -113,7 +114,7 @@ function compilesavepre(varname::AbstractString)
         "long_name"                 => "latitude",
     ))
 
-    nclat = defVar(ds,"level",Int32,("latitude",),attrib = Dict(
+    ncpre = defVar(ds,"level",Int32,("level",),attrib = Dict(
         "units"                     => "millibars",
         "long_name"                 => "pressure_level",
     ))
@@ -125,18 +126,19 @@ function compilesavepre(varname::AbstractString)
         "add_offset"    => offset,
         "_FillValue"    => Int16(-32767),
         "missing_value" => Int16(-32767),
-        "units"         => tds[varname].attrib["units"],
-        "long_name"     => tds[varname].attrib["long_name"],
+        "units"         => tds[vnc].attrib["units"],
+        "long_name"     => tds[vnc].attrib["long_name"],
     )
 
-    if haskey(tds[varname].attrib,"standard_name")
-        varattribs["standard_name"] = tds[varname].attrib["standard_name"]
+    if haskey(tds[vnc].attrib,"standard_name")
+        varattribs["standard_name"] = tds[vnc].attrib["standard_name"]
     end
 
     ncvar = defVar(ds,varname,Int16,("longitude","latitude","level"),attrib = varattribs)
 
     nclon[:] = lon
     nclat[:] = lat
+    ncpre[:] = lvl
     ncvar[:] = var
 
     close(ds)
