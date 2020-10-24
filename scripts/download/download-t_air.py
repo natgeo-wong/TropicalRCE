@@ -2,7 +2,7 @@
 import cdsapi
 import os
 
-datadir = '/n/holyscratch01/kuang_lab/nwong/TropicalRCE/data/reanalysis/w_air/'
+datadir = '/n/holyscratch01/kuang_lab/nwong/TropicalRCE/data/reanalysis/t_air/'
 
 c = cdsapi.Client()
 
