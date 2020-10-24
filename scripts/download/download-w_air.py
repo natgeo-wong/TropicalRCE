@@ -27,4 +27,4 @@ for yr in range(1979,2020):
             'area': [30, 0, -30, 360],
             'time': '00:00',
         },
-        datadir + 'era5-TRPx0.25-w_air' + str(yr) + '.nc')
+        datadir + 'era5-TRPx0.25-w_air-' + str(yr) + '.nc')

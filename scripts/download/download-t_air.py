@@ -2,7 +2,7 @@
 import cdsapi
 import os
 
-datadir = '/n/holyscratch01/kuang_lab/nwong/TropicalRCE/data/reanalysis/z_air/'
+datadir = '/n/holyscratch01/kuang_lab/nwong/TropicalRCE/data/reanalysis/w_air/'
 
 c = cdsapi.Client()
 
@@ -15,11 +15,10 @@ for yr in range(1979,2020):
         {
             'format': 'netcdf',
             'product_type': 'monthly_averaged_reanalysis',
-            'variable': 'geopotential',
+            'variable': 'temperature',
             'pressure_level': [
-                1,2,3,5,10,20,30,50,70,
-                100,125,150,175,200,225,250,300,350,
-                400,450,500,550,600,650,700,750,775,
+                50,70,100,125,150,175,200,225,250,300,
+                350,400,450,500,550,600,650,700,750,775,
                 800,825,850,875,900,925,950,975,1000
             ],
             'year': yr,
@@ -27,4 +26,4 @@ for yr in range(1979,2020):
             'area': [30, 0, -30, 360],
             'time': '00:00',
         },
-        datadir + 'era5-TRPx0.25-z_air-' + str(yr) + '.nc')
+        datadir + 'era5-TRPx0.25-t_air-' + str(yr) + '.nc')
