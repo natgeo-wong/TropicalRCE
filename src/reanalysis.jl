@@ -217,17 +217,16 @@ end
 function bindatasfc(coords,bins,var,lon,lat,lsm)
 
     tlon,tlat,rinfo = regiongridvec(coords,lon,lat);
-    ravg = regionextractgrid(var,rinfo)
+    rvar = regionextractgrid(var,rinfo)
     rlsm = regionextractgrid(lsm,rinfo)
 
-    lavg = ravg[rlsm.>0.5]; lavg = lavg[.!ismissing.(lavg)]; lavg = lavg[.!isnan.(lavg)]
-    savg = ravg[rlsm.<0.5]; savg = savg[.!ismissing.(savg)]; savg = savg[.!isnan.(savg)]
-    lavg = fit(Histogram,lavg,bins).weights
-    savg = fit(Histogram,savg,bins).weights
-    lavg = lavg ./ sum(lavg) * (length(bins) - 1)
-    savg = savg ./ sum(savg) * (length(bins) - 1)
+    lvar = rvar[rlsm.>0.5]; lvar = lvar[.!ismissing.(lvar)]; lvar = lvar[.!isnan.(lvar)]
+    svar = rvar[rlsm.<0.5]; svar = svar[.!ismissing.(svar)]; svar = svar[.!isnan.(svar)]
 
-    return lavg,savg
+    lbin = fit(Histogram,lvar,bins).weights; lbin = lbin ./ sum(lbin) * (length(bins) - 1)
+    sbin = fit(Histogram,svar,bins).weights; sbin = sbin ./ sum(sbin) * (length(bins) - 1)
+
+    return lbin,sbin,mean(lvar),mean(svar)
 
 end
 

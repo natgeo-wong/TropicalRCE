@@ -36,10 +36,10 @@ function plotfluxes(
 
     pbin = (bins[2:end].+bins[1:(end-1)])/2
 
-    lavg_DTP,savg_DTP = bindatasfc([20,-20,270,60],bins,var,lon,lat,lsm)
-    lavg_IPW,savg_IPW = bindatasfc([15,-15,180,90],bins,var,lon,lat,lsm)
-    lavg_WPW,savg_WPW = bindatasfc([5,-10,180,135],bins,var,lon,lat,lsm)
-    lavg_DRY,savg_DRY = bindatasfc([5,-5,275,180],bins,var,lon,lat,lsm)
+    lbin_DTP,sbin_DTP,lavg_DTP,savg_DTP = bindatasfc([20,-20,270,60],bins,var,lon,lat,lsm)
+    lbin_IPW,sbin_IPW,lavg_IPW,savg_IPW = bindatasfc([15,-15,180,90],bins,var,lon,lat,lsm)
+    lbin_WPW,sbin_WPW,lavg_WPW,savg_WPW = bindatasfc([5,-10,180,135],bins,var,lon,lat,lsm)
+    lbin_DRY,sbin_DRY,lavg_DRY,savg_DRY = bindatasfc([5,-5,275,180],bins,var,lon,lat,lsm)
 
     coord = readdlm(datadir("GLB-i.txt"),comments=true,comment_char='#')
     x = coord[:,1]; y = coord[:,2];
@@ -65,16 +65,23 @@ function plotfluxes(
     )
     f.colorbar(c1,loc="r")
 
-    axs[2].plot(pbin,lavg_DTP,c="b")
-    axs[2].plot(pbin,lavg_IPW,c="r")
-    axs[2].plot(pbin,lavg_WPW,c="k")
-    axs[2].format(xlim=(minimum(bins),maximum(bins)),rtitle="Land",ylabel="Normalized Frequency")
+    axs[2].plot(pbin,lbin_DTP,c="b"); axs[2].plot([1,1]*lavg_DTP,[0.1,50],c="b")
+    axs[2].plot(pbin,lbin_IPW,c="r"); axs[2].plot([1,1]*lavg_IPW,[0.1,50],c="r")
+    axs[2].plot(pbin,lbin_WPW,c="k"); axs[2].plot([1,1]*lavg_WPW,[0.1,50],c="k")
+    axs[2].format(
+        xlim=(minimum(bins),maximum(bins)),ylim=(0.1,50),yscale="log",
+        rtitle="Land",ylabel="Normalized Frequency"
+    )
 
-    axs[3].plot(pbin,savg_DTP,c="b")
-    axs[3].plot(pbin,savg_IPW,c="r")
-    axs[3].plot(pbin,savg_WPW,c="k")
-    axs[3].plot(pbin,savg_DRY,c="k",linestyle=":")
-    axs[3].format(xlim=(minimum(bins),maximum(bins)),rtitle="Ocean")
+    axs[3].plot(pbin,sbin_DTP,c="b"); axs[3].plot([1,1]*savg_DTP,[0.1,50],c="b")
+    axs[3].plot(pbin,sbin_IPW,c="r"); axs[3].plot([1,1]*savg_IPW,[0.1,50],c="r")
+    axs[3].plot(pbin,sbin_WPW,c="k"); axs[3].plot([1,1]*savg_WPW,[0.1,50],c="k")
+    axs[3].plot(pbin,sbin_DRY,c="k",linestyle=":")
+    axs[3].plot([1,1]*savg_DRY,[0.1,50],c="k",linestyle=":")
+    axs[3].format(
+        xlim=(minimum(bins),maximum(bins)),ylim=(0.1,50),yscale="log",
+        rtitle="Ocean"
+    )
 
     for ax in axs
         ax.format(abc=true,grid="on")

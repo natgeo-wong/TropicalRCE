@@ -24,31 +24,31 @@ close(ods)
 
 bins = -3:0.02:0; pbin = (bins[2:end].+bins[1:(end-1)])/2
 
-function bindata(coords,bins,eavg,elon,elat,oro,olon1,olat)
+function bindata(coords,bins,evar,elon,elat,oro,olon,olat)
 
     tlon,tlat,rinfo = regiongridvec(coords,elon,elat);
-    ravg = regionextractgrid(eavg,rinfo)
+    rvar = regionextractgrid(evar,rinfo)
 
-    rlon,rlat,rinfo = regiongridvec(coords,olon1,olat)
+    rlon,rlat,rinfo = regiongridvec(coords,olon,olat)
     roro = regionextractgrid(oro,rinfo); nlon = length(tlon); nlat = length(tlat);
     glon = zeros(Int32,nlon); for i = 1 : nlon; glon[i] = argmin(abs.(tlon[i] .- rlon)) end
     glat = zeros(Int32,nlat); for i = 1 : nlat; glat[i] = argmin(abs.(tlat[i] .- rlat)) end
 
     rlsm = roro[glon,glat]
 
-    lavg = ravg[rlsm .>0.5]; lavg = fit(Histogram,lavg,10 .^(bins)).weights
-    savg = ravg[rlsm .<0.5]; savg = fit(Histogram,savg,10 .^(bins)).weights
-    lavg = lavg ./ sum(lavg) * 120
-    savg = savg ./ sum(savg) * 120
+    lvar = rvar[rlsm .>0.5]; lbin = fit(Histogram,lvar,10 .^(bins)).weights
+    svar = rvar[rlsm .<0.5]; sbin = fit(Histogram,svar,10 .^(bins)).weights
+    lbin = lbin ./ sum(lbin) * (length(bins) - 1)
+    sbin = sbin ./ sum(sbin) * (length(bins) - 1)
 
-    return lavg,savg
+    return lbin,sbin,mean(lvar),mean(svar)
 
 end
 
-lavg_DTP,savg_DTP = bindata([20,-20,270,60],bins,eavg,elon,elat,oro,olon,olat)
-lavg_IPW,savg_IPW = bindata([15,-15,180,90],bins,eavg,elon,elat,oro,olon,olat)
-lavg_WPW,savg_WPW = bindata([5,-10,180,135],bins,eavg,elon,elat,oro,olon,olat)
-lavg_DRY,savg_DRY = bindata([5,-5,275,180],bins,eavg,elon,elat,oro,olon,olat)
+lbin_DTP,sbin_DTP,lavg_DTP,savg_DTP = bindata([20,-20,270,60],bins,eavg,elon,elat,oro,olon,olat)
+lbin_IPW,sbin_IPW,lavg_IPW,savg_IPW = bindata([15,-15,180,90],bins,eavg,elon,elat,oro,olon,olat)
+lbin_WPW,sbin_WPW,lavg_WPW,savg_WPW = bindata([5,-10,180,135],bins,eavg,elon,elat,oro,olon,olat)
+lbin_DRY,sbin_DRY,lavg_DRY,savg_DRY = bindata([5,-5,275,180],bins,eavg,elon,elat,oro,olon,olat)
 
 coord = readdlm(datadir("GLB-i.txt"),comments=true,comment_char='#')
 x = coord[:,1]; y = coord[:,2];
@@ -74,17 +74,25 @@ axs[1].format(
 )
 f.colorbar(c1,loc="r")
 
-axs[2].plot(10 .^pbin,lavg_DTP,c="b")
-axs[2].plot(10 .^pbin,lavg_IPW,c="r")
-axs[2].plot(10 .^pbin,lavg_WPW,c="k")
-axs[2].plot(10 .^pbin,lavg_DRY,c="k",linestyle=":")
-axs[2].format(xscale="log",ylim=(0,20),rtitle="Land",ylabel="Normalized Frequency")
+axs[2].plot(10 .^pbin,lbin_DTP,c="b"); axs[2].plot([1,1]*lavg_DTP,[0.1,50],c="b")
+axs[2].plot(10 .^pbin,lbin_IPW,c="r"); axs[2].plot([1,1]*lavg_IPW,[0.1,50],c="r")
+axs[2].plot(10 .^pbin,lbin_WPW,c="k"); axs[2].plot([1,1]*lavg_WPW,[0.1,50],c="k")
+axs[2].plot(10 .^pbin,lbin_DRY,c="k",linestyle=":")
+axs[2].plot([1,1]*lavg_DRY,[0.1,50],c="k",linestyle=":")
+axs[2].format(
+    xscale="log",ylim=(0.1,50),yscale="log",
+    rtitle="Land",ylabel="Normalized Frequency"
+)
 
-axs[3].plot(10 .^pbin,savg_DTP,c="b")
-axs[3].plot(10 .^pbin,savg_IPW,c="r")
-axs[3].plot(10 .^pbin,savg_WPW,c="k")
-axs[3].plot(10 .^pbin,savg_DRY,c="k",linestyle=":")
-axs[3].format(xscale="log",ylim=(0,20),rtitle="Ocean")
+axs[3].plot(10 .^pbin,sbin_DTP,c="b"); axs[3].plot([1,1]*savg_DTP,[0.1,50],c="b")
+axs[3].plot(10 .^pbin,sbin_IPW,c="r"); axs[3].plot([1,1]*savg_IPW,[0.1,50],c="r")
+axs[3].plot(10 .^pbin,sbin_WPW,c="k"); axs[3].plot([1,1]*savg_WPW,[0.1,50],c="k")
+axs[3].plot(10 .^pbin,sbin_DRY,c="k",linestyle=":")
+axs[3].plot([1,1]*savg_DRY,[0.1,50],c="k",linestyle=":")
+axs[3].format(
+    xscale="log",ylim=(0.1,50),yscale="log",
+    rtitle="Ocean"
+)
 
 for ax in axs
     ax.format(abc=true,grid="on")
