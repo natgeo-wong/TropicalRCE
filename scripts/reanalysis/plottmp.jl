@@ -77,6 +77,7 @@ function plottmp(
     )
     f.colorbar(c1,loc="r")
 
+    axs[2].plot([minimum(lbin),maximum(lbin)],[2,2],c="gray4",lw=0.5)
     axs[2].plot(plbin,lbin_DTP,c="b",lw=0.5); axs[2].plot([1,1]*lavg_DTP,[0.1,50],c="b")
     axs[2].plot(plbin,lbin_IPW,c="r",lw=0.5); axs[2].plot([1,1]*lavg_IPW,[0.1,50],c="r")
     axs[2].plot(plbin,lbin_WPW,c="k",lw=0.5); axs[2].plot([1,1]*lavg_WPW,[0.1,50],c="k")
@@ -85,6 +86,7 @@ function plottmp(
         rtitle="Land",ylabel="Normalized Frequency"
     )
 
+    axs[3].plot([minimum(sbin),maximum(sbin)],[2,2],c="gray4",lw=0.5)
     axs[3].plot(psbin,sbin_DTP,c="b",lw=0.5); axs[3].plot([1,1]*savg_DTP,[0.1,50],c="b")
     axs[3].plot(psbin,sbin_IPW,c="r",lw=0.5); axs[3].plot([1,1]*savg_IPW,[0.1,50],c="r")
     axs[3].plot(psbin,sbin_WPW,c="k",lw=0.5); axs[3].plot([1,1]*savg_WPW,[0.1,50],c="k")
