@@ -65,18 +65,18 @@ function plotsfc(
     )
     f.colorbar(c1,loc="r")
 
-    axs[2].plot(pbin,lbin_DTP,c="b"); axs[2].plot([1,1]*lavg_DTP,[0.1,50],c="b")
-    axs[2].plot(pbin,lbin_IPW,c="r"); axs[2].plot([1,1]*lavg_IPW,[0.1,50],c="r")
-    axs[2].plot(pbin,lbin_WPW,c="k"); axs[2].plot([1,1]*lavg_WPW,[0.1,50],c="k")
+    axs[2].plot(pbin,lbin_DTP,c="b",lw=1); axs[2].plot([1,1]*lavg_DTP,[0.1,50],c="b")
+    axs[2].plot(pbin,lbin_IPW,c="r",lw=1); axs[2].plot([1,1]*lavg_IPW,[0.1,50],c="r")
+    axs[2].plot(pbin,lbin_WPW,c="k",lw=1); axs[2].plot([1,1]*lavg_WPW,[0.1,50],c="k")
     axs[2].format(
         xlim=(0,maximum(bins)),ylim=(0.1,50),yscale="log",
         rtitle="Land",ylabel="Normalized Frequency"
     )
 
-    axs[3].plot(pbin,sbin_DTP,c="b"); axs[3].plot([1,1]*savg_DTP,[0.1,50],c="b")
-    axs[3].plot(pbin,sbin_IPW,c="r"); axs[3].plot([1,1]*savg_IPW,[0.1,50],c="r")
-    axs[3].plot(pbin,sbin_WPW,c="k"); axs[3].plot([1,1]*savg_WPW,[0.1,50],c="k")
-    axs[3].plot(pbin,sbin_DRY,c="k",linestyle=":")
+    axs[3].plot(pbin,sbin_DTP,c="b",lw=1); axs[3].plot([1,1]*savg_DTP,[0.1,50],c="b")
+    axs[3].plot(pbin,sbin_IPW,c="r",lw=1); axs[3].plot([1,1]*savg_IPW,[0.1,50],c="r")
+    axs[3].plot(pbin,sbin_WPW,c="k",lw=1); axs[3].plot([1,1]*savg_WPW,[0.1,50],c="k")
+    axs[3].plot(pbin,sbin_DRY,c="k",lw=1,linestyle=":")
     axs[3].plot([1,1]*savg_DRY,[0.1,50],c="k",linestyle=":")
     axs[3].format(
         xlim=(0,maximum(bins)),ylim=(0.1,50),yscale="log",

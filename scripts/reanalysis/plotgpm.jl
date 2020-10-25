@@ -58,7 +58,7 @@ WPW = prect(5,-10,135,180)
 IPW = prect(15,-15,90,180)
 DRY = prect(5,-5,180,275)
 
-pplt.close(); arr = [[1,1],[2,3],[2,3]];
+pplt.close(); arr = [[1,1],[2,3]];
 f,axs = pplt.subplots(arr,aspect=6,axwidth=6,sharey=0);
 
 c1 = axs[1].contourf(elon,elat,eavg',levels=0:0.05:0.5,cmap="Blues",extend="max");
@@ -74,20 +74,20 @@ axs[1].format(
 )
 f.colorbar(c1,loc="r")
 
-axs[2].plot(10 .^pbin,lbin_DTP,c="b"); axs[2].plot([1,1]*lavg_DTP,[0.1,50],c="b")
-axs[2].plot(10 .^pbin,lbin_IPW,c="r"); axs[2].plot([1,1]*lavg_IPW,[0.1,50],c="r")
-axs[2].plot(10 .^pbin,lbin_WPW,c="k"); axs[2].plot([1,1]*lavg_WPW,[0.1,50],c="k")
-axs[2].plot(10 .^pbin,lbin_DRY,c="k",linestyle=":")
+axs[2].plot(10 .^pbin,lbin_DTP,c="b",lw=0.5); axs[2].plot([1,1]*lavg_DTP,[0.1,50],c="b")
+axs[2].plot(10 .^pbin,lbin_IPW,c="r",lw=0.5); axs[2].plot([1,1]*lavg_IPW,[0.1,50],c="r")
+axs[2].plot(10 .^pbin,lbin_WPW,c="k",lw=0.5); axs[2].plot([1,1]*lavg_WPW,[0.1,50],c="k")
+axs[2].plot(10 .^pbin,lbin_DRY,c="k",lw=0.5,linestyle=":")
 axs[2].plot([1,1]*lavg_DRY,[0.1,50],c="k",linestyle=":")
 axs[2].format(
     xscale="log",ylim=(0.1,50),yscale="log",
     rtitle="Land",ylabel="Normalized Frequency"
 )
 
-axs[3].plot(10 .^pbin,sbin_DTP,c="b"); axs[3].plot([1,1]*savg_DTP,[0.1,50],c="b")
-axs[3].plot(10 .^pbin,sbin_IPW,c="r"); axs[3].plot([1,1]*savg_IPW,[0.1,50],c="r")
-axs[3].plot(10 .^pbin,sbin_WPW,c="k"); axs[3].plot([1,1]*savg_WPW,[0.1,50],c="k")
-axs[3].plot(10 .^pbin,sbin_DRY,c="k",linestyle=":")
+axs[3].plot(10 .^pbin,sbin_DTP,c="b",lw=0.5); axs[3].plot([1,1]*savg_DTP,[0.1,50],c="b")
+axs[3].plot(10 .^pbin,sbin_IPW,c="r",lw=0.5); axs[3].plot([1,1]*savg_IPW,[0.1,50],c="r")
+axs[3].plot(10 .^pbin,sbin_WPW,c="k",lw=0.5); axs[3].plot([1,1]*savg_WPW,[0.1,50],c="k")
+axs[3].plot(10 .^pbin,sbin_DRY,c="k",lw=0.5,linestyle=":")
 axs[3].plot([1,1]*savg_DRY,[0.1,50],c="k",linestyle=":")
 axs[3].format(
     xscale="log",ylim=(0.1,50),yscale="log",

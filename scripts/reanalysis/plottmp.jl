@@ -39,15 +39,15 @@ function plottmp(
 
     sst[ismissing.(sst)] .= NaN; sst = convert.(Float64,sst)
 
-    _,sbin_DTP,_,savg_DTP = bindatasfc([20,-20,270,60],bins,sst,lon,lat,lsm)
-    _,sbin_IPW,_,savg_IPW = bindatasfc([15,-15,180,90],bins,sst,lon,lat,lsm)
-    _,sbin_WPW,_,savg_WPW = bindatasfc([5,-10,180,135],bins,sst,lon,lat,lsm)
-    _,sbin_DRY,_,savg_DRY = bindatasfc([5,-5,275,180],bins,sst,lon,lat,lsm)
+    _,sbin_DTP,_,savg_DTP = bindatasfc([20,-20,270,60],sbin,sst,lon,lat,lsm)
+    _,sbin_IPW,_,savg_IPW = bindatasfc([15,-15,180,90],sbin,sst,lon,lat,lsm)
+    _,sbin_WPW,_,savg_WPW = bindatasfc([5,-10,180,135],sbin,sst,lon,lat,lsm)
+    _,sbin_DRY,_,savg_DRY = bindatasfc([5,-5,275,180],sbin,sst,lon,lat,lsm)
 
-    lbin_DTP,_,lavg_DTP,_ = bindatasfc([20,-20,270,60],bins,t2m,lon,lat,lsm)
-    lbin_IPW,_,lavg_IPW,_ = bindatasfc([15,-15,180,90],bins,t2m,lon,lat,lsm)
-    lbin_WPW,_,lavg_WPW,_ = bindatasfc([5,-10,180,135],bins,t2m,lon,lat,lsm)
-    lbin_DRY,_,lavg_DRY,_ = bindatasfc([5,-5,275,180],bins,t2m,lon,lat,lsm)
+    lbin_DTP,_,lavg_DTP,_ = bindatasfc([20,-20,270,60],lbin,t2m,lon,lat,lsm)
+    lbin_IPW,_,lavg_IPW,_ = bindatasfc([15,-15,180,90],lbin,t2m,lon,lat,lsm)
+    lbin_WPW,_,lavg_WPW,_ = bindatasfc([5,-10,180,135],lbin,t2m,lon,lat,lsm)
+    lbin_DRY,_,lavg_DRY,_ = bindatasfc([5,-5,275,180],lbin,t2m,lon,lat,lsm)
 
     coord = readdlm(datadir("GLB-i.txt"),comments=true,comment_char='#')
     x = coord[:,1]; y = coord[:,2];
@@ -74,21 +74,21 @@ function plottmp(
     )
     f.colorbar(c1,loc="r")
 
-    axs[2].plot(plbin,lbin_DTP,c="b"); axs[2].plot([1,1]*lavg_DTP,[0.1,50],c="b")
-    axs[2].plot(plbin,lbin_IPW,c="r"); axs[2].plot([1,1]*lavg_IPW,[0.1,50],c="r")
-    axs[2].plot(plbin,lbin_WPW,c="k"); axs[2].plot([1,1]*lavg_WPW,[0.1,50],c="k")
+    axs[2].plot(plbin,lbin_DTP,c="b",lw=1); axs[2].plot([1,1]*lavg_DTP,[0.1,50],c="b")
+    axs[2].plot(plbin,lbin_IPW,c="r",lw=1); axs[2].plot([1,1]*lavg_IPW,[0.1,50],c="r")
+    axs[2].plot(plbin,lbin_WPW,c="k",lw=1); axs[2].plot([1,1]*lavg_WPW,[0.1,50],c="k")
     axs[2].format(
-        xlim=(minimum(bins),maximum(bins)),ylim=(0.1,50),yscale="log",
+        xlim=(minimum(lbin),maximum(lbin)),ylim=(0.1,50),yscale="log",
         rtitle="Land",ylabel="Normalized Frequency"
     )
 
-    axs[3].plot(psbin,sbin_DTP,c="b"); axs[3].plot([1,1]*savg_DTP,[0.1,50],c="b")
-    axs[3].plot(psbin,sbin_IPW,c="r"); axs[3].plot([1,1]*savg_IPW,[0.1,50],c="r")
-    axs[3].plot(psbin,sbin_WPW,c="k"); axs[3].plot([1,1]*savg_WPW,[0.1,50],c="k")
-    axs[3].plot(psbin,sbin_DRY,c="k",linestyle=":")
+    axs[3].plot(psbin,sbin_DTP,c="b",lw=1); axs[3].plot([1,1]*savg_DTP,[0.1,50],c="b")
+    axs[3].plot(psbin,sbin_IPW,c="r",lw=1); axs[3].plot([1,1]*savg_IPW,[0.1,50],c="r")
+    axs[3].plot(psbin,sbin_WPW,c="k",lw=1); axs[3].plot([1,1]*savg_WPW,[0.1,50],c="k")
+    axs[3].plot(psbin,sbin_DRY,c="k",lw=1,linestyle=":")
     axs[3].plot([1,1]*savg_DRY,[0.1,50],c="k",linestyle=":")
     axs[3].format(
-        xlim=(minimum(bins),maximum(bins)),ylim=(0.1,50),yscale="log",
+        xlim=(minimum(sbin),maximum(sbin)),ylim=(0.1,50),yscale="log",
         rtitle="Ocean"
     )
 
