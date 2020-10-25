@@ -16,7 +16,8 @@ function plotsfc(
     bins::AbstractRange,
     lvls::AbstractRange,
     cmap::AbstractString,
-    extd::AbstractString
+    extd::AbstractString;
+    verbose::Bool=false
 )
 
     ds = NCDataset(datadir("reanalysis/era5-TRPx0.25-$(varname)-sfc.nc"))
@@ -49,7 +50,7 @@ function plotsfc(
     IPW = prect(15,-15,90,180)
     DRY = prect(5,-5,180,275)
 
-    pplt.close(); arr = [[1,1],[2,3],[2,3]];
+    pplt.close(); arr = [[1,1],[2,3]];
     f,axs = pplt.subplots(arr,aspect=6,axwidth=6,sharey=0);
 
     c1 = axs[1].contourf(lon,lat,var',levels=lvls,cmap=cmap,extend=extd);
@@ -65,18 +66,18 @@ function plotsfc(
     )
     f.colorbar(c1,loc="r")
 
-    axs[2].plot(pbin,lbin_DTP,c="b",lw=1); axs[2].plot([1,1]*lavg_DTP,[0.1,50],c="b")
-    axs[2].plot(pbin,lbin_IPW,c="r",lw=1); axs[2].plot([1,1]*lavg_IPW,[0.1,50],c="r")
-    axs[2].plot(pbin,lbin_WPW,c="k",lw=1); axs[2].plot([1,1]*lavg_WPW,[0.1,50],c="k")
+    axs[2].plot(pbin,lbin_DTP,c="b",lw=0.5); axs[2].plot([1,1]*lavg_DTP,[0.1,50],c="b")
+    axs[2].plot(pbin,lbin_IPW,c="r",lw=0.5); axs[2].plot([1,1]*lavg_IPW,[0.1,50],c="r")
+    axs[2].plot(pbin,lbin_WPW,c="k",lw=0.5); axs[2].plot([1,1]*lavg_WPW,[0.1,50],c="k")
     axs[2].format(
         xlim=(0,maximum(bins)),ylim=(0.1,50),yscale="log",
         rtitle="Land",ylabel="Normalized Frequency"
     )
 
-    axs[3].plot(pbin,sbin_DTP,c="b",lw=1); axs[3].plot([1,1]*savg_DTP,[0.1,50],c="b")
-    axs[3].plot(pbin,sbin_IPW,c="r",lw=1); axs[3].plot([1,1]*savg_IPW,[0.1,50],c="r")
-    axs[3].plot(pbin,sbin_WPW,c="k",lw=1); axs[3].plot([1,1]*savg_WPW,[0.1,50],c="k")
-    axs[3].plot(pbin,sbin_DRY,c="k",lw=1,linestyle=":")
+    axs[3].plot(pbin,sbin_DTP,c="b",lw=0.5); axs[3].plot([1,1]*savg_DTP,[0.1,50],c="b")
+    axs[3].plot(pbin,sbin_IPW,c="r",lw=0.5); axs[3].plot([1,1]*savg_IPW,[0.1,50],c="r")
+    axs[3].plot(pbin,sbin_WPW,c="k",lw=0.5); axs[3].plot([1,1]*savg_WPW,[0.1,50],c="k")
+    axs[3].plot(pbin,sbin_DRY,c="k",lw=0.5,linestyle=":")
     axs[3].plot([1,1]*savg_DRY,[0.1,50],c="k",linestyle=":")
     axs[3].format(
         xlim=(0,maximum(bins)),ylim=(0.1,50),yscale="log",
@@ -89,6 +90,20 @@ function plotsfc(
 
     mkpath(plotsdir("REANALYSIS"))
     f.savefig(plotsdir("REANALYSIS/$varname.png"),transparent=false,dpi=200)
+
+    if verbose
+        @info """Average OCEAN $(BOLD(uppercase(long))) (1979-2019):
+          $(BOLD("DTP (Deep Tropics):"))          $(@sprintf("%0.2f",savg_DTP)) $(unit)
+          $(BOLD("IPW (Indo-Pacific Warmpool):")) $(@sprintf("%0.2f",savg_IPW)) $(unit)
+          $(BOLD("WPW (West Pacific Warmpool):")) $(@sprintf("%0.2f",savg_WPW)) $(unit)
+          $(BOLD("DRY (Dry Pacific):"))           $(@sprintf("%0.2f",savg_DRY)) $(unit)
+
+        Average LAND $(BOLD(uppercase(long))) (1979-2019):
+          $(BOLD("DTP (Deep Tropics):"))          $(@sprintf("%0.2f",lavg_DTP)) $(unit)
+          $(BOLD("IPW (Indo-Pacific Warmpool):")) $(@sprintf("%0.2f",lavg_IPW)) $(unit)
+          $(BOLD("WPW (West Pacific Warmpool):")) $(@sprintf("%0.2f",lavg_WPW)) $(unit)
+        """
+    end
 
 end
 

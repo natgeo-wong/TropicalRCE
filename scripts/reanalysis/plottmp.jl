@@ -1,8 +1,10 @@
 using DrWatson
 @quickactivate "TropicalRCE"
+using Crayons.Box
 using DelimitedFiles
 using GeoRegions
 using NCDatasets
+using Printf
 using StatsBase
 
 using PyCall
@@ -15,7 +17,8 @@ function plottmp(
     sbin::AbstractRange,
     lbin::AbstractRange,
     lvls::AbstractRange,
-    extd::AbstractString
+    extd::AbstractString;
+    verbose::Bool=false
 )
 
     ds = NCDataset(datadir("reanalysis/era5-TRPx0.25-sst-sfc.nc"))
@@ -57,7 +60,7 @@ function plottmp(
     IPW = prect(15,-15,90,180)
     DRY = prect(5,-5,180,275)
 
-    pplt.close(); arr = [[1,1],[2,3],[2,3]];
+    pplt.close(); arr = [[1,1],[2,3]];
     f,axs = pplt.subplots(arr,aspect=6,axwidth=6,sharey=0);
 
     c1 = axs[1].contourf(lon,lat,t2m',levels=lvls,extend=extd);
@@ -74,18 +77,18 @@ function plottmp(
     )
     f.colorbar(c1,loc="r")
 
-    axs[2].plot(plbin,lbin_DTP,c="b",lw=1); axs[2].plot([1,1]*lavg_DTP,[0.1,50],c="b")
-    axs[2].plot(plbin,lbin_IPW,c="r",lw=1); axs[2].plot([1,1]*lavg_IPW,[0.1,50],c="r")
-    axs[2].plot(plbin,lbin_WPW,c="k",lw=1); axs[2].plot([1,1]*lavg_WPW,[0.1,50],c="k")
+    axs[2].plot(plbin,lbin_DTP,c="b",lw=0.5); axs[2].plot([1,1]*lavg_DTP,[0.1,50],c="b")
+    axs[2].plot(plbin,lbin_IPW,c="r",lw=0.5); axs[2].plot([1,1]*lavg_IPW,[0.1,50],c="r")
+    axs[2].plot(plbin,lbin_WPW,c="k",lw=0.5); axs[2].plot([1,1]*lavg_WPW,[0.1,50],c="k")
     axs[2].format(
         xlim=(minimum(lbin),maximum(lbin)),ylim=(0.1,50),yscale="log",
         rtitle="Land",ylabel="Normalized Frequency"
     )
 
-    axs[3].plot(psbin,sbin_DTP,c="b",lw=1); axs[3].plot([1,1]*savg_DTP,[0.1,50],c="b")
-    axs[3].plot(psbin,sbin_IPW,c="r",lw=1); axs[3].plot([1,1]*savg_IPW,[0.1,50],c="r")
-    axs[3].plot(psbin,sbin_WPW,c="k",lw=1); axs[3].plot([1,1]*savg_WPW,[0.1,50],c="k")
-    axs[3].plot(psbin,sbin_DRY,c="k",lw=1,linestyle=":")
+    axs[3].plot(psbin,sbin_DTP,c="b",lw=0.5); axs[3].plot([1,1]*savg_DTP,[0.1,50],c="b")
+    axs[3].plot(psbin,sbin_IPW,c="r",lw=0.5); axs[3].plot([1,1]*savg_IPW,[0.1,50],c="r")
+    axs[3].plot(psbin,sbin_WPW,c="k",lw=0.5); axs[3].plot([1,1]*savg_WPW,[0.1,50],c="k")
+    axs[3].plot(psbin,sbin_DRY,c="k",lw=0.5,linestyle=":")
     axs[3].plot([1,1]*savg_DRY,[0.1,50],c="k",linestyle=":")
     axs[3].format(
         xlim=(minimum(sbin),maximum(sbin)),ylim=(0.1,50),yscale="log",
@@ -99,6 +102,20 @@ function plottmp(
     mkpath(plotsdir("REANALYSIS"))
     f.savefig(plotsdir("REANALYSIS/t_sfc.png"),transparent=false,dpi=200)
 
+    if verbose
+        @info """Average Sea Surface Temperature (1979-2019):
+          $(BOLD("DTP (Deep Tropics):"))          $(@sprintf("%0.2f",savg_DTP)) K
+          $(BOLD("IPW (Indo-Pacific Warmpool):")) $(@sprintf("%0.2f",savg_IPW)) K
+          $(BOLD("WPW (West Pacific Warmpool):")) $(@sprintf("%0.2f",savg_WPW)) K
+          $(BOLD("DRY (Dry Pacific):"))           $(@sprintf("%0.2f",savg_DRY)) K
+
+        Average 2m Land Surface Temperature (1979-2019):
+          $(BOLD("DTP (Deep Tropics):"))          $(@sprintf("%0.2f",lavg_DTP)) K
+          $(BOLD("IPW (Indo-Pacific Warmpool):")) $(@sprintf("%0.2f",lavg_IPW)) K
+          $(BOLD("WPW (West Pacific Warmpool):")) $(@sprintf("%0.2f",lavg_WPW)) K
+        """
+    end
+
 end
 
-plottmp(295:0.05:305,280:0.05:305,295:0.5:305,"both")
+plottmp(295:0.05:305,280:0.05:305,295:0.5:305,"both",verbose=true)
