@@ -1,3 +1,4 @@
+using GeoRegions
 using NCDatasets
 using Statistics
 using StatsBase
@@ -139,6 +140,168 @@ function compilesavepre(varname::AbstractString)
     nclon[:] = lon
     nclat[:] = lat
     ncpre[:] = lvl
+    ncvar[:] = var
+
+    close(ds)
+
+    close(tds)
+
+end
+
+function compilesavesfchour(varname::AbstractString)
+
+    tds = NCDataset(datadir("reanalysis/$varname/era5mh-TRPx0.25-$varname-1979.nc"))
+    lon = tds["longitude"][:]*1; nlon = length(lon)
+    lat = tds["latitude"][:]*1;  nlat = length(lat)
+    var = zeros(length(lon),length(lat),288)
+
+    for yr = 1979 : 2019
+        yds  = NCDataset(datadir("reanalysis/$varname/era5-TRPx0.25-$varname-$(yr).nc"))
+        var += yds[vnc][:]*1
+        close(yds)
+    end
+
+    var = var / 41
+    var = dropdims(mean(reshape(var,nlon,nlat,24,:),dims=4),dims=4)
+
+    fnc = datadir("reanalysis/era5-TRPx0.25-$varname.nc")
+    ds = NCDataset(fnc,"c",attrib = Dict(
+        "Conventions"               => "CF-1.6",
+        "history"                   => "2020-10-21 23:54:22 GMT by grib_to_netcdf-2.16.0: /opt/ecmwf/eccodes/bin/grib_to_netcdf -S param -o /cache/data4/adaptor.mars.internal-1603323636.0468726-6113-3-fb54412a-f0a5-4783-956d-46233705e403.nc /cache/tmp/fb54412a-f0a5-4783-956d-46233705e403-adaptor.mars.internal-1603323636.0477095-6113-1-tmp.grib",
+    ))
+
+    # Dimensions
+
+    ds.dim["longitude"] = nlon
+    ds.dim["latitude"]  = nlat
+    ds.dim["hour"]      = 24
+
+    # Declare variables
+
+    nclon = defVar(ds,"longitude",Float32,("longitude",),attrib = Dict(
+        "units"                     => "degrees_east",
+        "long_name"                 => "longitude",
+    ))
+
+    nclat = defVar(ds,"latitude",Float32,("latitude",),attrib = Dict(
+        "units"                     => "degrees_north",
+        "long_name"                 => "latitude",
+    ))
+
+    nchr  = defVar(ds,"level",Int8,("hour",),attrib = Dict(
+        "units"                     => "hours",
+        "long_name"                 => "Hours past 00:00 (GMT)",
+    ))
+
+    scale,offset = ncoffsetscale(var)
+
+    varattribs = Dict(
+        "scale_factor"  => scale,
+        "add_offset"    => offset,
+        "_FillValue"    => Int16(-32767),
+        "missing_value" => Int16(-32767),
+        "units"         => tds[vnc].attrib["units"],
+        "long_name"     => tds[vnc].attrib["long_name"],
+    )
+
+    if haskey(tds[vnc].attrib,"standard_name")
+        varattribs["standard_name"] = tds[vnc].attrib["standard_name"]
+    end
+
+    ncvar = defVar(ds,varname,Int16,("longitude","latitude","hour"),attrib = varattribs)
+
+    nclon[:] = lon
+    nclat[:] = lat
+    nchr[:]  = collect(0:23)
+    ncvar[:] = var
+
+    close(ds)
+
+    close(tds)
+
+end
+
+function compilesaveprehour(varname::AbstractString;levels::AbstractVector{<:Real})
+
+    tds = NCDataset(datadir("reanalysis/$varname/era5mh-TRPx0.25-$varname-1979.nc"))
+    lon = tds["longitude"][:]*1; nlon = length(lon)
+    lat = tds["latitude"][:]*1;  nlat = length(lat)
+
+    var = zeros(nlon,nlat,nlvl,288); ilvl = 0;
+    vnc = replace(varname,"_air"=>"")
+
+    for lvl in levels; ilvl += 1
+        for yr = 1979 : 2019
+            fnc = "era5-TRPx0.25-$varname-$(lvl)hPa-$(yr).nc"
+            yds  = NCDataset(datadir("reanalysis/$varname/$(fnc)"))
+            var[:,:,yr,ilvl] += yds[vnc][:]*1
+            close(yds)
+        end
+    end
+
+    var = var / 41
+    var = dropdims(mean(reshape(var,nlon,nlat,nlvl,24,:),dims=5),dims=5)
+
+    fnc = datadir("reanalysis/era5-TRPx0.25-$varname.nc")
+    ds = NCDataset(fnc,"c",attrib = Dict(
+        "Conventions"               => "CF-1.6",
+        "history"                   => "2020-10-21 23:54:22 GMT by grib_to_netcdf-2.16.0: /opt/ecmwf/eccodes/bin/grib_to_netcdf -S param -o /cache/data4/adaptor.mars.internal-1603323636.0468726-6113-3-fb54412a-f0a5-4783-956d-46233705e403.nc /cache/tmp/fb54412a-f0a5-4783-956d-46233705e403-adaptor.mars.internal-1603323636.0477095-6113-1-tmp.grib",
+    ))
+
+    # Dimensions
+
+    ds.dim["longitude"] = length(lon)
+    ds.dim["latitude"]  = length(lat)
+    ds.dim["level"]     = length(lvl)
+    ds.dim["hour"]      = 24
+
+    # Declare variables
+
+    nclon = defVar(ds,"longitude",Float32,("longitude",),attrib = Dict(
+        "units"                     => "degrees_east",
+        "long_name"                 => "longitude",
+    ))
+
+    nclat = defVar(ds,"latitude",Float32,("latitude",),attrib = Dict(
+        "units"                     => "degrees_north",
+        "long_name"                 => "latitude",
+    ))
+
+    ncpre = defVar(ds,"level",Int32,("level",),attrib = Dict(
+        "units"                     => "millibars",
+        "long_name"                 => "pressure_level",
+    ))
+
+    nchr  = defVar(ds,"level",Int8,("hour",),attrib = Dict(
+        "units"                     => "hours",
+        "long_name"                 => "Hours past 00:00 (GMT)",
+    ))
+
+    scale,offset = ncoffsetscale(var)
+
+    varattribs = Dict(
+        "scale_factor"  => scale,
+        "add_offset"    => offset,
+        "_FillValue"    => Int16(-32767),
+        "missing_value" => Int16(-32767),
+        "units"         => tds[vnc].attrib["units"],
+        "long_name"     => tds[vnc].attrib["long_name"],
+    )
+
+    if haskey(tds[vnc].attrib,"standard_name")
+        varattribs["standard_name"] = tds[vnc].attrib["standard_name"]
+    end
+
+    ncvar = defVar(
+        ds,varname,Int16,
+        ("longitude","latitude","level","hour"),
+        attrib = varattribs
+    )
+
+    nclon[:] = lon
+    nclat[:] = lat
+    ncpre[:] = lvl
+    nchr[:]  = collect(0:23)
     ncvar[:] = var
 
     close(ds)
