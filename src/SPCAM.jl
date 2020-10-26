@@ -12,14 +12,14 @@ function camcompilesfc(varname::AbstractString)
     fncs = glob("perp_feb.cam2.h0.*.nc",dfol)
     lfnc = length(fncs)
 
-    tds = NCdataset(fncs[1])
-    lon = ds["lon"][:]; nlon = length(lon)
-    lat = ds["lat"][:]; nlat = length(lat)
+    tds = NCDataset(fncs[1])
+    lon = tds["lon"][:]; nlon = length(lon)
+    lat = tds["lat"][:]; nlat = length(lat)
     var = zeros(nlon,nlat)
 
     for ifnc = 1 : lfnc
-        ds   = NCdataset(fncs[ifnc])
-        var += ds[varname][:]
+        ds   = NCDataset(fncs[ifnc])
+        var += ds[varname][:,:,1]*1
     end
 
     var = var / lfnc
@@ -78,19 +78,21 @@ function camcompilepre(varname::AbstractString)
     fncs = glob("perp_feb.cam2.h0.*.nc",dfol)
     lfnc = length(fncs)
 
-    tds = NCdataset(fncs[1])
-    lon = ds["lon"][:]; nlon = length(lon)
-    lat = ds["lat"][:]; nlat = length(lat)
-    lvl = ds["lat"][:]; nlvl = length(lvl)
-    pre = ds["PS"][:]
+    tds = NCDataset(fncs[1])
+    lon = tds["lon"][:]; nlon = length(lon)
+    lat = tds["lat"][:]; nlat = length(lat)
+    lvl = tds["lev"][:]; nlvl = length(lvl)
     var = zeros(nlon,nlat,nlvl)
+    pre = zeros(nlon,nlat)
 
     for ifnc = 1 : lfnc
-        ds   = NCdataset(fncs[ifnc])
-        var += ds[varname][:]
+        ds   = NCDataset(fncs[ifnc])
+        var += ds[varname][:,:,:,1]*1
+        pre += ds["PS"][:,:,1]*1
     end
 
     var = var / lfnc
+    pre = pre / lfnc
 
     fnc = datadir("SPCAM/$varname.nc")
     if isfile(fnc)
@@ -120,17 +122,17 @@ function camcompilepre(varname::AbstractString)
     ))
 
     nclvl = defVar(ds,"level",Float32,("level",),attrib = Dict(
-        "long_name"     => "hybrid level at midpoints (1000*(A+B))"
-        "units"         => "level"
+        "long_name"     => "hybrid level at midpoints (1000*(A+B))",
+        "units"         => "level",
         "positive"      => "down",
         "standard_name" => "atmosphere_hybrid_sigma_pressure_coordinate",
-        "formula_terms" => "a: hyam b: hybm p0: P0 ps: PS,"
+        "formula_terms" => "a: hyam b: hybm p0: P0 ps: PS",
     ))
 
     ncpre = defVar(ds,"pressure",Float32,("longitude","latitude",),attrib = Dict(
         "units"       => "Pa",
         "long_name"   => "Surface pressure",
-        "cell_method" => "time: mean"
+        "cell_method" => "time: mean",
     ))
 
     varattribs = Dict(
@@ -143,12 +145,12 @@ function camcompilepre(varname::AbstractString)
         "cell_method"   => "time: mean"
     )
 
-    ncvar = defVar(ds,varname,Int16,("longitude","latitude"),attrib = varattribs)
+    ncvar = defVar(ds,varname,Int16,("longitude","latitude","level"),attrib = varattribs)
 
     nclon[:] = lon
     nclat[:] = lat
     nclvl[:] = lvl
-    ncpre[:] = lvl * pre
+    ncpre[:] = pre
     ncvar[:] = var
 
     close(ds)

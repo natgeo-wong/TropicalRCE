@@ -9,6 +9,6 @@ camcompilesfc.([
     "FSNS","FLNS","SHFLX","LHFLX","FSNTOA","FLUT"
 ])
 
-camcompilesfc.([
+camcompilepre.([
     "CLOUD","T"
 ])
