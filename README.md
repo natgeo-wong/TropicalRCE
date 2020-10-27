@@ -14,13 +14,13 @@ This repository contains the analysis scripts and output for the **TropicalRCE**
   * [ ] Averaged diurnal cycle for cloud-cover
 
 * [ ] SAM Model Runs
-  * [ ] 1-Moment Microphysics Basic RCE states for all domains
+  * [x] 1-Moment Microphysics Basic RCE states for all domains
   * [x] 2-Moment Microphysics Basic RCE states for all domains
   * [ ] With large-scale vertical ascent derived from ERA5 climatology
   * [ ] Wind shear (?), to be decided
 
-* [ ] SP-CAM analysis
-  * [ ] Calculation of surface energy balance and comparison with ERA5
+* [x] SP-CAM analysis
+  * [x] Calculation of surface energy balance and comparison with ERA5
 
 * [ ] SAM Model Analysis
 
@@ -92,11 +92,11 @@ These domains were chosen based on a combination of sea-surface temperature and 
 We ran SAM with the following SST and Insolation Configurations:
 
 | Domain | Insol / W m**-2 | SST Range / K | Avg SST / K |
-| :--:  |  :--:  | :--: | :--: |
-|  DTP  | 1345.6 | 299-303, step 0.5 | 300.8 |
+| :--:  |  :--:  | :-----------------: | :---: |
+|  DTP  | 1345.6 |  299-303, step 0.5  | 300.8 |
 |  IPW  | 1345.6 | 300.5-303, step 0.5 | 301.9 |
-|  WPW  | 1355.8 | 301-303, step 0.5 | 302.4 |
-|  DRY  | 1359.3 | 297-302, step 0.5 | 299.7 |
+|  WPW  | 1355.8 |  301-303, step 0.5  | 302.4 |
+|  DRY  | 1359.3 |  297-302, step 0.5  | 299.7 |
 
 ## 4. Surface Energy Balance
 
@@ -105,15 +105,15 @@ We ran SAM with the following SST and Insolation Configurations:
 Here, I display a summary of the model runs in SAM for averaged SST.  A full table containing all the experiments will be provided elsewhere.
 
 | Domain | Insol  | SST / K | SAM Micro | Net SW | Net LW | Sensible | Latent | SFC Bal |
-| :----: |  :---: |  :---:  |  :-----:  |  :---:  |  :--:  | :---: |  :--:  |  :---:  |
-|  DTP   | 1345.6 |  300.8  |  SAM1MOM  |  |  |  |  |  |
-|  IPW   | 1345.6 |  301.9  |  SAM1MOM  |  |  |  |  |  |
-|  WPW   | 1355.8 |  302.4  |  SAM1MOM  |  |  |  |  |  |
-|  DRY   | 1359.3 |  299.7  |  SAM1MOM  |  |  |  |  |  |
-|  DTP   | 1345.6 |  300.8  |   M2005   | +276.50 | -65.05 | -6.93 | -78.86 | +125.66 |
-|  IPW   | 1345.6 |  301.9  |   M2005   |  |  |  |  |  |
-|  WPW   | 1355.8 |  302.4  |   M2005   | +280.49 | -62.88 | -6.78 | -88.24 | +122.59 |
-|  DRY   | 1359.3 |  299.7  |   M2005   | +279.99 | -68.16 | -6.93 | -74.48 | +130.42 |
+| :----: | :----: |  :---:  |  :-----:  |  :---:  |  :--:  | :---:  |  :--:  |  :---:  |
+|  DTP   | 1345.6 |  300.8  |  SAM1MOM  | +283.52 | -67.94 | -10.61 | -88.94 | +116.03 |
+|  IPW   | 1345.6 |  301.9  |  SAM1MOM  | +282.46 | -63.85 | -10.39 | -93.52 | +114.70 |
+|  WPW   | 1355.8 |  302.4  |  SAM1MOM  | +283.37 | -61.73 | -10.18 | -95.24 | +116.21 |
+|  DRY   | 1359.3 |  299.7  |  SAM1MOM  | +287.38 | -71.50 | -10.68 | -84.56 | +120.64 |
+|  DTP   | 1345.6 |  300.8  |   M2005   | +276.50 | -65.05 | -6.93  | -78.86 | +125.66 |
+|  IPW   | 1345.6 |  301.9  |   M2005   | +277.62 | -61.33 | -6.80  | -83.09 | +126.39 |
+|  WPW   | 1355.8 |  302.4  |   M2005   | +280.49 | -62.88 | -6.78  | -88.24 | +122.59 |
+|  DRY   | 1359.3 |  299.7  |   M2005   | +279.99 | -68.16 | -6.93  | -74.48 | +130.42 |
 
 We see overall that the energy balance of small-domain RCE simulations in SAM have an overall surface energy balance of ~O(120) W/m2, compared to typical values of about 0-40 W/m2 (see comparison with reanalysis data below), and this is largely due to the very high net shortwave radiation into the ocean, which is only partially compensated by slightly increased net longwave radiation upward.
 
@@ -124,11 +124,11 @@ We find that the surface energy balance in ERA5 reanalysis is much lower than th
 ![Surface Balance](figures/seb-era5.png)
 
 | Domain | Insol  | SST / K | Net SW | Net LW | Sensible | Latent | SFC Bal |
-| :----: |  :---: |  :---:  |  :---:  |  :--:  | :---: |  :--:  |  :---:  |
-|  DTP   | 1345.6 |  300.8  | +178.84 | -42.92 | -8.96 | -105.60 | +25.43 |
-|  IPW   | 1345.6 |  301.9  | +174.08 | -40.79 | -9.46 | -100.09 | +23.73 |
-|  WPW   | 1355.8 |  302.4  | +172.56 | -39.74 | -10.26 | -94.14 | +28.42 |
-|  DRY   | 1359.3 |  299.7  | +191.51 | -41.38 | -5.85 | -83.15 | +61.12 |
+| :----: |  :---: |  :---:  |  :---:  |  :--:  | :----: |  :---:  |  :--:  |
+|  DTP   | 1345.6 |  300.8  | +178.84 | -42.92 | -8.96  | -105.60 | +25.43 |
+|  IPW   | 1345.6 |  301.9  | +174.08 | -40.79 | -9.46  | -100.09 | +23.73 |
+|  WPW   | 1355.8 |  302.4  | +172.56 | -39.74 | -10.26 | -94.14  | +28.42 |
+|  DRY   | 1359.3 |  299.7  | +191.51 | -41.38 | -5.85  | -83.15  | +61.12 |
 
 ### Comparison with SP-CAM
 
@@ -137,11 +137,19 @@ As mentioned in Section 2, we also compare our results to that from SP-CAM in or
 ![Surface Balance](figures/seb-spcam.png)
 
 | Domain | Insol  | SST / K | Net SW | Net LW | Sensible | Latent | SFC Bal |
-| :----: |  :---: |  :---:  |  :---:  |  :--:  | :---: |  :--:  |  :---:  |
-|  DTP   | 1345.6 |  300.8  | +202.30 | -50.33 | -12.20 | -144.39 | -4.62 |
-|  IPW   | 1345.6 |  301.9  | +186.51 | -46.40 | -12.97 | -151.47 | -24.33 |
-|  WPW   | 1355.8 |  302.4  | +180.90 | -41.12 | -11.35 | -133.02 | -4.59 |
-|  DRY   | 1359.3 |  299.7  | +225.07 | -44.21 | -5.04 | -90.83 | +84.99 |
+| :----: |  :---: |  :---:  |  :---:  |  :--:  | :---:  |  :--:   |  :--:  |
+|  DTP   | 1345.6 |  300.8  | +197.42 | -48.99 | -11.83 | -140.57 | -3.97  |
+|  IPW   | 1345.6 |  301.9  | +183.81 | -45.70 | -12.77 | -149.11 | -23.77 |
+|  WPW   | 1355.8 |  302.4  | +180.08 | -40.93 | -11.29 | -132.38 | -4.52  |
+|  DRY   | 1359.3 |  299.7  | +224.75 | -44.15 | -5.03  | -90.69  | +84.88 |
+
+We see from the SP-CAM runs that the surface energy balance within the tropics is definitely not as high as in our SP-CAM runs.  The magnitude of the surface energy balance in the tropics and the net shortwave downwards into the ground at ~O(190) W/m2 which is close to that of reanalysis, indicates that the very high net shortwave ~O(280) W/m2 observed in small-domain RCE simulations is due to the RCE setup itself, rather that it being an artifact of SAM.
+
+It is notable however, that in our SP-CAM runs the surface energy balance of the tropical regions is negative.  However, this is likely due to the fact that the SP-CAM model was run in a perpetual mid-February insolation, which is not equinoctal, and where there is more insolation in the southern hemisphere that would account for an overall loss in surface energy balance in many tropical regions.  In fact, we do see a gradient in the surface energy balance from north to south.
+
+## 5. Finding the Underlying Reason for Large Surface Imbalances in RCE
+
+Text
 
 ## Installation
 
