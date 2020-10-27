@@ -14,7 +14,8 @@ This repository contains the analysis scripts and output for the **TropicalRCE**
   * [ ] Averaged diurnal cycle for cloud-cover
 
 * [ ] SAM Model Runs
-  * [x] Basic RCE states for all domains
+  * [ ] 1-Moment Microphysics Basic RCE states for all domains
+  * [x] 2-Moment Microphysics Basic RCE states for all domains
   * [ ] With large-scale vertical ascent derived from ERA5 climatology
   * [ ] Wind shear (?), to be decided
 
@@ -55,13 +56,16 @@ In our project, we ran SAM v6.10.6 (w/ modifications by Dr. Peter Blossey) as a 
 * Insolation (averaged over domain latitudes)
 
 Other notable configurations:
+* 1-moment SAM Microphysics
 * 2-moment Morrison (2005) Microphysics
 * Diurnal cycle on, perpetual spring equinox
 * RRTM Radiation Scheme
 
 #### II. Super-Parameterized Community Atmosphere Model (SP-CAM)
 
-Our group maintains a version of the Community Atmosphere Model coupled to a 2D-domain of SAM run in CRM mode for the super-parameterization of convection in CAM, known as SP-CAM.  In order to see if the discrepancy in the our surface energy balance are due to the setup of our experiments, or artifact of SAM, we compare our results against runs in SP-CAM.  If the surface energy-balance in SP-CAM is similar to our results in pure RCE mode, then our results are likely an artifact of SAM.  However, if the surface energy balance is similar to that in reanalysis, then there is some aspect that is missing in our model setup that results in this energy imbalance.
+Our group maintains a version of the Community Atmosphere Model coupled to a 2D-domain of SAM run in CRM mode for the super-parameterization of convection in CAM, known as SP-CAM.  In order to see if the discrepancy in the our surface energy balance are due to the setup of our experiments, or artifact of SAM, we compare our results against runs in SP-CAM:
+* If the surface energy-balance in SP-CAM is similar to our results in pure RCE mode, then our results are likely an artifact of an error in SAM
+* If the surface energy balance is similar to that in reanalysis, then there is some aspect that is missing in our model setup that results in this energy imbalance.
 
 Notable configurations:
 * Perpetual February (spunup from average February climatology, Feb 15 insolation)
@@ -77,8 +81,8 @@ We considered the following domains in our analysis:
 ![Domains](figures/domain.png)
 
 These domains were chosen based on a combination of sea-surface temperature and precipitation characteristics.
-* IPW and WPW domains have relatively high SST respect to the rest of the tropics (WPW more so and more localized than IPW)
-* DRY domain has a relatively low SST despite equatorial insolation and very low precipitation
+* **IPW** and **WPW** domains have relatively **high SST** compared to the rest of the tropics (WPW more so and more localized than IPW)
+* **DRY** domain has a relatively **low SST** despite equatorial insolation and very **low precipitation**
 
 ![GPM Precipitation](figures/gpmprcp.png)
 ![Surface Temperature](figures/t_sfc.png)
@@ -90,6 +94,7 @@ We ran SAM with the following SST and Insolation Configurations:
 | Domain | Insol / W m**-2 | SST Range / K | Avg SST / K |
 | :--:  |  :--:  | :--: | :--: |
 |  DTP  | 1345.6 | 299-303, step 0.5 | 300.8 |
+|  IPW  | 1345.6 | 300.5-303, step 0.5 | 301.9 |
 |  WPW  | 1355.8 | 301-303, step 0.5 | 302.4 |
 |  DRY  | 1359.3 | 297-302, step 0.5 | 299.7 |
 
@@ -97,23 +102,46 @@ We ran SAM with the following SST and Insolation Configurations:
 
 ### Radiative-Convective Equilibrium in SAM
 
-#### DTP Domain
+Here, I display a summary of the model runs in SAM for averaged SST.  A full table containing all the experiments will be provided elsewhere.
 
-| Insol  | SST / K | Microphysics | Net SFC SW | Net SFC LW | Sensible | Latent | SFC Bal |
-|  :--:  |  :---:  |  :-----------:  |  :---:  |  :--:  | :---: |  :--:  |  :---:  |
-| 1345.6 |  299.0  | Morrison (2005) | +277.7  | -70.32 | -7.01 | -72.28 | +128.09 |
-| 1345.6 |  300.0  | Morrison (2005) | +276.92 | -67.32 | -6.95 | -75.76 | +126.89 |
-| 1345.6 |  300.5  | Morrison (2005) | +276.65 | -65.87 | -6.95 | -77.82 | +126.02 |
-| 1345.6 |  300.8  | Morrison (2005) | +276.5  | -65.05 | -6.93 | -78.86 | +125.66 |
-| 1345.6 |  301.0  | Morrison (2005) | +276.51 | -64.39 | -6.93 | -79.95 | +125.24 |
-| 1345.6 |  301.5  | Morrison (2005) | +277.64 | -62.64 | -6.85 | -81.68 | +126.47 |
-| 1345.6 |  302.0  | Morrison (2005) | +275.92 | -61.05 | -6.83 | -83.94 | +124.1  |
-| 1345.6 |  302.5  | Morrison (2005) | +275.25 | -59.31 | -6.76 | -85.95 | +123.24 |
-| 1345.6 |  303.0  | Morrison (2005) | +274.85 | -57.64 | -6.7  | -88.25 | +122.26 |
+| Domain | Insol  | SST / K | SAM Micro | Net SW | Net LW | Sensible | Latent | SFC Bal |
+| :----: |  :---: |  :---:  |  :-----:  |  :---:  |  :--:  | :---: |  :--:  |  :---:  |
+|  DTP   | 1345.6 |  300.8  |  SAM1MOM  |  |  |  |  |  |
+|  IPW   | 1345.6 |  301.9  |  SAM1MOM  |  |  |  |  |  |
+|  WPW   | 1355.8 |  302.4  |  SAM1MOM  |  |  |  |  |  |
+|  DRY   | 1359.3 |  299.7  |  SAM1MOM  |  |  |  |  |  |
+|  DTP   | 1345.6 |  300.8  |   M2005   | +276.50 | -65.05 | -6.93 | -78.86 | +125.66 |
+|  IPW   | 1345.6 |  301.9  |   M2005   |  |  |  |  |  |
+|  WPW   | 1355.8 |  302.4  |   M2005   | +280.49 | -62.88 | -6.78 | -88.24 | +122.59 |
+|  DRY   | 1359.3 |  299.7  |   M2005   | +279.99 | -68.16 | -6.93 | -74.48 | +130.42 |
+
+We see overall that the energy balance of small-domain RCE simulations in SAM have an overall surface energy balance of ~O(120) W/m2, compared to typical values of about 0-40 W/m2 (see comparison with reanalysis data below), and this is largely due to the very high net shortwave radiation into the ocean, which is only partially compensated by slightly increased net longwave radiation upward.
 
 ### Comparison with ERA5 Reanalysis
 
-We find that the surface energy balance in ERA5 Reanalysis
+We find that the surface energy balance in ERA5 reanalysis is much lower than that in our SAM model runs.
+
+![Surface Balance](figures/seb-era5.png)
+
+| Domain | Insol  | SST / K | Net SW | Net LW | Sensible | Latent | SFC Bal |
+| :----: |  :---: |  :---:  |  :---:  |  :--:  | :---: |  :--:  |  :---:  |
+|  DTP   | 1345.6 |  300.8  | +178.84 | -42.92 | -8.96 | -105.60 | +25.43 |
+|  IPW   | 1345.6 |  301.9  | +174.08 | -40.79 | -9.46 | -100.09 | +23.73 |
+|  WPW   | 1355.8 |  302.4  | +172.56 | -39.74 | -10.26 | -94.14 | +28.42 |
+|  DRY   | 1359.3 |  299.7  | +191.51 | -41.38 | -5.85 | -83.15 | +61.12 |
+
+### Comparison with SP-CAM
+
+As mentioned in Section 2, we also compare our results to that from SP-CAM in order to determine if the anomalously high surface imbalances we see in our SAM model runs are an artifact of our experiments being RCE runs (and therefore other aspects that must be included for the energy imbalance to be more realistic), or if this is a problem with SAM.
+
+![Surface Balance](figures/seb-spcam.png)
+
+| Domain | Insol  | SST / K | Net SW | Net LW | Sensible | Latent | SFC Bal |
+| :----: |  :---: |  :---:  |  :---:  |  :--:  | :---: |  :--:  |  :---:  |
+|  DTP   | 1345.6 |  300.8  | +202.30 | -50.33 | -12.20 | -144.39 | -4.62 |
+|  IPW   | 1345.6 |  301.9  | +186.51 | -46.40 | -12.97 | -151.47 | -24.33 |
+|  WPW   | 1355.8 |  302.4  | +180.90 | -41.12 | -11.35 | -133.02 | -4.59 |
+|  DRY   | 1359.3 |  299.7  | +225.07 | -44.21 | -5.04 | -90.83 | +84.99 |
 
 ## Installation
 
