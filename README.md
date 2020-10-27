@@ -93,13 +93,23 @@ We ran SAM with the following SST and Insolation Configurations:
 |  WPW  | 1355.8 | 301-303, step 0.5 | 302.4 |
 |  DRY  | 1359.3 | 297-302, step 0.5 | 299.7 |
 
-**DTP Domain Analogues:**
-
 ## 4. Surface Energy Balance
 
 ### Radiative-Convective Equilibrium in SAM
 
-Text
+#### DTP Domain
+
+| Insol  | SST / K | Microphysics | Net SFC SW | Net SFC LW | Sensible | Latent | SFC Bal |
+|  :--:  |  :---:  |  :-----------:  |  :---:  |  :--:  | :---: |  :--:  |  :---:  |
+| 1345.6 |  299.0  | Morrison (2005) | +277.7  | -70.32 | -7.01 | -72.28 | +128.09 |
+| 1345.6 |  300.0  | Morrison (2005) | +276.92 | -67.32 | -6.95 | -75.76 | +126.89 |
+| 1345.6 |  300.5  | Morrison (2005) | +276.65 | -65.87 | -6.95 | -77.82 | +126.02 |
+| 1345.6 |  300.8  | Morrison (2005) | +276.5  | -65.05 | -6.93 | -78.86 | +125.66 |
+| 1345.6 |  301.0  | Morrison (2005) | +276.51 | -64.39 | -6.93 | -79.95 | +125.24 |
+| 1345.6 |  301.5  | Morrison (2005) | +277.64 | -62.64 | -6.85 | -81.68 | +126.47 |
+| 1345.6 |  302.0  | Morrison (2005) | +275.92 | -61.05 | -6.83 | -83.94 | +124.1  |
+| 1345.6 |  302.5  | Morrison (2005) | +275.25 | -59.31 | -6.76 | -85.95 | +123.24 |
+| 1345.6 |  303.0  | Morrison (2005) | +274.85 | -57.64 | -6.7  | -88.25 | +122.26 |
 
 ### Comparison with ERA5 Reanalysis
 
