@@ -23,7 +23,7 @@ end
 
 function sebsummary(experiment::AbstractString, config::AbstractString, days::Integer=100)
 
-    t,eb_sfc,sw_sfc,lw_sfc,sh_sfc,lh_sfc = ebextract(experiment,config)
+    t,eb_sfc,sw_sfc,lw_sfc,sh_sfc,lh_sfc = sebextract(experiment,config)
 
     tstep = round(Integer,(length(t) - 1) / (t[end] - t[1]))
 
@@ -57,7 +57,7 @@ function sebsummary(
 
     for icon = 1 : nconfig
 
-        t,eb_sfc,sw_sfc,lw_sfc,sh_sfc,lh_sfc = ebextract(experiment,config[icon])
+        t,eb_sfc,sw_sfc,lw_sfc,sh_sfc,lh_sfc = sebextract(experiment,config[icon])
 
         tstep = round(Integer,(length(t) - 1) / (t[end] - t[1]))
 
