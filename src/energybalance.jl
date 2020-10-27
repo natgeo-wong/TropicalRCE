@@ -63,9 +63,9 @@ function sebsummary(
 
         sebtable[icon,1] = parse(Float32,replace(replace(config[icon],"sst"=>""),"d"=>"."))
         sebtable[icon,2] = mean(reshape(sw_sfc,tstep,:)[:,(end-days+1):end]);
-        sebtable[icon,3] = mean(reshape(lw_sfc,tstep,:)[:,(end-days+1):end]);
-        sebtable[icon,4] = mean(reshape(sh_sfc,tstep,:)[:,(end-days+1):end]);
-        sebtable[icon,5] = mean(reshape(lh_sfc,tstep,:)[:,(end-days+1):end]);
+        sebtable[icon,3] = mean(reshape(lw_sfc,tstep,:)[:,(end-days+1):end]) * -1;
+        sebtable[icon,4] = mean(reshape(sh_sfc,tstep,:)[:,(end-days+1):end]) * -1;
+        sebtable[icon,5] = mean(reshape(lh_sfc,tstep,:)[:,(end-days+1):end]) * -1;
         sebtable[icon,6] = mean(reshape(eb_sfc,tstep,:)[:,(end-days+1):end]);
 
     end
@@ -73,8 +73,8 @@ function sebsummary(
     head = ["SST / K","Net SFC SW","Net SFC LW","Sensible","Latent","SFC Balance"];
 
     pretty_table(
-        sebtable,head,
-        alignment=[:c,:c,:c,:c,:c,:c,:l,:l],
+        round.(sebtable,digits=2),head,
+        alignment=[:c,:c,:c,:c,:c,:c],
         tf=compact
     );
 
