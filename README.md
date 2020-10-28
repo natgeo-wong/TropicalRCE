@@ -9,24 +9,24 @@ This repository contains the analysis scripts and output for the **TropicalRCE**
 
 ## Progress
 * [ ] Download and analysis of ERA5 reanalysis Data
-  * [x] Averaged surface data, binned by spatial distribution
-  * [x] Profile of monthly-averaged pressure data against pressure-height
-  * [ ] Averaged diurnal cycle for cloud-cover
+   * [x] Averaged surface data, binned by spatial distribution
+   * [x] Profile of monthly-averaged pressure data against pressure-height
+   * [ ] Averaged diurnal cycle for cloud-cover
 
 * [ ] SAM Model Runs
-  * [x] 1-Moment Microphysics Basic RCE states for all domains
-  * [x] 2-Moment Microphysics Basic RCE states for all domains
-  * [ ] With large-scale vertical ascent derived from ERA5 climatology
-  * [ ] Wind shear (?), to be decided
+   * [x] 1-Moment Microphysics Basic RCE states for all domains
+   * [x] 2-Moment Microphysics Basic RCE states for all domains
+   * [ ] With large-scale vertical ascent derived from ERA5 climatology
+   * [ ] Wind shear (?), to be decided
 
 * [x] SP-CAM analysis
-  * [x] Calculation of surface energy balance and comparison with ERA5
+   * [x] Calculation of surface energy balance and comparison with ERA5
 
 * [ ] SAM Model Analysis
 
 ## 0. Motivation
 
-RCE simulations are often taken as an approximation to the tropical atmosphere.  However, from initial runs in the **[DiConv](https://github.com/natgeo-wong/DiConv)** project, we find that Cloud-Resolving RCE runs in the System of Atmospheric Modelling [(SAM)](http://rossby.msrc.sunysb.edu/~marat/SAM.html) v6.10.6, we find that the net energy balance at the surface is much greater than the tropical average O(40) W/m2.  The net energy balance in our runs at 302 K and equatorial insolation hovers at O(120) W/m2.  These results are not unique.  A recent study done by [Wing et al. (2020)](https://doi.org/10.1029/2020MS002138) as part of RCEMIP shows that for small domains (O(100)km in both horizontal directions), the mean surface energy balance is O(100) W/m2.
+RCE simulations are often taken as an approximation to the tropical atmosphere.  However, from initial runs iof SAM in Radiative-Convective Equilibrium (RCE) Cloud-Resolving Mode (CRM), we find that cloud-resolving RCE runs in the System of Atmospheric Modelling [(SAM)](http://rossby.msrc.sunysb.edu/~marat/SAM.html) v6.10.6 have a net energy balance at the surface is much greater than the tropical average O(40) W/m2.  The net energy balance in our runs at 302 K and equatorial insolation hovers at O(120) W/m2.  These results are not unique.  A recent study done by [Wing et al. (2020)](https://doi.org/10.1029/2020MS002138) as part of RCEMIP shows that for small domains (O(100)km in both horizontal directions), the mean surface energy balance is O(100) W/m2.
 
 In a way, these results are somewhat expected, given that atmospheric transport out of the tropics is not accounted for in these small-domain CRMs.  However, even when accounting for large-scale vertical motion as a proxy for large-scale atmospheric motion and ascent in the tropics, the surface energy balance still hovers at O(120) W/m2.  Therefore, in this project, we aim to explore and understand the differences between our results in small-domain RCE simulations, and reanalysis data (ERA5) that acts as a proxy to observations.
 
@@ -56,8 +56,7 @@ In our project, we ran SAM v6.10.6 (w/ modifications by Dr. Peter Blossey) as a 
 * Insolation (averaged over domain latitudes)
 
 Other notable configurations:
-* 1-moment SAM Microphysics
-* 2-moment Morrison (2005) Microphysics
+* 1/2-moment Microphysics (SAM1MOM and M2005 options in SAM)
 * Diurnal cycle on, perpetual spring equinox
 * RRTM Radiation Scheme
 
@@ -91,18 +90,58 @@ These domains were chosen based on a combination of sea-surface temperature and 
 
 We ran SAM with the following SST and Insolation Configurations:
 
-| Domain | Insol / W m**-2 | SST Range / K | Avg SST / K |
-| :--:  |  :--:  | :-----------------: | :---: |
-|  DTP  | 1345.6 |  299-303, step 0.5  | 300.8 |
-|  IPW  | 1345.6 | 300.5-303, step 0.5 | 301.9 |
-|  WPW  | 1355.8 |  301-303, step 0.5  | 302.4 |
-|  DRY  | 1359.3 |  297-302, step 0.5  | 299.7 |
+| Domain | Insol / W m**-2 | SST Range / K | Avg SST / K | Microphysics |
+| :---: |  :--:  | :-----------------: | :---: | :-------: |
+|  DTP  | 1345.6 |  299-303, step 0.5  | 300.8 |  SAM1MOM  |
+|  IPW  | 1345.6 | 300.5-303, step 0.5 | 301.9 |  SAM1MOM  |
+|  WPW  | 1355.8 |  301-303, step 0.5  | 302.4 |  SAM1MOM  |
+|  DRY  | 1359.3 |  297-302, step 0.5  | 299.7 |  SAM1MOM  |
+|  DTP  | 1345.6 |  299-303, step 0.5  | 300.8 |   M2005   |
+|  IPW  | 1345.6 | 300.5-303, step 0.5 | 301.9 |   M2005   |
+|  WPW  | 1355.8 |  301-303, step 0.5  | 302.4 |   M2005   |
+|  DRY  | 1359.3 |  297-302, step 0.5  | 299.7 |   M2005   |
 
-## 4. Surface Energy Balance
+## 4. Comparison of SAM Runs against Reanalysis and Observation Data
 
-### Radiative-Convective Equilibrium in SAM
+### A. Surface Variables
 
-Here, I display a summary of the model runs in SAM for averaged SST.  A full table containing all the experiments will be provided elsewhere.
+**Precipitation / mm/day**
+| Domain | Insol  | SST / K | GPM  | ERA5 | SAM1MOM | M2005 |
+| :----: | :----: |  :---:  | :--: | :--: | :-----: | :---: |
+|  DTP   | 1345.6 |  300.8  | 4.70 | 4.70 | 3.06 | 2.71 |
+|  IPW   | 1345.6 |  301.9  | 7.05 | 6.53 | 3.22 | 2.86 |
+|  WPW   | 1355.8 |  302.4  | 8.90 | 7.98 | 3.28 | 3.05 |
+|  DRY   | 1359.3 |  299.7  | 1.86 | 2.61 | 2.91 | 2.56 |
+
+*(Note: We plot the ERA5 precipitation below:)*
+
+![ERA5 Precipitation](figures/prcp_tot.png)
+
+It is interesting to see that the ERA5 domain mean precipitation over the deep tropics as a whole is almost exactly the same as that given by the GPM IMERG dataset.  However, on a smaller domain scale, such as over the WPW or DRY domains, differences remain.  We do note that the ERA5 precipitation in the DRY region is very similar to that from our RCE runs, though the significance of this is as of yet unclear (caa 28 Oct 2020).
+
+**Total Column Water / mm**
+| Domain | Insol  | SST / K | ERA5  | SAM1MOM | M2005 |
+| :----: | :----: |  :---:  | :---: | :-----: | :---: |
+|  DTP   | 1345.6 |  300.8  | 42.78 | 41.22 | 42.57 |
+|  IPW   | 1345.6 |  301.9  | 49.05 | 45.58 | 46.78 |
+|  WPW   | 1355.8 |  302.4  | 52.15 | 47.89 | 46.20 |
+|  DRY   | 1359.3 |  299.7  | 40.69 | 37.53 | 39.02 |
+
+### B. Atmospheric Temperature
+
+Text
+
+### C. Specific Humidity Profile
+
+### D. Relative Humidity Profile
+
+### E. Cloud Fraction Profile
+
+## 5. Surface Energy Balance
+
+### A. Radiative-Convective Equilibrium in SAM
+
+Here, I display a summary of the surface energy balance for the model runs in SAM with averaged SST for each ERA5 domain.  A full table containing all the experiments will be provided elsewhere.
 
 | Domain | Insol  | SST / K | SAM Micro | Net SW | Net LW | Sensible | Latent | SFC Bal |
 | :----: | :----: |  :---:  |  :-----:  |  :---:  |  :--:  | :---:  |  :--:  |  :---:  |
@@ -117,7 +156,7 @@ Here, I display a summary of the model runs in SAM for averaged SST.  A full tab
 
 We see overall that the energy balance of small-domain RCE simulations in SAM have an overall surface energy balance of ~O(120) W/m2, compared to typical values of about 0-40 W/m2 (see comparison with reanalysis data below), and this is largely due to the very high net shortwave radiation into the ocean, which is only partially compensated by slightly increased net longwave radiation upward.
 
-### Comparison with ERA5 Reanalysis
+### B. Comparison with ERA5 Reanalysis
 
 We find that the surface energy balance in ERA5 reanalysis is much lower than that in our SAM model runs.
 
@@ -125,12 +164,12 @@ We find that the surface energy balance in ERA5 reanalysis is much lower than th
 
 | Domain | Insol  | SST / K | Net SW | Net LW | Sensible | Latent | SFC Bal |
 | :----: |  :---: |  :---:  |  :---:  |  :--:  | :----: |  :---:  |  :--:  |
-|  DTP   | 1345.6 |  300.8  | +178.84 | -42.92 | -8.96  | -105.60 | +25.43 |
-|  IPW   | 1345.6 |  301.9  | +174.08 | -40.79 | -9.46  | -100.09 | +23.73 |
-|  WPW   | 1355.8 |  302.4  | +172.56 | -39.74 | -10.26 | -94.14  | +28.42 |
-|  DRY   | 1359.3 |  299.7  | +191.51 | -41.38 | -5.85  | -83.15  | +61.12 |
+|  DTP   | 1345.6 |  300.8  | +178.84 | -42.92 | -8.96  | -105.60 | +21.36 |
+|  IPW   | 1345.6 |  301.9  | +174.08 | -40.79 | -9.46  | -100.09 | +23.83 |
+|  WPW   | 1355.8 |  302.4  | +172.56 | -39.74 | -10.26 | -94.14  | +28.45 |
+|  DRY   | 1359.3 |  299.7  | +191.51 | -41.38 | -5.85  | -83.15  | +61.14 |
 
-### Comparison with SP-CAM
+### C. Comparison with SP-CAM
 
 As mentioned in Section 2, we also compare our results to that from SP-CAM in order to determine if the anomalously high surface imbalances we see in our SAM model runs are an artifact of our experiments being RCE runs (and therefore other aspects that must be included for the energy imbalance to be more realistic), or if this is a problem with SAM.
 
@@ -147,7 +186,21 @@ We see from the SP-CAM runs that the surface energy balance within the tropics i
 
 It is notable however, that in our SP-CAM runs the surface energy balance of the tropical regions is negative.  However, this is likely due to the fact that the SP-CAM model was run in a perpetual mid-February insolation, which is not equinoctal, and where there is more insolation in the southern hemisphere that would account for an overall loss in surface energy balance in many tropical regions.  In fact, we do see a gradient in the surface energy balance from north to south.
 
-## 5. Finding the Underlying Reason for Large Surface Imbalances in RCE
+## 6. Finding the Underlying Reason for Large Surface Imbalances in RCE
+
+### A. Large-scale Circulation
+
+Text
+
+### B. Imposing a Weak Temperature Gradient
+
+Text
+
+### C. The Diurnal Cycle of Cloud Cover
+
+Text
+
+### D. Wind Shear
 
 Text
 
