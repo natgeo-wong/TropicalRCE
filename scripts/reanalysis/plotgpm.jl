@@ -14,7 +14,7 @@ include(srcdir("reanalysis.jl"))
 ds = NCDataset(datadir("gpmimerg-prcp_rate-cmp-TRP.nc"))
 elon = ds["longitude"][:]
 elat = ds["latitude"][:]
-eavg = ds["average"][:]*3600
+eavg = ds["average"][:]*3600*24
 close(ds)
 
 ods = NCDataset(datadir("ETOPO1.grd"))
@@ -22,7 +22,7 @@ olon = ods["x"][:]; olat = ods["y"][:]; oro = ods["z"][:]*1
 oro[oro.>0] .= 1; oro[oro.<0] .= 0
 close(ods)
 
-bins = -3:0.02:0; pbin = (bins[2:end].+bins[1:(end-1)])/2
+bins = -1.5:0.02:1.5; pbin = (bins[2:end].+bins[1:(end-1)])/2
 
 function bindata(coords,bins,evar,elon,elat,oro,olon,olat)
 
@@ -61,7 +61,7 @@ DRY = prect(5,-5,180,275)
 pplt.close(); arr = [[1,1],[2,3]];
 f,axs = pplt.subplots(arr,aspect=6,axwidth=6,sharey=0);
 
-c1 = axs[1].contourf(elon,elat,eavg',levels=0:0.05:0.5,cmap="Blues",extend="max");
+c1 = axs[1].contourf(elon,elat,eavg',levels=0:15,cmap="Blues",extend="max");
 axs[1].plot(x,y,c="k",lw=0.2)
 axs[1].plot(DTP[1],DTP[2],c="b",lw=1)
 axs[1].plot(IPW[1],IPW[2],c="r",lw=1)
@@ -70,7 +70,7 @@ axs[1].plot(DRY[1],DRY[2],c="k",lw=1,linestyle="--")
 axs[1].format(
     ylim=(-30,30),
     xlim=(0,360),xlocator=[0:60:360],
-    suptitle=L"Precipitation Rate / mm hr$^{-1}$"
+    suptitle="Precipitation Rate / mm day**-1"
 )
 f.colorbar(c1,loc="r")
 
@@ -80,7 +80,7 @@ axs[2].plot(10 .^pbin,lbin_WPW,c="k",lw=0.5); axs[2].plot([1,1]*lavg_WPW,[0.1,50
 axs[2].plot(10 .^pbin,lbin_DRY,c="k",lw=0.5,linestyle=":")
 axs[2].plot([1,1]*lavg_DRY,[0.1,50],c="k",linestyle=":")
 axs[2].format(
-    xscale="log",ylim=(0.1,50),yscale="log",
+    xlim=(10 .^minimum(bins),10 .^maximum(bins)),xscale="log",ylim=(0.1,50),yscale="log",
     rtitle="Land",ylabel="Normalized Frequency"
 )
 
@@ -90,13 +90,25 @@ axs[3].plot(10 .^pbin,sbin_WPW,c="k",lw=0.5); axs[3].plot([1,1]*savg_WPW,[0.1,50
 axs[3].plot(10 .^pbin,sbin_DRY,c="k",lw=0.5,linestyle=":")
 axs[3].plot([1,1]*savg_DRY,[0.1,50],c="k",linestyle=":")
 axs[3].format(
-    xscale="log",ylim=(0.1,50),yscale="log",
+    xlim=(10 .^minimum(bins),10 .^maximum(bins)),xscale="log",ylim=(0.1,50),yscale="log",
     rtitle="Ocean"
 )
 
 for ax in axs
     ax.format(abc=true,grid="on")
 end
+
+@info """Average Precipitation Rate (1979-2019):
+  $(BOLD("DTP (Deep Tropics):"))          $(@sprintf("%0.2f",savg_DTP)) mm day**-1
+  $(BOLD("IPW (Indo-Pacific Warmpool):")) $(@sprintf("%0.2f",savg_IPW)) mm day**-1
+  $(BOLD("WPW (West Pacific Warmpool):")) $(@sprintf("%0.2f",savg_WPW)) mm day**-1
+  $(BOLD("DRY (Dry Pacific):"))           $(@sprintf("%0.2f",savg_DRY)) mm day**-1
+
+Average Precipitation Rate (1979-2019):
+  $(BOLD("DTP (Deep Tropics):"))          $(@sprintf("%0.2f",lavg_DTP)) mm day**-1
+  $(BOLD("IPW (Indo-Pacific Warmpool):")) $(@sprintf("%0.2f",lavg_IPW)) mm day**-1
+  $(BOLD("WPW (West Pacific Warmpool):")) $(@sprintf("%0.2f",lavg_WPW)) mm day**-1
+"""
 
 mkpath(plotsdir("REANALYSIS"))
 f.savefig(plotsdir("REANALYSIS/gpmprcp.png"),transparent=false,dpi=200)

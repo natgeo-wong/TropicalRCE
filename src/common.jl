@@ -16,6 +16,7 @@ function bindatasfc(coords,bins,var,lon,lat,lsm)
     tlon,tlat,rinfo = regiongridvec(coords,lon,lat);
     rvar = regionextractgrid(var,rinfo)
     rlsm = regionextractgrid(lsm,rinfo)
+    rwgt = ones(size(rlsm)) .* cosd.(reshape(tlat,1,:))
 
     lvar = rvar[rlsm.>0.5]; lvar = lvar[.!ismissing.(lvar)]; lvar = lvar[.!isnan.(lvar)]
     svar = rvar[rlsm.<0.5]; svar = svar[.!ismissing.(svar)]; svar = svar[.!isnan.(svar)]
@@ -26,6 +27,8 @@ function bindatasfc(coords,bins,var,lon,lat,lsm)
     rvar = rvar .* cosd.(reshape(tlat,1,:))
     lvar = rvar[rlsm.>0.5]; lvar = lvar[.!ismissing.(lvar)]; lvar = lvar[.!isnan.(lvar)]
     svar = rvar[rlsm.<0.5]; svar = svar[.!ismissing.(svar)]; svar = svar[.!isnan.(svar)]
+    lvar = lvar / mean(rwgt[rlsm.>0.5])
+    svar = svar / mean(rwgt[rlsm.<0.5])
 
     return lbin,sbin,mean(lvar),mean(svar)
 

@@ -10,6 +10,8 @@ using PyCall
 using LaTeXStrings
 pplt = pyimport("proplot");
 
+include(srcdir("common.jl"))
+
 function plotsfc(
     varname::AbstractString,
     bins::AbstractRange,
