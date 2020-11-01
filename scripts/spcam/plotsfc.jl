@@ -26,6 +26,7 @@ function plotsfc(
     lon = ds["longitude"][:]
     lat = ds["latitude"][:]
     var = ds[varname][:]*1; var[ismissing.(var)] .= NaN;
+    var = var * 1
 
     long = ds[varname].attrib["long_name"]
     unit = ds[varname].attrib["units"]
@@ -38,7 +39,7 @@ function plotsfc(
 
     pbin = (bins[2:end].+bins[1:(end-1)])/2
 
-    lbin_DTP,sbin_DTP,lavg_DTP,savg_DTP = bindatasfc([20,-20,270,60],bins,var,lon,lat,lsm)
+    lbin_DTP,sbin_DTP,lavg_DTP,savg_DTP = bindatasfc([15,-15,360,0],bins,var,lon,lat,lsm)
     lbin_IPW,sbin_IPW,lavg_IPW,savg_IPW = bindatasfc([15,-15,180,90],bins,var,lon,lat,lsm)
     lbin_WPW,sbin_WPW,lavg_WPW,savg_WPW = bindatasfc([5,-10,180,135],bins,var,lon,lat,lsm)
     lbin_DRY,sbin_DRY,lavg_DRY,savg_DRY = bindatasfc([5,-5,275,180],bins,var,lon,lat,lsm)
@@ -71,7 +72,7 @@ function plotsfc(
     axs[2].plot(pbin,lbin_IPW,c="r",lw=0.5); axs[2].plot([1,1]*lavg_IPW,[0.1,50],c="r")
     axs[2].plot(pbin,lbin_WPW,c="k",lw=0.5); axs[2].plot([1,1]*lavg_WPW,[0.1,50],c="k")
     axs[2].format(
-        xlim=(0,maximum(bins)),ylim=(0.1,50),yscale="log",
+        xlim=(minimum(bins),maximum(bins)),ylim=(0.1,50),yscale="log",
         rtitle="Land",ylabel="Normalized Frequency"
     )
 
@@ -81,7 +82,7 @@ function plotsfc(
     axs[3].plot(pbin,sbin_DRY,c="k",lw=0.5,linestyle=":")
     axs[3].plot([1,1]*savg_DRY,[0.1,50],c="k",linestyle=":")
     axs[3].format(
-        xlim=(0,maximum(bins)),ylim=(0.1,50),yscale="log",
+        xlim=(minimum(bins),maximum(bins)),ylim=(0.1,50),yscale="log",
         rtitle="Ocean"
     )
 
