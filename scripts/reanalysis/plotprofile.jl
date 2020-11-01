@@ -83,7 +83,7 @@ function plottair()
     pplt.close(); f,axs = pplt.subplots(ncols=3,aspect=0.5,axwidth=1.5);
 
     axs[1].plot(sprf_DTP,lvl,c="b")
-    axs[1].format(title="DTP_OCN",xlim=(190,310))
+    axs[1].format(title="DTP_OCN",xlim=(180,310))
 
     axs[2].plot(lprf_DTP.-sprf_DTP,lvl,c="b")
     axs[2].plot(lprf_IPW.-sprf_DTP,lvl,c="r")
