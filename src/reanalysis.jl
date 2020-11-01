@@ -368,7 +368,7 @@ end
 
 function prereanalysis(variable::AbstractString,coords::Vector{<:Real})
 
-    ds = NCDataset(datadir("reanalysis/era5-TRPx0.25-t_air.nc"))
+    ds = NCDataset(datadir("reanalysis/era5-TRPx0.25-$(variable).nc"))
 
     lon = ds["longitude"][:]; nlon = length(lon)
     lat = ds["latitude"][:];  nlat = length(lat)
