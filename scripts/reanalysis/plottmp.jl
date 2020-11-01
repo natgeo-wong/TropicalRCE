@@ -42,12 +42,12 @@ function plottmp(
 
     sst[ismissing.(sst)] .= NaN; sst = convert.(Float64,sst)
 
-    _,sbin_DTP,_,savg_DTP = bindatasfc([20,-20,270,60],sbin,sst,lon,lat,lsm)
+    _,sbin_DTP,_,savg_DTP = bindatasfc([15,-15,360,0],sbin,sst,lon,lat,lsm)
     _,sbin_IPW,_,savg_IPW = bindatasfc([15,-15,180,90],sbin,sst,lon,lat,lsm)
     _,sbin_WPW,_,savg_WPW = bindatasfc([5,-10,180,135],sbin,sst,lon,lat,lsm)
     _,sbin_DRY,_,savg_DRY = bindatasfc([5,-5,275,180],sbin,sst,lon,lat,lsm)
 
-    lbin_DTP,_,lavg_DTP,_ = bindatasfc([20,-20,270,60],lbin,t2m,lon,lat,lsm)
+    lbin_DTP,_,lavg_DTP,_ = bindatasfc([15,-15,360,0],lbin,t2m,lon,lat,lsm)
     lbin_IPW,_,lavg_IPW,_ = bindatasfc([15,-15,180,90],lbin,t2m,lon,lat,lsm)
     lbin_WPW,_,lavg_WPW,_ = bindatasfc([5,-10,180,135],lbin,t2m,lon,lat,lsm)
     lbin_DRY,_,lavg_DRY,_ = bindatasfc([5,-5,275,180],lbin,t2m,lon,lat,lsm)

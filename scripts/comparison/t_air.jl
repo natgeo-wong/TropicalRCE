@@ -15,7 +15,7 @@ include(srcdir("SAM.jl"))
 
 pplt.close(); f,axs = pplt.subplots(ncols=4,aspect=0.5,axwidth=1.5);
 
-elvl,_,ocn_DTP = tairreanalysis([20,-20,270,60])
+elvl,_,ocn_DTP = tairreanalysis([15,-15,360,0])
 slvl_DTP1M,sst_DTP1M = tairSAM("DTP1M","sst300d8")
 slvl_DTP2M,sst_DTP2M = tairSAM("DTP2M","sst300d8")
 axs[1].plot(ocn_DTP,elvl,c="k")

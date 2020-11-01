@@ -26,7 +26,7 @@ function plotwair()
     lsm = ds["lsm"][:]*1
     close(ds)
 
-    lprf_DTP,sprf_DTP = getmean([20,-20,270,60],var,lon,lat,nlvl,lsm)
+    lprf_DTP,sprf_DTP = getmean([15,-15,360,0],var,lon,lat,nlvl,lsm)
     lprf_IPW,sprf_IPW = getmean([15,-15,180,90],var,lon,lat,nlvl,lsm)
     lprf_WPW,sprf_WPW = getmean([5,-10,180,135],var,lon,lat,nlvl,lsm)
     lprf_DRY,sprf_DRY = getmean([5,-5,275,180],var,lon,lat,nlvl,lsm)
@@ -47,7 +47,7 @@ function plotwair()
 
     for ax in axs
         ax.format(
-            abc=true,grid="on",ylim=(1000,50),
+            abc=true,grid="on",ylim=(1000,70),
             xlabel=L"Vertical Velocity / Pa s$^{-1}$",ylabel="Pressure / hPa"
         )
     end
@@ -75,7 +75,7 @@ function plottair()
     lsm = ds["lsm"][:]*1
     close(ds)
 
-    lprf_DTP,sprf_DTP = getmean([20,-20,270,60],var,lon,lat,nlvl,lsm)
+    lprf_DTP,sprf_DTP = getmean([15,-15,360,0],var,lon,lat,nlvl,lsm)
     lprf_IPW,sprf_IPW = getmean([15,-15,180,90],var,lon,lat,nlvl,lsm)
     lprf_WPW,sprf_WPW = getmean([5,-10,180,135],var,lon,lat,nlvl,lsm)
     lprf_DRY,sprf_DRY = getmean([5,-5,275,180],var,lon,lat,nlvl,lsm)
@@ -88,16 +88,16 @@ function plottair()
     axs[2].plot(lprf_DTP.-sprf_DTP,lvl,c="b")
     axs[2].plot(lprf_IPW.-sprf_DTP,lvl,c="r")
     axs[2].plot(lprf_WPW.-sprf_DTP,lvl,c="k")
-    axs[2].format(xlim=(-3,3),title=L"Land $-$ DTP_OCN")
+    axs[2].format(xlim=(-5,5),title=L"Land $-$ DTP_OCN")
 
     axs[3].plot(sprf_IPW.-sprf_DTP,lvl,c="r")
     axs[3].plot(sprf_WPW.-sprf_DTP,lvl,c="k")
     axs[3].plot(sprf_DRY.-sprf_DTP,lvl,c="k",linestyle=":")
-    axs[3].format(xlim=(-3,3),title=L"Ocean $-$ DTP_OCN")
+    axs[3].format(xlim=(-5,5),title=L"Ocean $-$ DTP_OCN")
 
     for ax in axs
         ax.format(
-            abc=true,grid="on",ylim=(1000,50),
+            abc=true,grid="on",ylim=(1000,70),
             xlabel="Temperature / K",ylabel="Pressure / hPa"
         )
     end
@@ -120,7 +120,7 @@ function plotzair()
     lsm = ds["lsm"][:]*1
     close(ds)
 
-    lprf_DTP,sprf_DTP = getmean([20,-20,270,60],var,lon,lat,nlvl,lsm)
+    lprf_DTP,sprf_DTP = getmean([15,-15,360,0],var,lon,lat,nlvl,lsm)
     lprf_IPW,sprf_IPW = getmean([15,-15,180,90],var,lon,lat,nlvl,lsm)
     lprf_WPW,sprf_WPW = getmean([5,-10,180,135],var,lon,lat,nlvl,lsm)
     lprf_DRY,sprf_DRY = getmean([5,-5,275,180],var,lon,lat,nlvl,lsm)
@@ -142,7 +142,7 @@ function plotzair()
 
     for ax in axs
         ax.format(
-            abc=true,grid="on",ylim=(1000,50),
+            abc=true,grid="on",ylim=(1000,70),
             xlabel="Orographic Height / km",ylabel="Pressure / hPa"
         )
     end
@@ -165,7 +165,7 @@ function plotcld()
     lsm = ds["lsm"][:]*1
     close(ds)
 
-    lprf_DTP,sprf_DTP = getmean([20,-20,270,60],var,lon,lat,nlvl,lsm)
+    lprf_DTP,sprf_DTP = getmean([15,-15,360,0],var,lon,lat,nlvl,lsm)
     lprf_IPW,sprf_IPW = getmean([15,-15,180,90],var,lon,lat,nlvl,lsm)
     lprf_WPW,sprf_WPW = getmean([5,-10,180,135],var,lon,lat,nlvl,lsm)
     lprf_DRY,sprf_DRY = getmean([5,-5,275,180],var,lon,lat,nlvl,lsm)
@@ -186,7 +186,7 @@ function plotcld()
 
     for ax in axs
         ax.format(
-            abc=true,grid="on",ylim=(1000,50),
+            abc=true,grid="on",ylim=(1000,70),
             xlabel="Cloud Cover Fraction",ylabel="Pressure / hPa"
         )
     end

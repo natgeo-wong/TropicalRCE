@@ -26,7 +26,7 @@ close(ds)
 
 bins = -1:0.02:2; pbin = (bins[2:end].+bins[1:(end-1)])/2
 
-lbin_DTP,sbin_DTP,lavg_DTP,savg_DTP = bindatasfc([20,-20,270,60],10 .^bins,prcp,lon,lat,lsm)
+lbin_DTP,sbin_DTP,lavg_DTP,savg_DTP = bindatasfc([15,-15,360,0],10 .^bins,prcp,lon,lat,lsm)
 lbin_IPW,sbin_IPW,lavg_IPW,savg_IPW = bindatasfc([15,-15,180,90],10 .^bins,prcp,lon,lat,lsm)
 lbin_WPW,sbin_WPW,lavg_WPW,savg_WPW = bindatasfc([5,-10,180,135],10 .^bins,prcp,lon,lat,lsm)
 lbin_DRY,sbin_DRY,lavg_DRY,savg_DRY = bindatasfc([5,-5,275,180],10 .^bins,prcp,lon,lat,lsm)
