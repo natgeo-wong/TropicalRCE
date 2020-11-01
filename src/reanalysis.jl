@@ -365,3 +365,27 @@ function compilesfceb()
     close(ds)
 
 end
+
+function tairreanalysis(coords::Vector{<:Real})
+
+    ds = NCDataset(datadir("reanalysis/era5-TRPx0.25-t_air.nc"))
+
+    lon = ds["longitude"][:]; nlon = length(lon)
+    lat = ds["latitude"][:];  nlat = length(lat)
+    lvl = ds["level"][:];     nlvl = length(lvl)
+    var = ds["t_air"][:]*1
+
+    long = ds["t_air"].attrib["long_name"]
+    unit = ds["t_air"].attrib["units"]
+
+    close(ds)
+
+    ds = NCDataset(datadir("reanalysis/era5-TRPx0.25-lsm-sfc.nc"))
+    lsm = ds["lsm"][:]*1
+    close(ds)
+
+    lprf,sprf = getmean(coords,var,lon,lat,nlvl,lsm)
+
+    return lvl,lprf,sprf
+
+end

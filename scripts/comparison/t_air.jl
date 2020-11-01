@@ -9,81 +9,50 @@ using PyCall
 using LaTeXStrings
 pplt = pyimport("proplot");
 
+include(srcdir("common.jl"))
 include(srcdir("reanalysis.jl"))
+include(srcdir("SAM.jl"))
 
-function tairreanalysis(coords::Vector{<:Real})
+pplt.close(); f,axs = pplt.subplots(ncols=4,aspect=0.5,axwidth=1.5);
 
-    ds = NCDataset(datadir("reanalysis/era5-TRPx0.25-t_air.nc"))
+elvl,_,ocn_DTP = tairreanalysis([20,-20,270,60])
+slvl_DTP1M,sst_DTP1M = tairSAM("DTP1M","sst300d8")
+slvl_DTP2M,sst_DTP2M = tairSAM("DTP2M","sst300d8")
+axs[1].plot(ocn_DTP,elvl,c="k")
+axs[1].plot(sst_DTP1M,slvl_DTP1M,label="SAM1MOM")
+axs[1].plot(sst_DTP2M,slvl_DTP2M,label="M2005")
+axs[1].format(title="DTP_OCN",xlim=(190,310))
 
-    lon = ds["longitude"][:]; nlon = length(lon)
-    lat = ds["latitude"][:];  nlat = length(lat)
-    lvl = ds["level"][:];     nlvl = length(lvl)
-    var = ds["t_air"][:]*1
+_,_,ocn_IPW = tairreanalysis([15,-15,180,90])
+slvl_IPW1M,sst_IPW1M = tairSAM("IPW1M","sst301d9")
+slvl_IPW2M,sst_IPW2M = tairSAM("IPW2M","sst301d9")
+axs[2].plot(ocn_IPW,elvl,c="k")
+axs[2].plot(sst_IPW1M,slvl_IPW1M,label="SAM1MOM")
+axs[2].plot(sst_IPW2M,slvl_IPW2M,label="M2005")
+axs[2].format(title="IPW_OCN",xlim=(190,310))
 
-    long = ds["t_air"].attrib["long_name"]
-    unit = ds["t_air"].attrib["units"]
+_,_,ocn_WPW = tairreanalysis([5,-10,180,135])
+slvl_WPW1M,sst_WPW1M = tairSAM("WPW1M","sst302d4")
+slvl_WPW2M,sst_WPW2M = tairSAM("WPW2M","sst302d4")
+axs[3].plot(ocn_WPW,elvl,c="k")
+axs[3].plot(sst_WPW1M,slvl_WPW1M,label="SAM1MOM")
+axs[3].plot(sst_WPW2M,slvl_WPW2M,label="M2005")
+axs[3].format(title="WPW_OCN",xlim=(190,310))
 
-    close(ds)
-
-    ds = NCDataset(datadir("reanalysis/era5-TRPx0.25-lsm-sfc.nc"))
-    lsm = ds["lsm"][:]*1
-    close(ds)
-
-    lprf,sprf = getmean(coords,var,lon,lat,nlvl,lsm)
-
-    return lvl,lprf,sprf
-
-end
-
-function tairSAM(
-    experiment::AbstractString, configuration::AbstractString,
-    lvl::AbstractVector{<:Real};
-    days::Integer=100
-)
-
-    rce = NCDataset(datadir(joinpath(
-        experiment,configuration,"OUT_STAT",
-        "RCE_DiConv-$(experiment).nc"
-    )))
-
-    p = rce["p"][:]; t = rce["time"][:]; t_air = rce["TABS"][:]
-
-    close(rce)
-
-    tstep = round(Integer,(length(t)-1)/(t[end]-t[1]))
-    beg = days*tstep - 1
-    t_air = dropdims(mean(t_air[:,(end-beg):end],dims=2),dims=2);
-    lvl = lvl[lvl.>minimum(p)]
-    spl = Spline1D(reverse(p),reverse(t_air))
-
-    return lvl,spl(lvl)
-
-end
-
-elvl,_,ocn_WPW = tairreanalysis([5,-10,180,135])
-slvl1,sst301d0_WPW = tairSAM("WPW2M","sst301d0",elvl); ilvl1 = length(elvl) - length(slvl1)
-slvl2,sst302d5_WPW = tairSAM("WPW2M","sst302d5",elvl); ilvl2 = length(elvl) - length(slvl2)
-slvl3,sst303d0_WPW = tairSAM("WPW2M","sst303d0",elvl); ilvl3 = length(elvl) - length(slvl3)
-
-pplt.close(); f,axs = pplt.subplots(ncols=2,aspect=0.5,axwidth=1.5);
-
-axs[1].plot(ocn_WPW,elvl,c="k")
-axs[1].plot(sst301d0_WPW,slvl1)
-axs[1].plot(sst302d5_WPW,slvl2)
-axs[1].plot(sst303d0_WPW,slvl3)
-axs[1].format(title="WPW_OCN",xlim=(190,310))
-
-axs[2].plot(sst301d0_WPW.-ocn_WPW[(1+ilvl1):end],slvl)
-axs[2].plot(sst302d5_WPW.-ocn_WPW[(1+ilvl2):end],slvl)
-axs[2].plot(sst303d0_WPW.-ocn_WPW[(1+ilvl3):end],slvl)
-axs[2].format(xlim=(-10,10),title=L"SAM $-$ WPW_OCN")
+_,_,ocn_DRY = tairreanalysis([5,-5,275,180])
+slvl_DRY1M,sst_DRY1M = tairSAM("DRY1M","sst299d7")
+slvl_DRY2M,sst_DRY2M = tairSAM("DRY2M","sst299d7")
+axs[4].plot(ocn_DRY,elvl,c="k")
+axs[4].plot(sst_DRY1M,slvl_DRY1M,label="SAM1MOM")
+axs[4].plot(sst_DRY2M,slvl_DRY2M,label="M2005")
+axs[4].format(title="DRY_OCN",xlim=(190,310))
 
 for ax in axs
     ax.format(
-        abc=true,grid="on",ylim=(1000,50),
+        abc=true,grid="on",ylim=(1000,100),
         xlabel="Temperature / K",ylabel="Pressure / hPa"
     )
 end
 
 mkpath(plotsdir("COMPARISON"))
-f.savefig(plotsdir("COMPARISON/t_air-WPW.png"),transparent=false,dpi=200)
+f.savefig(plotsdir("COMPARISON/t_air.png"),transparent=false,dpi=200)

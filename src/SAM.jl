@@ -58,3 +58,50 @@ function sfcsummary(
     );
 
 end
+
+function tairSAM(
+    experiment::AbstractString, configuration::AbstractString;
+    days::Integer=100
+)
+
+    rce = NCDataset(datadir(joinpath(
+        experiment,configuration,"OUT_STAT",
+        "RCE_DiConv-$(experiment).nc"
+    )))
+
+    p = rce["p"][:]; t = rce["time"][:]; t_air = rce["TABS"][:]
+
+    close(rce)
+
+    tstep = round(Integer,(length(t)-1)/(t[end]-t[1]))
+    beg = days*tstep - 1
+    t_air = dropdims(mean(t_air[:,(end-beg):end],dims=2),dims=2);
+
+    return p,t_air
+
+end
+
+function tairSAMinterp(
+    experiment::AbstractString, configuration::AbstractString,
+    lvl::AbstractVector{<:Real};
+    days::Integer=100
+)
+
+    rce = NCDataset(datadir(joinpath(
+        experiment,configuration,"OUT_STAT",
+        "RCE_DiConv-$(experiment).nc"
+    )))
+
+    p = rce["p"][:]; t = rce["time"][:]; t_air = rce["TABS"][:]
+
+    close(rce)
+
+    tstep = round(Integer,(length(t)-1)/(t[end]-t[1]))
+    beg = days*tstep - 1
+    t_air = dropdims(mean(t_air[:,(end-beg):end],dims=2),dims=2);
+    lvl = lvl[lvl.>minimum(p)]
+    spl = Spline1D(reverse(p),reverse(t_air))
+
+    return lvl,spl(lvl)
+
+end
