@@ -59,7 +59,8 @@ function sfcsummary(
 
 end
 
-function tairSAM(
+function preextract(
+    variable::AbstractString,
     experiment::AbstractString, configuration::AbstractString;
     days::Integer=100
 )
@@ -69,19 +70,20 @@ function tairSAM(
         "RCE_DiConv-$(experiment).nc"
     )))
 
-    p = rce["p"][:]; t = rce["time"][:]; t_air = rce["TABS"][:]
+    p = rce["p"][:]; t = rce["time"][:]; var = rce[variable][:]
 
     close(rce)
 
     tstep = round(Integer,(length(t)-1)/(t[end]-t[1]))
     beg = days*tstep - 1
-    t_air = dropdims(mean(t_air[:,(end-beg):end],dims=2),dims=2);
+    var = dropdims(mean(var[:,(end-beg):end],dims=2),dims=2);
 
-    return p,t_air
+    return p,var
 
 end
 
-function tairSAMinterp(
+function preinterp(
+    variable::AbstractString,
     experiment::AbstractString, configuration::AbstractString,
     lvl::AbstractVector{<:Real};
     days::Integer=100
@@ -92,13 +94,13 @@ function tairSAMinterp(
         "RCE_DiConv-$(experiment).nc"
     )))
 
-    p = rce["p"][:]; t = rce["time"][:]; t_air = rce["TABS"][:]
+    p = rce["p"][:]; t = rce["time"][:]; var = rce[variable][:]
 
     close(rce)
 
     tstep = round(Integer,(length(t)-1)/(t[end]-t[1]))
     beg = days*tstep - 1
-    t_air = dropdims(mean(t_air[:,(end-beg):end],dims=2),dims=2);
+    var = dropdims(mean(var[:,(end-beg):end],dims=2),dims=2);
     lvl = lvl[lvl.>minimum(p)]
     spl = Spline1D(reverse(p),reverse(t_air))
 

@@ -366,17 +366,17 @@ function compilesfceb()
 
 end
 
-function tairreanalysis(coords::Vector{<:Real})
+function prereanalysis(variable::AbstractString,coords::Vector{<:Real})
 
     ds = NCDataset(datadir("reanalysis/era5-TRPx0.25-t_air.nc"))
 
     lon = ds["longitude"][:]; nlon = length(lon)
     lat = ds["latitude"][:];  nlat = length(lat)
     lvl = ds["level"][:];     nlvl = length(lvl)
-    var = ds["t_air"][:]*1
+    var = ds[variable][:]*1
 
-    long = ds["t_air"].attrib["long_name"]
-    unit = ds["t_air"].attrib["units"]
+    long = ds[variable].attrib["long_name"]
+    unit = ds[variable].attrib["units"]
 
     close(ds)
 
