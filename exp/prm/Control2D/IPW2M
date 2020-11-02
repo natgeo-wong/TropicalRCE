@@ -77,8 +77,8 @@ save2Dbin    = .true.,
 save2Davg    = .true.,
 save2Dsep    = .true.,
 
-nsave3D      = 180,
-nsave3Dstart = 999999
+nsave3D      = 45,
+nsave3Dstart = 432000,
 nsave3Dend   = 999999999,
 save3Dbin    = .true.,
 rad3Dout     = .true.,
