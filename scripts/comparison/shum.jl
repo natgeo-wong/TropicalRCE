@@ -45,7 +45,7 @@ axs[4].format(title="DRY_OCN")
 
 for ax in axs
     ax.format(
-        abc=true,grid="on",ylim=(1000,70),xscale="log",xlim=(0.001,20)
+        abc=true,grid="on",ylim=(1000,70),xscale="log",xlim=(0.001,20),
         xlabel="Specific Humidity / g kg**-1",ylabel="Pressure / hPa"
     )
 end

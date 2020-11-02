@@ -135,7 +135,7 @@ function rhumextract(
         "RCE_DiConv-$(experiment).nc"
     )))
 
-    p = rce["p"][:]; t = rce["time"][:]; q = rce["QV"][:];
+    p = rce["p"][:]; t = rce["time"][:]; q = rce["QV"][:]/10;
     rh = zeros(size(q)); t_air = rce["TABS"][:]
 
     close(rce)
