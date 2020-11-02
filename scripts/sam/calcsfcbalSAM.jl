@@ -1,15 +1,10 @@
 using DrWatson
 @quickactivate "TropicalRCE"
 
-include(srcdir("energybalance.jl"))
+include(srcdir("SAM.jl"))
 
-sebsummary(
-    "DTP2M",[
-        "sst299d0","sst300d0","sst300d5",
-        "sst300d8","sst301d0","sst301d5",
-        "sst302d0","sst302d5","sst303d0"
-    ]
-)
+sebsummary("Domain2D",["DTP1M","IPW1M","WPW1M","DRY1M","DTP2M","IPW2M","WPW2M","DRY2M"])
+sebsummary("Domain3D",["DTP1M","IPW1M","WPW1M","DRY1M","DTP2M","IPW2M","WPW2M","DRY2M"])
 
 sebsummary(
     "DRY2M",[
