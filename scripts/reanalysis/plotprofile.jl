@@ -196,4 +196,92 @@ function plotcld()
 
 end
 
-plotwair(); plottair(); plotzair(); plotcld()
+function plotrhum()
+
+    ds = NCDataset(datadir("reanalysis/era5-TRPx0.25-r_air.nc"))
+    lon = ds["longitude"][:]; nlon = length(lon)
+    lat = ds["latitude"][:];  nlat = length(lat)
+    lvl = ds["level"][:];     nlvl = length(lvl)
+    var = ds["r_air"][:]*1
+    close(ds)
+
+    ds = NCDataset(datadir("reanalysis/era5-TRPx0.25-lsm-sfc.nc"))
+    lsm = ds["lsm"][:]*1
+    close(ds)
+
+    lprf_DTP,sprf_DTP = getmean([15,-15,360,0],var,lon,lat,nlvl,lsm)
+    lprf_IPW,sprf_IPW = getmean([15,-15,180,90],var,lon,lat,nlvl,lsm)
+    lprf_WPW,sprf_WPW = getmean([5,-10,180,135],var,lon,lat,nlvl,lsm)
+    lprf_DRY,sprf_DRY = getmean([5,-5,275,180],var,lon,lat,nlvl,lsm)
+
+    pplt.close(); f,axs = pplt.subplots(ncols=2,aspect=0.5,axwidth=1.5);
+
+    axs[1].plot(lprf_DTP,lvl,c="b")
+    axs[1].plot(lprf_IPW,lvl,c="r")
+    axs[1].plot(lprf_WPW,lvl,c="k")
+    # axs[1].plot(lprf_DRY,lvl,c="k",linestyle=":")
+    axs[1].format(title="Land")
+
+    axs[2].plot(sprf_DTP,lvl,c="b")
+    axs[2].plot(sprf_IPW,lvl,c="r")
+    axs[2].plot(sprf_WPW,lvl,c="k")
+    axs[2].plot(sprf_DRY,lvl,c="k",linestyle=":")
+    axs[2].format(title=L"Ocean")
+
+    for ax in axs
+        ax.format(
+            abc=true,grid="on",xlim=(0,100),ylim=(1000,70),
+            xlabel="Relative Humidity / %",ylabel="Pressure / hPa"
+        )
+    end
+
+    mkpath(plotsdir("REANALYSIS"))
+    f.savefig(plotsdir("REANALYSIS/rhum.png"),transparent=false,dpi=200)
+
+end
+
+function plotshum()
+
+    ds = NCDataset(datadir("reanalysis/era5-TRPx0.25-q_air.nc"))
+    lon = ds["longitude"][:]; nlon = length(lon)
+    lat = ds["latitude"][:];  nlat = length(lat)
+    lvl = ds["level"][:];     nlvl = length(lvl)
+    var = ds["q_air"][:]*1000
+    close(ds)
+
+    ds = NCDataset(datadir("reanalysis/era5-TRPx0.25-lsm-sfc.nc"))
+    lsm = ds["lsm"][:]*1
+    close(ds)
+
+    lprf_DTP,sprf_DTP = getmean([15,-15,360,0],var,lon,lat,nlvl,lsm)
+    lprf_IPW,sprf_IPW = getmean([15,-15,180,90],var,lon,lat,nlvl,lsm)
+    lprf_WPW,sprf_WPW = getmean([5,-10,180,135],var,lon,lat,nlvl,lsm)
+    lprf_DRY,sprf_DRY = getmean([5,-5,275,180],var,lon,lat,nlvl,lsm)
+
+    pplt.close(); f,axs = pplt.subplots(ncols=2,aspect=0.5,axwidth=1.5);
+
+    axs[1].plot(lprf_DTP,lvl,c="b")
+    axs[1].plot(lprf_IPW,lvl,c="r")
+    axs[1].plot(lprf_WPW,lvl,c="k")
+    # axs[1].plot(lprf_DRY,lvl,c="k",linestyle=":")
+    axs[1].format(title="Land")
+
+    axs[2].plot(sprf_DTP,lvl,c="b")
+    axs[2].plot(sprf_IPW,lvl,c="r")
+    axs[2].plot(sprf_WPW,lvl,c="k")
+    axs[2].plot(sprf_DRY,lvl,c="k",linestyle=":")
+    axs[2].format(title=L"Ocean")
+
+    for ax in axs
+        ax.format(
+            abc=true,grid="on",ylim=(1000,70),xscale="log",xlim=(0.001,20),
+            xlabel="Specific Humidity / g kg**-1",ylabel="Pressure / hPa"
+        )
+    end
+
+    mkpath(plotsdir("REANALYSIS"))
+    f.savefig(plotsdir("REANALYSIS/shum.png"),transparent=false,dpi=200)
+
+end
+
+plotwair(); plottair(); plotzair(); plotcld(); plotshum(); plotrhum()
