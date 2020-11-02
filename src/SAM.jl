@@ -89,21 +89,67 @@ function preinterp(
     days::Integer=100
 )
 
+    p,var = preextract(variable,experiment,configuration,days=days)
+    lvl = lvl[lvl.>minimum(p)]
+    spl = Spline1D(reverse(p),reverse(var))
+
+    return lvl,spl(lvl)
+
+end
+
+function preinterp(
+    data::AbstractVector{<:Real},
+    slvl::AbstractVector{<:Real},
+    lvl::AbstractVector{<:Real}
+)
+
+    lvl = lvl[lvl.>minimum(slvl)]
+    spl = Spline1D(reverse(slvl),reverse(data))
+
+    return lvl,spl(lvl)
+
+end
+
+function temp2esat(t::Real,p::Real)
+
+    tb = t - 273.15
+    if tb <= 0
+        esat = exp(43.494 - 6545.8/(tb+278)) / (tb+868)^2
+    else
+        esat = exp(34.494 - 4924.99/(tb+237.1)) / (tb+105)^1.57
+    end
+
+
+    r = 0.622 * esat / max(esat,p-esat)
+    return r / (1+r)
+
+end
+
+function rhumextract(
+    experiment::AbstractString, configuration::AbstractString;
+    days::Integer=100
+)
+
     rce = NCDataset(datadir(joinpath(
         experiment,configuration,"OUT_STAT",
         "RCE_DiConv-$(experiment).nc"
     )))
 
-    p = rce["p"][:]; t = rce["time"][:]; var = rce[variable][:]
+    p = rce["p"][:]; t = rce["time"][:]; q = rce["QV"][:];
+    rh = zeros(size(q)); t_air = rce["TABS"][:]
 
     close(rce)
 
+    for it = 1 : length(t), ilvl = 1 : length(p)
+
+        rh[ilvl,it] = q[ilvl,it] / temp2esat(t_air[ilvl,it],p[ilvl]*100)
+
+    end
+
     tstep = round(Integer,(length(t)-1)/(t[end]-t[1]))
     beg = days*tstep - 1
-    var = dropdims(mean(var[:,(end-beg):end],dims=2),dims=2);
-    lvl = lvl[lvl.>minimum(p)]
-    spl = Spline1D(reverse(p),reverse(t_air))
+    rh = dropdims(mean(rh[:,(end-beg):end],dims=2),dims=2);
 
-    return lvl,spl(lvl)
+    return p,rh
 
 end
