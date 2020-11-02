@@ -1,6 +1,6 @@
 &PARAMETERS
 
-caseid ='DiConv-IPW2M',
+caseid ='TropicalRCE-IPW2M',
 
 dx = 2000.,
 dy = 2000.,
@@ -14,7 +14,7 @@ OCEAN = .true.,
 
 dosgs            = .true.,
 dodamping        = .true.,
-doupperbound     = .true.,
+doupperbound     = .false.,
 docloud          = .true.,
 doprecip         = .true.,
 dolongwave       = .true.,
