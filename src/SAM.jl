@@ -31,12 +31,12 @@ function sfcsummary(
 )
 
     nconfig = length(config)
-    vartable = zeros(nconfig+1,3)
+    vartable = Array{Any,2}(undef,nconfig+1,3)
     tc,varc = sfcextract(variable,experiment,control)
     tstepc = round(Integer,(length(tc) - 1) / (tc[end] - tc[1]))
     varc = mean(reshape(varc,tstepc,:)[:,(end-days+1):end])
 
-    vartable[1,1] = parse(Float32,replace(replace(control,"sst"=>""),"d"=>"."))
+    vartable[1,1] = control
     vartable[1,2] = varc
     vartable[1,3] = 0
 
@@ -46,17 +46,18 @@ function sfcsummary(
 
         tstep = round(Integer,(length(t) - 1) / (t[end] - t[1]))
 
-        vartable[icon+1,1] = parse(Float32,replace(replace(config[icon],"sst"=>""),"d"=>"."))
+        vartable[icon+1,1] = config[icon]
         vartable[icon+1,2] = mean(reshape(var,tstep,:)[:,(end-days+1):end])
         vartable[icon+1,3] = mean(reshape(var,tstep,:)[:,(end-days+1):end]) - varc
 
     end
 
-    head = ["SAM SST / K","$variable","Config - Control"];
+    head = ["Config","$variable","Config - Control"];
 
+    vartable[:,2:end] = round.(vartable[:,2:end],digits=2)
     pretty_table(
-        round.(vartable,digits=2),head,
-        alignment=[:c,:c,:c],
+        vartable,head,
+        alignment=[:c,:c,:c,:c,:c,:c],
         tf=compact
     );
 
@@ -211,7 +212,7 @@ function sebsummary(
     days::Integer=100)
 
     nconfig = length(config)
-    sebtable = zeros(nconfig,6)
+    sebtable = Array{Any,2}(undef,nconfig,6)
 
     for icon = 1 : nconfig
 
@@ -219,7 +220,7 @@ function sebsummary(
 
         tstep = round(Integer,(length(t) - 1) / (t[end] - t[1]))
 
-        sebtable[icon,1] = parse(Float32,replace(replace(config[icon],"sst"=>""),"d"=>"."))
+        sebtable[icon,1] = config[icon]
         sebtable[icon,2] = mean(reshape(sw_sfc,tstep,:)[:,(end-days+1):end]);
         sebtable[icon,3] = mean(reshape(lw_sfc,tstep,:)[:,(end-days+1):end]) * -1;
         sebtable[icon,4] = mean(reshape(sh_sfc,tstep,:)[:,(end-days+1):end]) * -1;
@@ -228,10 +229,10 @@ function sebsummary(
 
     end
 
-    head = ["SST / K","Net SFC SW","Net SFC LW","Sensible","Latent","SFC Balance"];
-
+    head = ["Config","Net SFC SW","Net SFC LW","Sensible","Latent","SFC Balance"];
+    sebtable[:,2:end] = round.(sebtable[:,2:end],digits=2)
     pretty_table(
-        round.(sebtable,digits=2),head,
+        sebtable,head,
         alignment=[:c,:c,:c,:c,:c,:c],
         tf=compact
     );
