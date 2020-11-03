@@ -57,7 +57,7 @@ function sfcsummary(
     vartable[:,2:end] = round.(vartable[:,2:end],digits=2)
     pretty_table(
         vartable,head,
-        alignment=[:c,:c,:c,:c,:c,:c],
+        alignment=[:c,:c,:c],
         tf=compact
     );
 
