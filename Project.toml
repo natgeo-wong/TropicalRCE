@@ -4,6 +4,7 @@ authors = ["Nathanael Wong <natgeo.wong@outlook.com>"]
 [deps]
 Crayons = "a8cc5b0e-0ffa-5ad4-8c14-923d3ee1735f"
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
+Dierckx = "39dd38d3-220a-591b-8e3c-4c3a8c710a94"
 DrWatson = "634d3b9d-ee7a-5ddf-bec9-22491ea816e1"
 GeoRegions = "b001f823-fa75-4bff-bf55-6610c8f3688a"
 Glob = "c27321d9-0574-5035-807b-f59d2c89b15c"

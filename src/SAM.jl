@@ -1,6 +1,7 @@
 using NCDatasets
 using PrettyTables
 using Statistics
+using Dierckx
 
 function sfcextract(
     variable::AbstractString,
