@@ -11,7 +11,7 @@ include(srcdir("SAM.jl"))
 
 pplt.close(); f,axs = pplt.subplots(ncols=4,aspect=0.5,axwidth=1.5);
 
-elvl,_,ocn_DTP = prereanalysis(evar,[15,-15,360,0])
+elvl,_,ocn_DTP = prereanalysis("r_air",[15,-15,360,0])
 slvl_DTP1M_3DLR,DTP1M_3DLR = rhumextract("Control3D","DTP1M")
 slvl_DTP2M_3DLR,DTP2M_3DLR = rhumextract("Control3D","DTP2M")
 slvl_DTP1M_2DLR,DTP1M_2DLR = rhumextract("Control2D","DTP1M")
@@ -27,7 +27,7 @@ axs[1].plot(DTP2M_2DLR,slvl_DTP2M_2DLR,c="r",linestyle="--")
 axs[1].plot(DTP2M_2DHR,slvl_DTP2M_2DHR,c="r",linestyle=":")
 axs[1].format(title="DTP_OCN")
 
-_,_,ocn_IPW = prereanalysis(evar,[15,-15,180,90])
+_,_,ocn_IPW = prereanalysis("r_air",[15,-15,180,90])
 slvl_IPW1M_3DLR,IPW1M_3DLR = rhumextract("Control3D","IPW1M")
 slvl_IPW2M_3DLR,IPW2M_3DLR = rhumextract("Control3D","IPW2M")
 slvl_IPW1M_2DLR,IPW1M_2DLR = rhumextract("Control2D","IPW1M")
@@ -43,7 +43,7 @@ axs[2].plot(IPW2M_2DLR,slvl_IPW2M_2DLR,c="r",linestyle="--")
 axs[2].plot(IPW2M_2DHR,slvl_IPW2M_2DHR,c="r",linestyle=":")
 axs[2].format(title="IPW_OCN")
 
-_,_,ocn_WPW = prereanalysis(evar,[5,-10,180,135])
+_,_,ocn_WPW = prereanalysis("r_air",[5,-10,180,135])
 slvl_WPW1M_3DLR,WPW1M_3DLR = rhumextract("Control3D","WPW1M")
 slvl_WPW2M_3DLR,WPW2M_3DLR = rhumextract("Control3D","WPW2M")
 slvl_WPW1M_2DLR,WPW1M_2DLR = rhumextract("Control2D","WPW1M")
@@ -59,7 +59,7 @@ axs[3].plot(WPW2M_2DLR,slvl_WPW2M_2DLR,c="r",linestyle="--")
 axs[3].plot(WPW2M_2DHR,slvl_WPW2M_2DHR,c="r",linestyle=":")
 axs[3].format(title="WPW_OCN")
 
-_,_,ocn_DRY = prereanalysis(evar,[5,-5,275,180])
+_,_,ocn_DRY = prereanalysis("r_air",[5,-5,275,180])
 slvl_DRY1M_3DLR,DRY1M_3DLR = rhumextract("Control3D","DRY1M")
 slvl_DRY2M_3DLR,DRY2M_3DLR = rhumextract("Control3D","DRY2M")
 slvl_DRY1M_2DLR,DRY1M_2DLR = rhumextract("Control2D","DRY1M")
@@ -83,4 +83,4 @@ for ax in axs
 end
 
 mkpath(plotsdir("COMPARISON"))
-f.savefig(plotsdir("COMPARISON/rhum.png"),transparent=false,dpi=200)
+f.savefig(plotsdir("COMPARISON/r_air.png"),transparent=false,dpi=200)
