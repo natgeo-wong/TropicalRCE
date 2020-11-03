@@ -91,27 +91,32 @@ These domains were chosen based on a combination of sea-surface temperature and 
 We ran SAM with the following SST and Insolation Configurations:
 
 | Domain | Insol / W m**-2 | SST Range / K | Avg SST / K | Microphysics |
-| :---: |  :--:  | :-----------------: | :---: | :-------: |
-|  DTP  | 1345.6 |  299-303, step 0.5  | 300.7 |  SAM1MOM  |
-|  IPW  | 1345.6 | 300.5-303, step 0.5 | 301.9 |  SAM1MOM  |
-|  WPW  | 1355.8 |  301-303, step 0.5  | 302.4 |  SAM1MOM  |
-|  DRY  | 1359.3 |  297-302, step 0.5  | 299.7 |  SAM1MOM  |
-|  DTP  | 1345.6 |  299-303, step 0.5  | 300.7 |   M2005   |
-|  IPW  | 1345.6 | 300.5-303, step 0.5 | 301.9 |   M2005   |
-|  WPW  | 1355.8 |  301-303, step 0.5  | 302.4 |   M2005   |
-|  DRY  | 1359.3 |  297-302, step 0.5  | 299.7 |   M2005   |
+| :---: |  :--:  | :-----------------: | :---: | :----------: |
+|  DTP  | 1345.6 |  299-303, step 0.5  | 300.7 | SAM1MOM (1M) |
+|  IPW  | 1345.6 | 300.5-303, step 0.5 | 301.9 | SAM1MOM (1M) |
+|  WPW  | 1355.8 |  301-303, step 0.5  | 302.4 | SAM1MOM (1M) |
+|  DRY  | 1359.3 |  297-302, step 0.5  | 299.7 | SAM1MOM (1M) |
+|  DTP  | 1345.6 |  299-303, step 0.5  | 300.7 |  M2005 (2M)  |
+|  IPW  | 1345.6 | 300.5-303, step 0.5 | 301.9 |  M2005 (2M)  |
+|  WPW  | 1355.8 |  301-303, step 0.5  | 302.4 |  M2005 (2M)  |
+|  DRY  | 1359.3 |  297-302, step 0.5  | 299.7 |  M2005 (2M)  |
+
+We conducted three batches of the above experiments:
+1. RCE in 3D, 64x64 horizontal grid at 2 km resolution, 64 vertical levels (3D)
+2. RCE in 2D, 64 horizontal points at 2 km resolution, 64 vertical levels (2D)
+3. RCE in 2D, 512 horizontal points at 0.5 km resolution, 64 vertical levels (2DH)
 
 ## 4. Comparison of SAM Runs against Reanalysis and Observation Data
 
 ### A. Surface Variables
 
 **Precipitation / mm/day**
-| Domain | Insol  | SST / K | GPM  | ERA5 | SAM1MOM | M2005 |
-| :----: | :----: |  :---:  | :--: | :--: | :-----: | :---: |
-|  DTP   | 1345.6 |  300.7  | 4.70 | 4.70 | 3.06 | 2.71 |
-|  IPW   | 1345.6 |  301.9  | 7.05 | 6.53 | 3.22 | 2.86 |
-|  WPW   | 1355.8 |  302.4  | 8.90 | 7.98 | 3.28 | 3.05 |
-|  DRY   | 1359.3 |  299.7  | 1.86 | 2.61 | 2.91 | 2.56 |
+| Domain | Insol | SST / K | GPM | ERA5 | 3D-1M | 3D-2M | 2D-1M | 2D-2M | 2DH-1M | 2DH-2M |
+| :-: | :----: | :---: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
+| DTP | 1345.6 | 300.7 | 4.70 | 4.70 | 3.05 | 2.64 | 3.17 | 2.67 | 2.97 | 2.60 |
+| IPW | 1345.6 | 301.9 | 7.05 | 6.53 | 3.22 | 2.80 | 3.33 | 2.82 | 3.01 | 2.71 |
+| WPW | 1355.8 | 302.4 | 8.90 | 7.98 | 3.26 | 2.86 | 3.34 | 2.83 | 3.11 | 2.81 |
+| DRY | 1359.3 | 299.7 | 1.86 | 2.61 | 2.91 | 2.49 | 3.05 | 2.50 | 2.73 | 2.45 |
 
 *(Note: We plot the ERA5 precipitation below:)*
 
@@ -120,12 +125,14 @@ We ran SAM with the following SST and Insolation Configurations:
 It is interesting to see that the ERA5 domain mean precipitation over the deep tropics as a whole is almost exactly the same as that given by the GPM IMERG dataset.  However, on a smaller domain scale, such as over the WPW or DRY domains, differences remain.  We do note that the ERA5 precipitation in the DRY region is very similar to that from our RCE runs, though the significance of this is as of yet unclear (caa 28 Oct 2020).
 
 **Total Column Water / mm**
-| Domain | Insol  | SST / K | ERA5  | SAM1MOM | M2005 |
-| :----: | :----: |  :---:  | :---: | :-----: | :---: |
-|  DTP   | 1345.6 |  300.7  | 42.78 | 41.22 | 42.57 |
-|  IPW   | 1345.6 |  301.9  | 49.05 | 45.58 | 46.78 |
-|  WPW   | 1355.8 |  302.4  | 52.15 | 47.89 | 46.20 |
-|  DRY   | 1359.3 |  299.7  | 40.69 | 37.53 | 39.02 |
+| Domain | Insol | SST / K | ERA5  | 3D-1M | 3D-2M | 2D-1M | 2D-2M | 2DH-1M | 2DH-2M |
+| :-: | :----: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| DTP | 1345.6 | 300.7 | 42.78 | 40.66 | 43.20 | 39.73 | 43.47 | 42.78 | 44.13 |
+| IPW | 1345.6 | 301.9 | 49.05 | 45.30 | 47.80 | 44.50 | 47.87 | 49.14 | 49.52 |
+| WPW | 1355.8 | 302.4 | 52.15 | 47.57 | 50.01 | 47.04 | 50.65 | 51.37 | 51.51 |
+| DRY | 1359.3 | 299.7 | 40.69 | 37.15 | 39.95 | 35.91 | 39.87 | 40.64 | 40.40 |
+
+Right off the bat, we see that 2-moment microphysics simulations have a higher overall precipitable water in the atmosphere compared to 1-moment microphysics.  However, this does **not** correspond to higher rainfall.  Indeed, precipitation actually falls in simulations with 2-moment microphysics despite there being higher overall column water.  Furthermore, we see that at the same horizontal resolution, 2D simulations have higher rainfall than 3D simulations, but as the resolution of the simulations increases, rainfall rate decreases.
 
 ### B. Atmospheric Temperature
 
@@ -143,18 +150,44 @@ Text
 
 Here, I display a summary of the surface energy balance for the model runs in SAM with averaged SST for each ERA5 domain.  A full table containing all the experiments will be provided elsewhere.
 
-| Domain | Insol  | SST / K | SAM Micro | Net SW | Net LW | Sensible | Latent | SFC Bal |
-| :----: | :----: |  :---:  |  :-----:  |  :---:  |  :--:  | :---:  |  :--:  |  :---:  |
-|  DTP   | 1345.6 |  300.7  |  SAM1MOM  | +283.52 | -67.94 | -10.61 | -88.94 | +116.03 |
-|  IPW   | 1345.6 |  301.9  |  SAM1MOM  | +282.46 | -63.85 | -10.39 | -93.52 | +114.70 |
-|  WPW   | 1355.8 |  302.4  |  SAM1MOM  | +283.37 | -61.73 | -10.18 | -95.24 | +116.21 |
-|  DRY   | 1359.3 |  299.7  |  SAM1MOM  | +287.38 | -71.50 | -10.68 | -84.56 | +120.64 |
-|  DTP   | 1345.6 |  300.7  |   M2005   | +276.50 | -65.05 | -6.93  | -78.86 | +125.66 |
-|  IPW   | 1345.6 |  301.9  |   M2005   | +277.62 | -61.33 | -6.80  | -83.09 | +126.39 |
-|  WPW   | 1355.8 |  302.4  |   M2005   | +280.49 | -62.88 | -6.78  | -88.24 | +122.59 |
-|  DRY   | 1359.3 |  299.7  |   M2005   | +279.99 | -68.16 | -6.93  | -74.48 | +130.42 |
+| Domain | Insol  | SST / K | Config | Net SW | Net LW | Sensible | Latent | SFC Bal |
+| :-: | :----: | :---: | :----: | :-----: | :----: | :----: | :----: | :-----: |
+| DTP | 1345.6 | 300.7 | 3D-1M  | +280.89 | -68.66 | -10.66 | -88.59 | +112.98 |
+| IPW | 1345.6 | 301.9 | 3D-1M  | +279.96 | -64.29 | -10.41 | -93.23 | +112.03 |
+| WPW | 1355.8 | 302.4 | 3D-1M  | +281.43 | -62.22 | -10.20 | -94.83 | +114.18 |
+| DRY | 1359.3 | 299.7 | 3D-1M  | +285.66 | -72.13 | -10.75 | -84.62 | +118.17 |
+| DTP | 1345.6 | 300.7 | 3D-2M  | +271.18 | -64.21 | -6.67  | -76.66 | +123.65 |
+| IPW | 1345.6 | 301.9 | 3D-2M  | +270.28 | -60.38 | -6.57  | -81.30 | +122.03 |
+| WPW | 1355.8 | 302.4 | 3D-2M  | +272.64 | -58.61 | -6.47  | -83.23 | +124.33 |
+| DRY | 1359.3 | 299.7 | 3D-2M  | +274.36 | -66.87 | -6.62  | -72.27 | +128.60 |
 
 We see overall that the energy balance of small-domain RCE simulations in SAM have an overall surface energy balance of ~O(120) W/m2, compared to typical values of about 0-40 W/m2 (see comparison with reanalysis data below), and this is largely due to the very high net shortwave radiation into the ocean, which is only partially compensated by slightly increased net longwave radiation upward.
+
+| Domain | Insol  | SST / K | Config | Net SW | Net LW | Sensible | Latent | SFC Bal |
+| :-: | :----: | :---: | :----: | :-----: | :----: | :----: | :----: | :-----: |
+| DTP | 1345.6 | 300.7 | 2D-1M  | +274.42 | -67.25 | -10.33 | -91.04 | +105.81 |
+| IPW | 1345.6 | 301.9 | 2D-1M  | +274.81 | -62.49 | -10.17 | -96.58 | +105.57 |
+| WPW | 1355.8 | 302.4 | 2D-1M  | +278.70 | -60.24 | -9.89  | -97.53 | +111.04 |
+| DRY | 1359.3 | 299.7 | 2D-1M  | +279.28 | -71.22 | -10.72 | -88.70 | +108.64 |
+| DTP | 1345.6 | 300.7 | 2D-2M  | +257.07 | -60.02 | -6.04  | -76.93 | +114.09 |
+| IPW | 1345.6 | 301.9 | 2D-2M  | +258.70 | -56.98 | -5.98  | -82.24 | +113.50 |
+| WPW | 1355.8 | 302.4 | 2D-2M  | +257.60 | -53.90 | -5.72  | -82.50 | +115.48 |
+| DRY | 1359.3 | 299.7 | 2D-2M  | +260.03 | -63.37 | -6.06  | -72.60 | +118.00 |
+
+| Domain | Insol  | SST / K | Config | Net SW | Net LW | Sensible | Latent | SFC Bal |
+| :-: | :----: | :---: | :----: | :-----: | :----: | :----: | :----: | :-----: |
+| DTP | 1345.6 | 300.7 | 2DH-1M | +264.99 | -63.64 | -10.45 | -87.70 | +103.20 |
+| IPW | 1345.6 | 301.9 | 2DH-1M | +262.44 | -57.07 | -9.50  | -88.37 | +107.50 |
+| WPW | 1355.8 | 302.4 | 2DH-1M | +262.14 | -55.56 | -9.46  | -90.57 | +106.55 |
+| DRY | 1359.3 | 299.7 | 2DH-1M | +263.22 | -63.68 | -10.13 | -80.20 | +109.21 |
+| DTP | 1345.6 | 300.7 | 2DH-2M | +258.88 | -59.62 | -6.53  | -75.37 | +117.35 |
+| IPW | 1345.6 | 301.9 | 2DH-2M | +256.48 | -54.87 | -6.34  | -78.75 | +116.52 |
+| WPW | 1355.8 | 302.4 | 2DH-2M | +258.27 | -53.63 | -6.30  | -81.87 | +116.47 |
+| DRY | 1359.3 | 299.7 | 2DH-2M | +260.99 | -62.90 | -6.58  | -71.42 | +120.10 |
+
+A comparison between 3D and 2D simulations shows us that for 2D simulations, the surface energy imbalance is slightly lower, though much higher than observations, at ~O(110) W/m2 on average.  There appears to be no significant difference between simulations of the original size, and simulations that are larger in area and higher in resolution.
+
+Something that is consistent among all simulations is that when 1-moment microphysics is switched to 2-moment microphysics, the **Shortwave** fluxes decrease in magnitude.  However, at the same time the **Sensible** and **Latent** Heat fluxes decrease in magnitude.  Therefore, even though less shortwave reaches the surface, the net change in sensible and latent heat fluxes are such that the surface imbalance in 2-moment microphysics actually increases by about 10% compared to 1-moment microphysics.
 
 ### B. Comparison with ERA5 Reanalysis
 
