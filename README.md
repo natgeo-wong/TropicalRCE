@@ -13,16 +13,19 @@ This repository contains the analysis scripts and output for the **TropicalRCE**
    * [x] Profile of monthly-averaged pressure data against pressure-height
    * [ ] Averaged diurnal cycle for cloud-cover
 
-* [ ] SAM Model Runs
+* [x] Basic RCE State Model runs in SAM
    * [x] 1-Moment Microphysics Basic RCE states for all domains
    * [x] 2-Moment Microphysics Basic RCE states for all domains
-   * [ ] With large-scale vertical ascent derived from ERA5 climatology
-   * [ ] Wind shear (?), to be decided
+   * [x] 3D, 2D and Hi-Res 2D simulations of the above the Basic RCE states
+   * [x] Analysis of surface variables and profiles and comparison to reanalysis
 
 * [x] SP-CAM analysis
    * [x] Calculation of surface energy balance and comparison with ERA5
 
-* [ ] SAM Model Analysis
+* [ ] Large-scale forcings to RCE State in SAM to attain reanalysis surface imbalance
+   * [ ] With large-scale vertical ascent derived from ERA5 climatology
+   * [ ] Wind shear (?), to be decided
+   * [ ] With WTG?  Use WTG in conjunction with Large-scale vertical ascent?  Or keep separate?
 
 ## 0. Motivation
 
@@ -134,15 +137,38 @@ It is interesting to see that the ERA5 domain mean precipitation over the deep t
 
 Right off the bat, we see that 2-moment microphysics simulations have a higher overall precipitable water in the atmosphere compared to 1-moment microphysics.  However, this does **not** correspond to higher rainfall.  Indeed, precipitation actually falls in simulations with 2-moment microphysics despite there being higher overall column water.  Furthermore, we see that at the same horizontal resolution, 2D simulations have higher rainfall than 3D simulations, but as the resolution of the simulations increases, rainfall rate decreases.
 
-### B. Atmospheric Temperature
+### B. Atmospheric Temperature (Mean-State)
 
-Text
+We compare the profiles for atmospheric temperature (see figures below, top for observations and comparison between domains, bottom for comparison between SAM and reanalysis.)
 
-### C. Specific Humidity Profile
+![ERA5 Temperature](figures/t_air.png)
 
-### D. Relative Humidity Profile
+We see that the atmospheric profile for the tropical domain as a whole is generally cooler than the specific-domain profiles.  This is likely for different reasons for different domains (note, I am only analyzing profiles over the ocean):
+* For the **IPW** profile, we see that temperature is greater than DTP **below 800 hPa** and above **600 hPa** all the way to around the tropopause.  This is likely because of the fact that at these levels, *convective activity* is higher on average at these pressure levels than in DTP.
+* For the **WPW** profile, we see a similar curve as with IPW, which indicates that *convective activity* is indeed partially responsible.  However, there is an overall mean increase in temperature compared to the IPW profile, which means that the temperature increase could be due to overall *higher insolation*
+* For the **DRY** profile, we see that the mean profile average temperature anomaly is around the same as WPW, which indicates that *higher insolation* plays a role in the temperature difference compared to DTP.  However, with that taken into account, we see that the profile seems to be reversed compared to WPW, with higher temperatures in **400-800 hPa** compared to WPW.  This indicates that *convective inhibition and downwelling* plays a role in increasing the temperature profiles here.
 
-### E. Cloud Fraction Profile
+Now on to a comparison with our model results ...
+
+![ERA5 Temperature](figures/t_air_comparison.png)
+
+*(Note: Black line is reanalysis for domain, blue/red lines are for 1/2-moment microphysics respectively, solid/dashed/dotted lines are for 3D/2D/2DH spatial configurations respectively.)*
+
+Here, we see that while lower-tropospheric temperatures are higher than in observations, upper-tropospheric temperatures near the tropopause are lower.  However, temperatures in the stratosphere are higher.  We see that for 1-moment microphysics, high resolution simulations are needed in 2D in order to prevent high temperature biases in the stratosphere above the tropopause.  However, there is otherwise not significant difference in the temperature profiles across all our simulations.  We do note that 1-moment microphysics simulations have a colder upper-troposphere in general than 2-moment microphysics simulations.
+
+### C. Relative Humidity Profile
+
+We compare the profiles for relative humidity between SAM and reanalysis.  Since ERA5 calculates relative humidity profiles using both liquid and ice saturation vapour pressures, we calculate relative humidity profiles from SAM via the following
+* When the atmospheric temperature *T* < 0 (Note: T is taken instantaneously), then we calculate using ice saturation vapour pressure
+* When the atmospheric temperature *T* > 0 (Note: T is taken instantaneously), then we calculate using liquid saturation vapour pressure
+
+We note that this is not directly equivalent to the method that ERA5 uses to calculate relative humidity, which can be found [here](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-pressure-levels?tab=overview)
+
+![ERA5 Temperature](figures/r_air.png)
+
+### D. Cloud Fraction Profile
+
+![ERA5 Temperature](figures/cc_air.png)
 
 ## 5. Surface Energy Balance
 
