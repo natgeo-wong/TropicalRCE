@@ -164,11 +164,17 @@ We compare the profiles for relative humidity between SAM and reanalysis.  Since
 
 We note that this is not directly equivalent to the method that ERA5 uses to calculate relative humidity, which can be found [here](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-pressure-levels?tab=overview)
 
-![ERA5 Temperature](figures/r_air.png)
+![ERA5 RH](figures/r_air.png)
 
 ### D. Cloud Fraction Profile
 
-![ERA5 Temperature](figures/cc_air.png)
+We compare the profiles for cloud cover between SAM and reanalysis.
+
+![ERA5 CC](figures/cc_air.png)
+
+We see that all SAM simulations are able to capture the presence of high clouds in the upper troposphere.  However, 3D SAM conversely is unable to capture the presence of medium clouds, and significantly underestimates the presence of low clouds.  However, in all our 2D simulations, we see that there is an improvement in the fraction of cloud cover in the mid-troposphere.
+
+The 2-moment M2005 microphysics overestimates the presence of high clouds.  We see that the high cloud cover in the M2005 microphysics simulation is closer to observations in regions that by default have significant large-scale vertical ascent, which is not representative of a stable small-domain RCE state.  Indeed, it seems that for statistical purposes, 1-moment microphysics would be a better fit to observational data, especially since overall in the TRP region there is overall a small amount of large-scale ascent.
 
 ## 5. Surface Energy Balance
 
@@ -249,7 +255,7 @@ It is notable however, that in our SP-CAM runs the surface energy balance of the
 
 ### A. Large-scale Circulation
 
-Text
+Next, we attempt to see if the absence of the large-scale circulation is a part of the reason why 
 
 ### B. Imposing a Weak Temperature Gradient
 
