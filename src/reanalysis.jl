@@ -153,7 +153,7 @@ function compilesavesfchour(varname::AbstractString)
     var = var / 41
     var = dropdims(mean(reshape(var,nlon,nlat,24,:),dims=4),dims=4)
 
-    fnc = datadir("reanalysis/era5-TRPx0.25-$varname.nc")
+    fnc = datadir("reanalysis/era5-TRPx0.25-$varname-sfc-hour.nc")
     ds = NCDataset(fnc,"c",attrib = Dict(
         "Conventions"               => "CF-1.6",
         "history"                   => "2020-10-21 23:54:22 GMT by grib_to_netcdf-2.16.0: /opt/ecmwf/eccodes/bin/grib_to_netcdf -S param -o /cache/data4/adaptor.mars.internal-1603323636.0468726-6113-3-fb54412a-f0a5-4783-956d-46233705e403.nc /cache/tmp/fb54412a-f0a5-4783-956d-46233705e403-adaptor.mars.internal-1603323636.0477095-6113-1-tmp.grib",
@@ -212,7 +212,7 @@ end
 
 function compilesaveprehour(varname::AbstractString;levels::AbstractVector{<:Real})
 
-    tds = NCDataset(datadir("reanalysis/$varname/era5mh-TRPx0.25-$varname-1979.nc"))
+    tds = NCDataset(datadir("reanalysis/$varname/era5-TRPx0.25-$varname-1000hPa-1979.nc"))
     lon = tds["longitude"][:]*1; nlon = length(lon)
     lat = tds["latitude"][:]*1;  nlat = length(lat)
 
@@ -223,7 +223,7 @@ function compilesaveprehour(varname::AbstractString;levels::AbstractVector{<:Rea
         for yr = 1979 : 2019
             fnc = "era5-TRPx0.25-$varname-$(lvl)hPa-$(yr).nc"
             yds  = NCDataset(datadir("reanalysis/$varname/$(fnc)"))
-            var[:,:,yr,ilvl] += yds[vnc][:]*1
+            var[:,:,ilvl,:] += yds[vnc][:]*1
             close(yds)
         end
     end
@@ -231,7 +231,7 @@ function compilesaveprehour(varname::AbstractString;levels::AbstractVector{<:Rea
     var = var / 41
     var = dropdims(mean(reshape(var,nlon,nlat,nlvl,24,:),dims=5),dims=5)
 
-    fnc = datadir("reanalysis/era5-TRPx0.25-$varname.nc")
+    fnc = datadir("reanalysis/era5-TRPx0.25-$varname-hour.nc")
     ds = NCDataset(fnc,"c",attrib = Dict(
         "Conventions"               => "CF-1.6",
         "history"                   => "2020-10-21 23:54:22 GMT by grib_to_netcdf-2.16.0: /opt/ecmwf/eccodes/bin/grib_to_netcdf -S param -o /cache/data4/adaptor.mars.internal-1603323636.0468726-6113-3-fb54412a-f0a5-4783-956d-46233705e403.nc /cache/tmp/fb54412a-f0a5-4783-956d-46233705e403-adaptor.mars.internal-1603323636.0477095-6113-1-tmp.grib",
