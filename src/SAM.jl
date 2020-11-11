@@ -1,7 +1,8 @@
+using Dierckx
 using NCDatasets
 using PrettyTables
+using SAMTools
 using Statistics
-using Dierckx
 
 function sfcextract(
     variable::AbstractString,
@@ -237,5 +238,14 @@ function sebsummary(
         alignment=[:c,:c,:c,:c,:c,:c],
         tf=compact
     );
+
+end
+
+function createsnd(
+    sndname::AbstractString;
+    exp::AbstractString, config::AbstractString, ndays::Integer=100
+)
+    mkpath(projectdir("exp/snd")); fsnd = projectdir("exp/snd/$(sndname)")
+    samsnd(fsnd,prjpath=datadir(),fname="RCE",experiment=exp,config=config,ndays=ndays)
 
 end
