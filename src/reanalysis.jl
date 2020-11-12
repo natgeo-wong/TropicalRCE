@@ -177,7 +177,7 @@ function compilesavesfchour(varname::AbstractString)
         "long_name"                 => "latitude",
     ))
 
-    nchr  = defVar(ds,"level",Int8,("hour",),attrib = Dict(
+    nchr  = defVar(ds,"hour",Int8,("hour",),attrib = Dict(
         "units"                     => "hours",
         "long_name"                 => "Hours past 00:00 (GMT)",
     ))
@@ -215,6 +215,7 @@ function compilesaveprehour(varname::AbstractString;levels::AbstractVector{<:Rea
     tds = NCDataset(datadir("reanalysis/$varname/era5-TRPx0.25-$varname-1000hPa-1979.nc"))
     lon = tds["longitude"][:]*1; nlon = length(lon)
     lat = tds["latitude"][:]*1;  nlat = length(lat)
+                                 nlvl = length(levels)
 
     var = zeros(nlon,nlat,nlvl,288); ilvl = 0;
     vnc = replace(varname,"_air"=>"")
@@ -239,9 +240,9 @@ function compilesaveprehour(varname::AbstractString;levels::AbstractVector{<:Rea
 
     # Dimensions
 
-    ds.dim["longitude"] = length(lon)
-    ds.dim["latitude"]  = length(lat)
-    ds.dim["level"]     = length(lvl)
+    ds.dim["longitude"] = nlon
+    ds.dim["latitude"]  = nlat
+    ds.dim["level"]     = nlvl
     ds.dim["hour"]      = 24
 
     # Declare variables
@@ -261,7 +262,7 @@ function compilesaveprehour(varname::AbstractString;levels::AbstractVector{<:Rea
         "long_name"                 => "pressure_level",
     ))
 
-    nchr  = defVar(ds,"level",Int8,("hour",),attrib = Dict(
+    nchr  = defVar(ds,"hour",Int8,("hour",),attrib = Dict(
         "units"                     => "hours",
         "long_name"                 => "Hours past 00:00 (GMT)",
     ))
@@ -289,7 +290,7 @@ function compilesaveprehour(varname::AbstractString;levels::AbstractVector{<:Rea
 
     nclon[:] = lon
     nclat[:] = lat
-    ncpre[:] = lvl
+    ncpre[:] = levels
     nchr[:]  = collect(0:23)
     ncvar[:] = var
 
