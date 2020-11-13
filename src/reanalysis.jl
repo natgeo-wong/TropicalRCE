@@ -139,13 +139,14 @@ end
 
 function compilesavesfchour(varname::AbstractString)
 
-    tds = NCDataset(datadir("reanalysis/$varname/era5mh-TRPx0.25-$varname-1979.nc"))
+    tds = NCDataset(datadir("reanalysis/$varname/era5-TRPx0.25-$varname-1979.nc"))
     lon = tds["longitude"][:]*1; nlon = length(lon)
     lat = tds["latitude"][:]*1;  nlat = length(lat)
-    var = zeros(length(lon),length(lat),288)
+    var = zeros(nlon,nlat,24)
 
-    for yr = 1979 : 2019
-        yds  = NCDataset(datadir("reanalysis/$varname/era5-TRPx0.25-$varname-$(yr).nc"))
+    for yr = 1979 : 2019, mo = 1 : 12
+        fnc  = "era5-TRPx0.25-$varname-sfc-$(yrmo2str(Date(yr,mo))).nc"
+        yds  = NCDataset(datadir("reanalysis/$(varname)/$(fnc)"))
         var += yds[vnc][:]*1
         close(yds)
     end
@@ -217,22 +218,20 @@ function compilesaveprehour(varname::AbstractString;levels::AbstractVector{<:Rea
     lat = tds["latitude"][:]*1;  nlat = length(lat)
                                  nlvl = length(levels)
 
-    var = zeros(nlon,nlat,nlvl,288); ilvl = 0;
+    var = zeros(nlon,nlat,nlvl,24); ilvl = 0;
     vnc = replace(varname,"_air"=>"")
 
-    for lvl in levels; ilvl += 1
-        for yr = 1979 : 2019
-            fnc = "era5-TRPx0.25-$varname-$(lvl)hPa-$(yr).nc"
-            yds  = NCDataset(datadir("reanalysis/$varname/$(fnc)"))
-            var[:,:,ilvl,:] += yds[vnc][:]*1
-            close(yds)
-        end
+    for yr = 1979 : 2019, mo = 1 : 12
+        fnc  = "era5-TRPx0.25-$varname-$(lvl)hPa-$(yrmo2str(Date(yr,mo))).nc"
+        yds  = NCDataset(datadir("reanalysis/$(varname)/$(fnc)"))
+        var += yds[vnc][:]*1
+        close(yds)
     end
 
     var = var / 41
     var = dropdims(mean(reshape(var,nlon,nlat,nlvl,24,:),dims=5),dims=5)
 
-    fnc = datadir("reanalysis/era5-TRPx0.25-$varname-hour.nc")
+    fnc = datadir("reanalysis/era5-TRPx0.25-$(varname)-hour.nc")
     ds = NCDataset(fnc,"c",attrib = Dict(
         "Conventions"               => "CF-1.6",
         "history"                   => "2020-10-21 23:54:22 GMT by grib_to_netcdf-2.16.0: /opt/ecmwf/eccodes/bin/grib_to_netcdf -S param -o /cache/data4/adaptor.mars.internal-1603323636.0468726-6113-3-fb54412a-f0a5-4783-956d-46233705e403.nc /cache/tmp/fb54412a-f0a5-4783-956d-46233705e403-adaptor.mars.internal-1603323636.0477095-6113-1-tmp.grib",

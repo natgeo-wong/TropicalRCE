@@ -1,5 +1,7 @@
 prect(N::Real,S::Real,W::Real,E::Real) = [W,E,E,W,W],[S,S,N,N,S]
 
+yrmo2str(date::TimeType) = Dates.format(date,dateformat"yyyymm")
+
 function ncoffsetscale(data::AbstractArray)
 
     dmax = maximum(data[.!ismissing.(data)])
