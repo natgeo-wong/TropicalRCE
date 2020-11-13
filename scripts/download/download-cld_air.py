@@ -2,12 +2,6 @@
 import cdsapi
 import os
 
-pre = [
-    1,2,3,5,10,20,30,50,70,
-    100,125,150,175,200,225,250,300,350,
-    400,450,500,550,600,650,700,750,775,
-    800,825,850,875,900,925,950,975,1000
-]
 datadir = '/n/holyscratch01/kuang_lab/nwong/TropicalRCE/data/reanalysis/cld_air/'
 
 c = cdsapi.Client()
@@ -16,7 +10,7 @@ if not os.path.exists(datadir):
     os.makedirs(datadir)
 
 for yr in range(1979,2020):
-    for lvl in pre:
+    for mo in [1,2,3,4,5,6,7,8,9,10,11,12]:
         c.retrieve(
             'reanalysis-era5-pressure-levels-monthly-means',
             {
@@ -24,8 +18,12 @@ for yr in range(1979,2020):
                 'product_type': 'monthly_averaged_reanalysis_by_hour_of_day',
                 'variable': 'fraction_of_cloud_cover',
                 'year': yr,
-                'pressure_level': lvl,
-                'month': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+                'pressure_level': [
+                    50,70,100,125,150,175,200,225,250,300,
+                    350,400,450,500,550,600,650,700,750,775,
+                    800,825,850,875,900,925,950,975,1000
+                ],
+                'month': mo,
                 'time': [
                     '00:00', '01:00', '02:00',
                     '03:00', '04:00', '05:00',
@@ -38,7 +36,7 @@ for yr in range(1979,2020):
                 ],
                 'area': [30, 0, -30, 360],
             },
-            datadir + 'era5-TRPx0.25-cld_air-' + str(lvl) + 'hPa-' + str(yr) + '.nc')
+            datadir + 'era5-TRPx0.25-cld_air-' + str(yr) + str(mo).zfill(2) + '.nc')
 
 for yr in range(1979,2020):
     c.retrieve(
