@@ -56,14 +56,14 @@ swz_DRY = z2p(swair_DRY,lvl,szair_DRY); lwz_DRY = z2p(lwair_DRY,lvl,lzair_DRY)
 
 lsf = lsfinit()
 lsf[1:end-5,7] .= reverse(swz_DTP[5:end]); v = szair_DTP / 15000 * 5; v[v.>5] .= 5
-lsf[1:end-5,6] .= reverse(v[5:end]);
+lsf[1:end-5,5] .= reverse(v[5:end]);
 lsfprint(projectdir("exp/lsf/DTP-shear"),lsf,1005.50)
 lsf[1:end-5,7] .= reverse(swz_IPW[5:end]); v = szair_IPW / 15000 * 5; v[v.>5] .= 5
-lsf[1:end-5,6] .= reverse(v[5:end]);
+lsf[1:end-5,5] .= reverse(v[5:end]);
 lsfprint(projectdir("exp/lsf/IPW-shear"),lsf,1005.50)
 lsf[1:end-5,7] .= reverse(swz_WPW[5:end]); v = szair_WPW / 15000 * 5; v[v.>5] .= 5
-lsf[1:end-5,6] .= reverse(v[5:end]);
+lsf[1:end-5,5] .= reverse(v[5:end]);
 lsfprint(projectdir("exp/lsf/WPW-shear"),lsf,1005.50)
 lsf[1:end-5,7] .= reverse(swz_DRY[5:end]); v = szair_DRY / 15000 * 5; v[v.>5] .= 5
-lsf[1:end-5,6] .= reverse(v[5:end]);
+lsf[1:end-5,5] .= reverse(v[5:end]);
 lsfprint(projectdir("exp/lsf/DRY-shear"),lsf,1005.50)
