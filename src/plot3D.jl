@@ -30,7 +30,7 @@ function plotcld(
     c = axsii.contourf(
         tvec,height,data.-mean(data,dims=2),
         #cmap="Blues",norm="segmented",levels=[0,1,2,5,10,20,50,80,90,95,99,100]
-        cmap="drywet",levels=[-5,-2,-1,-0.5,-0.2,-0.1,0.1,0.2,0.5,1,2,5],extend="both"
+        cmap="drywet",levels=[-10,-5,-2,-1,-0.5,-0.2,0.2,0.5,1,2,5,10],extend="both"
     ); axsii.colorbar(c,loc="r")
 
     axsii.format(
@@ -87,7 +87,7 @@ function plotqtend(
 
     axsii.format(
         xlim=(0,24),xlocator=[0,3,6,9,12,15,18,21,24],xlabel="Hour of Day",
-        rtitle=L"Moisture Tendency due to W Large Scale Advect / g/kg hr$^{-1}$"
+        rtitle=L"Q Tendency due to W Large Scale Advect / g/kg hr$^{-1}$"
     )
 
 end
@@ -101,13 +101,35 @@ function retrieve3Dvar(
         "RCE_TropicalRCE-$(experiment).nc"
     )))
 
-    p    = rce["p"][:]; t = rce["time"][:] .- 80;
-    cld  = rce["CLD"][:]*100; rh = rce["RELH"][:];
+    p    = rce["p"][:]; t = rce["time"][:] .- 80; nt = length(t)
+    cld  = rce["CLD"][:]*100; qv = rce["QV"][:]/10;
     tair = rce["TABS"][:]; qvtd = rce["QVTEND"]/24; wwtg = 0;
+
+    rh = zeros(size(qv,1),nt)
+    for it = 1 : nt, ilvl = 1 : length(p)
+
+        rh[ilvl,it] = qv[ilvl,it] / temp2qsat(tair[ilvl,it],p[ilvl]*100)
+
+    end
 
     if plotWTG; wwtg = rce["WWTG"][:] end
 
     return p,t,cld,rh,tair,qvtd,wwtg
+
+end
+
+function temp2qsat(t::Real,p::Real)
+
+    tb = t - 273.15
+    if tb <= 0
+        esat = exp(43.494 - 6545.8/(tb+278)) / (tb+868)^2
+    else
+        esat = exp(34.494 - 4924.99/(tb+237.1)) / (tb+105)^1.57
+    end
+
+
+    r = 0.622 * esat / max(esat,p-esat)
+    return r / (1+r)
 
 end
 
@@ -150,7 +172,7 @@ function plot3Ddiurnal(
     end
 
     pplt.close(); arr = [[0,0,1,2,2,2,0,0],[3,4,4,4,5,6,6,6],[7,8,8,8,9,10,10,10]];
-    f,axs = pplt.subplots(arr,axwidth=1,aspect=0.5)
+    f,axs = pplt.subplots(arr,axwidth=1,aspect=0.5,sharex=1,wspace=[0,0,0,nothing,0,0,0])
 
     axs[1].plot(dropdims(mean(tair,dims=2),dims=2),z,lw=1)
     axs[1].format(ylabel="Pressure / hPa",title="Daily Mean",xlim=(180,300));
@@ -168,6 +190,11 @@ function plot3Ddiurnal(
         axs[7].plot(dropdims(mean(wwtg,dims=2),dims=2),z,lw=1);
         axs[7].format(ylabel="Pressure / hPa",xlim=(-0.1,0.1))
         plotwwtg(t,z,wwtg,axs[8])
+    else
+        axs[8].format(
+            xlim=(0,24),xlocator=[0,3,6,9,12,15,18,21,24],xlabel="Hour of Day",
+            rtitle=L"Weak Temperature Gradient / m s$^{-1}$"
+        )
     end
 
     axs[9].plot(dropdims(mean(qvtd,dims=2),dims=2),z,lw=1);
