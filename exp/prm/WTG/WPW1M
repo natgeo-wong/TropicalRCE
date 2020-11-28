@@ -1,6 +1,6 @@
 &PARAMETERS
 
-caseid ='TropicalRCE-Shear',
+caseid ='TropicalRCE-WTG',
 
 dx = 500.,
 dy = 500.,
