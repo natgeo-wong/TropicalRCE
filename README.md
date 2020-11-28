@@ -8,10 +8,10 @@ This repository contains the analysis scripts and output for the **TropicalRCE**
 > Introductory Text Here.
 
 ## Progress
-* [ ] Download and analysis of ERA5 reanalysis Data
+* [x] Download and analysis of ERA5 reanalysis Data
    * [x] Averaged surface data, binned by spatial distribution
    * [x] Profile of monthly-averaged pressure data against pressure-height
-   * [ ] Averaged diurnal cycle for cloud-cover
+   * [ ] Averaged diurnal cycle for temperature, relative humidity, cloud-cover
 
 * [x] Basic RCE State Model runs in SAM
    * [x] 1-Moment Microphysics Basic RCE states for all domains
@@ -23,8 +23,8 @@ This repository contains the analysis scripts and output for the **TropicalRCE**
    * [x] Calculation of surface energy balance and comparison with ERA5
 
 * [ ] Large-scale forcings to RCE State in SAM to attain reanalysis surface imbalance
-   * [ ] With large-scale vertical ascent derived from ERA5 climatology
-   * [ ] Wind shear (?), to be decided
+   * [x] With large-scale vertical ascent derived from ERA5 climatology
+   * [x] Wind shear (?), to be decided
    * [ ] With WTG?  Use WTG in conjunction with Large-scale vertical ascent?  Or keep separate?
 
 ## 0. Motivation
@@ -255,19 +255,48 @@ It is notable however, that in our SP-CAM runs the surface energy balance of the
 
 ### A. Large-scale Circulation
 
-Next, we attempt to see if the absence of the large-scale circulation is a part of the reason why 
+Next, we attempt to see if the absence of the large-scale circulation is a part of the reason why
 
-### B. Imposing a Weak Temperature Gradient
+| Domain | Insol  | SST / K | Config | Net SW | Net LW | Sensible | Latent | SFC Bal |
+| :-: | :----: | :---: | :---: | :-----: | :----: | :----: | :----: | :-----: |
+| DTP | 1345.6 | 300.7 | 2D-1M | +253.39 | -55.28 | -9.40 | -78.89 | +109.83 |
+| IPW | 1345.6 | 301.9 | 2D-1M | +226.90 | -45.04 | -8.99 | -72.47 | +100.40 |
+| WPW | 1355.8 | 302.4 | 2D-1M | +221.41 | -41.63 | -8.76 | -69.83 | +101.19 |
+| DRY | 1359.3 | 299.7 | 2D-1M | +292.76 | -68.31 | -8.53 | -76.67 | +139.24 |
+| DTP | 1345.6 | 300.7 | 2D-2M | +247.41 | -53.74 | -5.34 | -66.37 | +121.96 |
+| IPW | 1345.6 | 301.9 | 2D-2M | +218.67 | -43.95 | -4.98 | -59.38 | +110.36 |
+| WPW | 1355.8 | 302.4 | 2D-2M | +204.21 | -38.48 | -4.84 | -54.93 | +105.96 |
+| DRY | 1359.3 | 299.7 | 2D-2M | +295.80 | -70.45 | -6.65 | -76.85 | +141.85 |
 
-Text
+### B. Wind Shear
+
+| Domain | Insol  | SST / K | Config | Net SW | Net LW | Sensible | Latent | SFC Bal |
+| :-: | :----: | :---: | :---: | :-----: | :----: | :----: | :----: | :-----: |
+| DTP | 1345.6 | 300.7 | 2D-1M | +274.38 | -67.39 | -10.32 | -85.91 | +110.77 |
+| IPW | 1345.6 | 301.9 | 2D-1M | +259.0  | -57.83 | -10.40 | -85.44 | +105.33 |
+| WPW | 1355.8 | 302.4 | 2D-1M | +249.74 | -51.11 | -10.01 | -80.51 | +108.11 |
+| DRY | 1359.3 | 299.7 | 2D-1M | +298.69 | -71.96 | -7.99  | -75.60 | +143.14 |
+| DTP | 1345.6 | 300.7 | 2D-2M | +261.91 | -61.98 | -6.64  | -74.50 | +118.79 |
+| IPW | 1345.6 | 301.9 | 2D-2M | +237.94 | -50.58 | -6.15  | -69.41 | +111.80 |
+| WPW | 1355.8 | 302.4 | 2D-2M | +224.07 | -44.00 | -5.83  | -63.58 | +110.67 |
+| DRY | 1359.3 | 299.7 | 2D-2M | +298.55 | -73.45 | -6.54  | -76.27 | +142.29 |
+
+### C. Imposing a Weak Temperature Gradient
+
+| Domain | Insol  | SST / K | Config | Net SW | Net LW | Sensible | Latent | SFC Bal |
+| :-: | :----: | :---: | :---: | :-----: | :-----: | :----: | :----: | :-----: |
+| IPW | 1345.6 | 301.9 | 2D-1M | +227.56 | -66.97  | -21.29 | -138.79 | +0.51  |
+| WPW | 1355.8 | 302.4 | 2D-1M | +210.57 | -67.27  | -26.55 | -156.19 | -39.44 |
+| DRY | 1359.3 | 299.7 | 2D-1M | +330.47 | -130.13 | -7.36  | -160.71 | +32.27 |
+| IPW | 1345.6 | 301.9 | 2D-2M | +215.23 | -61.26  | -10.56 | -110.10 | +33.31 |
+| WPW | 1355.8 | 302.4 | 2D-2M | +166.07 | -57.10  | -18.58 | -145.46 | -55.07 |
+| DRY | 1359.3 | 299.7 | 2D-2M | +331.72 | -132.13 | -7.65  | -158.78 | +33.16 |
 
 ### C. The Diurnal Cycle of Cloud Cover
 
 Text
 
 ### D. Wind Shear
-
-Text
 
 ## Installation
 

@@ -23,7 +23,11 @@ function compileresavediurnalsfc(varname::AbstractString)
 
     end
 
-    fnc = datadir("reanalysis/era5-TRPx0.25-$varname-sfc-diurnal.nc")
+    if !isdir(datadir("reanalysis/diurnal"))
+        mkpath(datadir("reanalysis/diurnal"))
+    end
+
+    fnc = datadir("reanalysis/diurnal/era5-TRPx0.25-$varname-sfc-diurnal.nc")
     ds = NCDataset(fnc,"c",attrib = Dict(
         "Conventions"               => "CF-1.6",
         "history"                   => "2020-10-21 23:54:22 GMT by grib_to_netcdf-2.16.0: /opt/ecmwf/eccodes/bin/grib_to_netcdf -S param -o /cache/data4/adaptor.mars.internal-1603323636.0468726-6113-3-fb54412a-f0a5-4783-956d-46233705e403.nc /cache/tmp/fb54412a-f0a5-4783-956d-46233705e403-adaptor.mars.internal-1603323636.0477095-6113-1-tmp.grib",
@@ -103,7 +107,11 @@ function compileresavediurnalpre(varname::AbstractString)
 
     end
 
-    fnc = datadir("reanalysis/era5-TRPx0.25-$varname-diurnal.nc")
+    if !isdir(datadir("reanalysis/diurnal"))
+        mkpath(datadir("reanalysis/diurnal"))
+    end
+
+    fnc = datadir("reanalysis/diurnal/era5-TRPx0.25-$varname-diurnal.nc")
     ds = NCDataset(fnc,"c",attrib = Dict(
         "Conventions"               => "CF-1.6",
         "history"                   => "2020-10-21 23:54:22 GMT by grib_to_netcdf-2.16.0: /opt/ecmwf/eccodes/bin/grib_to_netcdf -S param -o /cache/data4/adaptor.mars.internal-1603323636.0468726-6113-3-fb54412a-f0a5-4783-956d-46233705e403.nc /cache/tmp/fb54412a-f0a5-4783-956d-46233705e403-adaptor.mars.internal-1603323636.0477095-6113-1-tmp.grib",

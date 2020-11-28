@@ -22,6 +22,7 @@ c.retrieve(
             'low_cloud_cover',
             'total_cloud_cover',
             'sea_surface_temperature',
+            'skin_surface_temperature',
             '2m_temperature',
             'total_column_water',
             'total_column_water_vapour',
