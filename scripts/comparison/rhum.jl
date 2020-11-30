@@ -82,5 +82,5 @@ for ax in axs
     )
 end
 
-mkpath(plotsdir("COMPARISON"))
-f.savefig(plotsdir("COMPARISON/r_air.png"),transparent=false,dpi=200)
+mkpath(plotsdir("SAM_CONFIG"))
+f.savefig(plotsdir("SAM_CONFIG/r_air.png"),transparent=false,dpi=200)
