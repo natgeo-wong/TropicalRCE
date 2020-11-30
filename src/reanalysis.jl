@@ -423,6 +423,73 @@ function compilesfceb()
 
 end
 
+function compilesfcebfeb()
+
+    tds  = NCDataset(datadir("reanalysis/era5-TRPx0.25-sfc.nc"))
+    lon  = tds["longitude"][:]*1
+    lat  = tds["latitude"][:]*1
+    close(tds)
+
+    tds = NCDataset(datadir("reanalysis/era5feb-TRPx0.25-ssr-sfc.nc"))
+    ssr = tds["ssr"][:]*1
+    close(tds)
+    tds = NCDataset(datadir("reanalysis/era5feb-TRPx0.25-str-sfc.nc"))
+    str = tds["str"][:]*1
+    close(tds)
+    tds = NCDataset(datadir("reanalysis/era5feb-TRPx0.25-sshf-sfc.nc"))
+    shf = tds["sshf"][:]*1
+    close(tds)
+    tds = NCDataset(datadir("reanalysis/era5feb-TRPx0.25-slhf-sfc.nc"))
+    lhf = tds["slhf"][:]*1
+    close(tds)
+
+    seb = ssr .+ str .+ shf .+ lhf
+
+    fnc = datadir("reanalysis/era5feb-TRPx0.25-seb-sfc.nc")
+    ds = NCDataset(fnc,"c",attrib = Dict(
+        "Conventions"               => "CF-1.6",
+        "history"                   => "2020-10-21 23:54:22 GMT by grib_to_netcdf-2.16.0: /opt/ecmwf/eccodes/bin/grib_to_netcdf -S param -o /cache/data4/adaptor.mars.internal-1603323636.0468726-6113-3-fb54412a-f0a5-4783-956d-46233705e403.nc /cache/tmp/fb54412a-f0a5-4783-956d-46233705e403-adaptor.mars.internal-1603323636.0477095-6113-1-tmp.grib",
+    ))
+
+    # Dimensions
+
+    ds.dim["longitude"] = length(lon)
+    ds.dim["latitude"]  = length(lat)
+
+    # Declare variables
+
+    nclon = defVar(ds,"longitude",Float32,("longitude",),attrib = Dict(
+        "units"                     => "degrees_east",
+        "long_name"                 => "longitude",
+    ))
+
+    nclat = defVar(ds,"latitude",Float32,("latitude",),attrib = Dict(
+        "units"                     => "degrees_north",
+        "long_name"                 => "latitude",
+    ))
+
+    scale,offset = ncoffsetscale(seb)
+
+    varattribs = Dict(
+        "scale_factor"  => scale,
+        "add_offset"    => offset,
+        "_FillValue"    => Int16(-32767),
+        "missing_value" => Int16(-32767),
+        "units"         => "J m**-2",
+        "long_name"     => "Surface net energy balance",
+        "standard_name" => "surface_net_downward_energy_flux",
+    )
+
+    ncvar = defVar(ds,"seb",Int16,("longitude","latitude"),attrib = varattribs)
+
+    nclon[:] = lon
+    nclat[:] = lat
+    ncvar[:] = seb
+
+    close(ds)
+
+end
+
 function prereanalysis(variable::AbstractString,coords::Vector{<:Real})
 
     ds = NCDataset(datadir("reanalysis/era5-TRPx0.25-$(variable).nc"))

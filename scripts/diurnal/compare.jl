@@ -33,28 +33,28 @@ ds = NCDataset(datadir("reanalysis/era5-TRPx0.25-lsm-sfc.nc"))
 lsm = ds["lsm"][:]*1
 close(ds)
 
-occa_DTP = zeros(25,nlvl)
+occa_ERA = zeros(25,nlvl)
 
 for it = 1 : 24
-    _,occa_DTP[it,:] = getmean([15,-15,360,0],cca[:,:,:,it],lon,lat,nlvl,lsm)
+    _,occa_ERA[it,:] = getmean([15,-15,180,90],cca[:,:,:,it],lon,lat,nlvl,lsm)
 end
-_,occa_DTP[25,:] = getmean([15,-15,360,0],cca[:,:,:,1],lon,lat,nlvl,lsm)
-mocca_DTP = mean(occa_DTP[1:24,:],dims=1)
-vocca_DTP = occa_DTP .- mocca_DTP
-mocca_DTP = dropdims(mocca_DTP,dims=1)
+_,occa_ERA[25,:] = getmean([15,-15,180,90],cca[:,:,:,1],lon,lat,nlvl,lsm)
+mocca_ERA = mean(occa_ERA[1:24,:],dims=1)
+vocca_ERA = occa_ERA .- mocca_ERA
+mocca_ERA = dropdims(mocca_ERA,dims=1)
 
-t,p_RCE,mocca_RCE,vocca_RCE = sam3D("Control2DHR","DTP1M")
-_,p_LSV,mocca_LSV,vocca_LSV = sam3D("LSVert","DTP1M")
-_,p_SHR,mocca_SHR,vocca_SHR = sam3D("Shear","DTP1M")
-# _,p_WTG,mocca_WTG,vocca_WTG = sam3D("WTG","DTP1M")
+t,p_RCE,mocca_RCE,vocca_RCE = sam3D("Control2DHR","IPW1M")
+_,p_LSV,mocca_LSV,vocca_LSV = sam3D("LSVert","IPW1M")
+_,p_SHR,mocca_SHR,vocca_SHR = sam3D("Shear","IPW1M")
+_,p_WTG,mocca_WTG,vocca_WTG = sam3D("WTG","IPW1M")
 
 arr = [[0,0,1,2,2,2,0,0],[3,4,4,4,5,6,6,6],[7,8,8,8,9,10,10,10]]
 pplt.close(); f,axs = pplt.subplots(arr,aspect=0.5,axwidth=1,wspace=(0,0,0,nothing,0,0,0));
 clvl = [-10,-5,-2,-1,-0.5,-0.2,0.2,0.5,1,2,5,10]
 
-axs[1].plot(mocca_DTP[:],lvl)
-c = axs[2].contourf(0:24,lvl,vocca_DTP',cmap="drywet",levels=clvl,extend="both")
-axs[1].format(urtitle="ERA5",suptitle="Diurnal Cycle of Cloud Cover / %")
+axs[1].plot(mocca_ERA[:],lvl)
+c = axs[2].contourf(0:24,lvl,vocca_ERA',cmap="drywet",levels=clvl,extend="both")
+axs[1].format(urtitle="ERA5",suptitle="Diurnal Cycle of Cloud Cover (DTP) / %")
 
 axs[3].plot(mocca_RCE[:],p_RCE)
 axs[4].contourf(t,p_RCE,vocca_RCE,cmap="drywet",levels=clvl,extend="both")
@@ -68,8 +68,8 @@ axs[7].plot(mocca_SHR[:],p_SHR)
 axs[8].contourf(t,p_SHR,vocca_SHR,cmap="drywet",levels=clvl,extend="both")
 axs[7].format(urtitle="Shear")
 
-# axs[9].plot(mocca_WTG[:],lvl)
-# axs[10].contourf(t,p_WTG,vocca_WTG',cmap="drywet",levels=clvl,extend="both")
+axs[9].plot(mocca_WTG[:],p_WTG)
+axs[10].contourf(t,p_WTG,vocca_WTG,cmap="drywet",levels=clvl,extend="both")
 axs[9].format(urtitle="WTG")
 
 for ii = 1 : 10
@@ -77,9 +77,9 @@ for ii = 1 : 10
     if mod(ii,2) == 0
         axs[ii].format(xlim=(0,24),xlocator=4:4:20)
     else
-        axs[ii].format(xlim=(0,25))
+        axs[ii].format(xlim=(0,40))
     end
 end
 
 f.colorbar(c,loc="r")
-f.savefig(plotsdir("COMPARISON/cc_air-diurnal.png"),transparent=false,dpi=200)
+f.savefig(plotsdir("COMPARISON/cc_air-diurnal-IPW1M.png"),transparent=false,dpi=200)
