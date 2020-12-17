@@ -2,7 +2,7 @@
 import cdsapi
 import os
 
-datadir = '/n/holyscratch01/kuang_lab/nwong/TropicalRCE/data/reanalysis/cld_air/'
+datadir = '/n/holyscratch01/kuang_lab/nwong/TropicalRCE/data/reanalysis/cc_air/'
 
 c = cdsapi.Client()
 
@@ -36,7 +36,7 @@ for yr in range(1979,2020):
                 ],
                 'area': [30, 0, -30, 360],
             },
-            datadir + 'era5-TRPx0.25-cld_air-' + str(yr) + str(mo).zfill(2) + '.nc')
+            datadir + 'era5-TRPx0.25-cc_air-' + str(yr) + str(mo).zfill(2) + '.nc')
 
 for yr in range(1979,2020):
     c.retrieve(
@@ -55,4 +55,4 @@ for yr in range(1979,2020):
             'area': [30, 0, -30, 360],
             'time': '00:00',
         },
-        datadir + 'era5-TRPx0.25-cld_air-' + str(yr) + '.nc')
+        datadir + 'era5-TRPx0.25-cc_air-' + str(yr) + '.nc')
