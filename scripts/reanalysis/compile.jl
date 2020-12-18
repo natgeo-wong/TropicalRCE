@@ -13,13 +13,13 @@ compilesavesfc.([
 compilesavesfchour.([
     "ssr","str","sshf","slhf","tsr","ttr",
     "hcc","mcc","lcc","tcc","sst","skt","t2m",
-    "tcw","tcwv","lsm"
+    "tcw","tcwv"
 ])
 
-compilesavediurnalsfc.([
+compileresavediurnalsfc.([
     "ssr","str","sshf","slhf","tsr","ttr",
     "hcc","mcc","lcc","tcc","sst","skt","t2m",
-    "tcw","tcwv","lsm"
+    "tcw","tcwv"
 ])
 
 compilesavepre.(["t_air","w_air","z_air","q_air","r_air","cc_air","clwc_air","ciwc_air"])
