@@ -262,9 +262,13 @@ It is notable however, that in our SP-CAM runs the surface energy balance of the
 
 ## 6. Finding the Underlying Reason for Large Surface Imbalances in RCE
 
-### A. Large-scale Circulation
+Our next step involves trying to figure out what exactly is the cause of the large surface energy imbalance that we observe in our RCE simulations as opposed to the reanalysis data. We hypothesize that the energy imbalance is largely due to differences in the cloud cover between our RCE model and reanalysis data.  We investigate several different possible mechanisms:
+* The large-scale circulation (parameterized by vertical ascent/descent)
+* Vertical wind-shear (which could be responsible for distributing cloud cover more widely over the domain)
+* The absence of low cloud cover in RCE simulations compared to reanalysis
+* Differences in the diurnal cycle of cloud cover
 
-Next, we attempt to see if the absence of the large-scale circulation is a part of the reason why
+### A. Large-scale Circulation
 
 | Domain | Insol | SST / K | Config | Net SW | Net LW | Sensible | Latent | SFC Bal |
 | :-: | :----: | :---: | :---: | :-----: | :----: | :----: | :----: | :-----: |
@@ -290,7 +294,15 @@ Next, we attempt to see if the absence of the large-scale circulation is a part 
 | WPW | 1355.8 | 302.4 | 2D-2M | +224.07 | -44.00 | -5.83  | -63.58 | +110.67 |
 | DRY | 1359.3 | 299.7 | 2D-2M | +298.55 | -73.45 | -6.54  | -76.27 | +142.29 |
 
-### C. Imposing a Weak Temperature Gradient
+### C. Low/Middle Cloud Cover in RCE
+
+Text
+
+### D. The importance of the Diurnal Cycle
+
+Text
+
+### X. Imposing a Weak Temperature Gradient
 
 | Domain | Insol  | SST / K | Config | Net SW | Net LW | Sensible | Latent | SFC Bal |
 | :-: | :----: | :---: | :---: | :-----: | :-----: | :----: | :----: | :-----: |
