@@ -47,7 +47,7 @@ for yr in range(1979,2020):
                 '21:00', '22:00', '23:00',
             ],
         },
-        datadir + 'era5-TRPx0.25-sfc-' + str(yr) + '.nc')
+        datadir + 'sfc/era5-TRPx0.25-sfc-' + str(yr) + '.nc')
 
 c.retrieve(
     'reanalysis-era5-single-levels-monthly-means',

@@ -196,7 +196,7 @@ end
 
 function compilesavesfchour(varname::AbstractString)
 
-    tds = NCDataset(datadir("reanalysis/era5-TRPx0.25-sfc-1979.nc"))
+    tds = NCDataset(datadir("reanalysis/sfc/era5-TRPx0.25-sfc-1979.nc"))
     lon = tds["longitude"][:]*1; nlon = length(lon)
     lat = tds["latitude"][:]*1;  nlat = length(lat)
     t   = tds["time"][:];        nt   = length(t)
@@ -204,7 +204,7 @@ function compilesavesfchour(varname::AbstractString)
     vart = zeros(nlon,nlat,nt)
     for yr = 1979 : 2019
         fnc   = "era5-TRPx0.25-sfc-$yr.nc"
-        yds   = NCDataset(datadir("reanalysis/$(fnc)"))
+        yds   = NCDataset(datadir("reanalysis/sfc/$(fnc)"))
         vart += yds[varname][:]*1
         close(yds)
     end
