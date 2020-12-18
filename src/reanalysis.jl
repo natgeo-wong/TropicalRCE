@@ -199,17 +199,23 @@ function compilesavesfchour(varname::AbstractString)
     tds = NCDataset(datadir("reanalysis/era5-TRPx0.25-sfc-1979.nc"))
     lon = tds["longitude"][:]*1; nlon = length(lon)
     lat = tds["latitude"][:]*1;  nlat = length(lat)
-    var = zeros(nlon,nlat,24)
+    t   = tds["time"][:];        nt   = length(t)
 
+    vart = zeros(nlon,nlat,nt)
     for yr = 1979 : 2019
-        fnc  = "era5-TRPx0.25-sfc-$yr.nc"
-        yds  = NCDataset(datadir("reanalysis/$(fnc)"))
-        var += yds[varname][:]*1
+        fnc   = "era5-TRPx0.25-sfc-$yr.nc"
+        yds   = NCDataset(datadir("reanalysis/$(fnc)"))
+        vart += yds[varname][:]*1
         close(yds)
     end
 
-    var = var / 41
-    var = dropdims(mean(reshape(var,nlon,nlat,24,:),dims=4),dims=4)
+    vart = vart / 41
+    vart = dropdims(mean(reshape(vart,nlon,nlat,:,12),dims=4),dims=4)
+
+    nhr = size(vart,3); mhr = nhr - 24; mind = 2*mhr
+    var = zeros(nlon,nlat,24)
+    var[:,:,(mhr+1):end] .= vart[:,:,(mind+1):end]
+    var[:,:,1:mhr] .= dropdims(sum(reshape(vart[:,:,1:mind],nlon,nlat,2,:),dims=3),dims=3)
 
     fnc = datadir("reanalysis/era5-TRPx0.25-$varname-sfc-hour.nc")
     ds = NCDataset(fnc,"c",attrib = Dict(
@@ -286,7 +292,6 @@ function compilesaveprehour(varname::AbstractString;levels::AbstractVector{<:Rea
     end
 
     var = var / (41*12)
-    var = dropdims(mean(reshape(var,nlon,nlat,nlvl,24,:),dims=5),dims=5)
 
     fnc = datadir("reanalysis/era5-TRPx0.25-$(varname)-hour.nc")
     ds = NCDataset(fnc,"c",attrib = Dict(
