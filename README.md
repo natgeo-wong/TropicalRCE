@@ -270,8 +270,16 @@ Our next step involves trying to figure out what exactly is the cause of the lar
 
 ### A. Large-scale Circulation
 
+In our limited-area RCE simulations, the large-scale circulation in the Tropics (especially the deep tropics) is parameterized in the form of the large-scale vertical motion.  We therefore first obtain vertical profiles of the large-scale vertical motion using the ERA5 reanalysis data.
+
+![Surface Balance](figures/w_air.png)
+
+We see that the mean vertical velocity of the atmospheric column in the deep tropical region (blue) increases with height up until around 250-300 hPa, before decreasing and reaching zero at about the tropopause.  This is consistent with our understanding that the tropics are regions of atmospheric ascent.  This ascent is more pronounced in the Indo-Pacific and West Pacific warmpools, which is also consistent with our understanding that these are regions of strong convective activity due to a warmer ocean surface temperature.  In contrast, over the Dry Pacific region there is atmospheric descent, as the ocean surface is of a lower mean temperature than the tropical mean.
+
+In SAM, the take these mean profiles and use them as **sounding** inputs into their respective model runs.  So, for example, the DTP vertical profiles are sounding inputs for our DTP runs, the IPW vertical profiles for IPW runs, and so forth.  The impact of adding this vertical profile of vertical velocity as an analogue to the large-scale circulation on the surface energy imbalance is shown in the table below.
+
 | Domain | Insol | SST / K | Config | Net SW | Net LW | Sensible | Latent | SFC Bal |
-| :-: | :----: | :---: | :---: | :-----: | :----: | :----: | :----: | :-----: |
+| :-: | :----: | :---: | :---: | :-----: | :----: | :---: | :----: | :-----: |
 | DTP | 1345.6 | 300.7 | 2D-1M | +253.39 | -55.28 | -9.40 | -78.89 | +109.83 |
 | IPW | 1345.6 | 301.9 | 2D-1M | +226.90 | -45.04 | -8.99 | -72.47 | +100.40 |
 | WPW | 1355.8 | 302.4 | 2D-1M | +221.41 | -41.63 | -8.76 | -69.83 | +101.19 |
@@ -280,6 +288,8 @@ Our next step involves trying to figure out what exactly is the cause of the lar
 | IPW | 1345.6 | 301.9 | 2D-2M | +218.67 | -43.95 | -4.98 | -59.38 | +110.36 |
 | WPW | 1355.8 | 302.4 | 2D-2M | +204.21 | -38.48 | -4.84 | -54.93 | +105.96 |
 | DRY | 1359.3 | 299.7 | 2D-2M | +295.80 | -70.45 | -6.65 | -76.85 | +141.85 |
+
+We see that there is a noticeable decrease in the net **shortwave** flux at the surface when there is strong vertical ascent in the domain (see the IPW and WPW analogues).  There is not much change in the DTP-analogue simulation, but that is because the vertical ascent decreases.  However, this is counterbalanced by a noticeable decrease in the magnitude of the other fluxes, most notably the **longwave** and **latent** fluxes, such that the overall surface balance is still roughly the same as before.
 
 ### B. Wind Shear
 
@@ -312,12 +322,6 @@ Text
 | IPW | 1345.6 | 301.9 | 2D-2M | +215.23 | -61.26  | -10.56 | -110.10 | +33.31 |
 | WPW | 1355.8 | 302.4 | 2D-2M | +166.07 | -57.10  | -18.58 | -145.46 | -55.07 |
 | DRY | 1359.3 | 299.7 | 2D-2M | +331.72 | -132.13 | -7.65  | -158.78 | +33.16 |
-
-### C. The Diurnal Cycle of Cloud Cover
-
-Text
-
-### D. Wind Shear
 
 ## Installation
 
