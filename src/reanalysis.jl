@@ -211,6 +211,7 @@ function compilesavesfchour(varname::AbstractString)
 
     vart = vart / 41
     vart = dropdims(mean(reshape(vart,nlon,nlat,:,12),dims=4),dims=4)
+    vart[ismissing.(vart)] .= 0; vart = vart*1
 
     nhr = size(vart,3); mhr = nhr - 24; mind = 2*mhr
     var = zeros(nlon,nlat,24)
