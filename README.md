@@ -227,12 +227,12 @@ We find that the surface energy balance in ERA5 reanalysis is much lower than th
 
 ![Surface Balance](figures/seb-era5.png)
 
-| Domain | Insol  | SST / K | Net SW | Net LW | Sensible | Latent | SFC Bal |
-| :----: |  :---: |  :---:  |  :---:  |  :--:  | :----: |  :---:  |  :--:  |
-|  DTP   | 1345.6 |  300.7  | +178.84 | -42.92 | -8.96  | -105.60 | +29.86 |
-|  IPW   | 1345.6 |  301.9  | +174.08 | -40.79 | -9.46  | -100.09 | +23.83 |
-|  WPW   | 1355.8 |  302.4  | +172.56 | -39.74 | -10.26 | -94.14  | +28.45 |
-|  DRY   | 1359.3 |  299.7  | +191.51 | -41.38 | -5.85  | -83.15  | +61.14 |
+| Domain | Insol | SST / K | Net SW | Net LW | Sensible | Latent | SFC Bal |
+| :-: | :----: | :---: | :-----: | :----: | :----: | :-----: | :----: |
+| DTP | 1345.6 | 300.7 | +224.71 | -52.36 | -10.39 | -124.63 | +37.33 |
+| IPW | 1345.6 | 301.9 | +217.57 | -50.97 | -11.83 | -124.98 | +29.79 |
+| WPW | 1355.8 | 302.4 | +215.72 | -49.68 | -12.83 | -117.66 | +35.56 |
+| DRY | 1359.3 | 299.7 | +239.39 | -51.72 | -7.32  | -103.93 | +76.42 |
 
 ### C. Comparison with SP-CAM
 
@@ -240,16 +240,25 @@ As mentioned in Section 2, we also compare our results to that from SP-CAM in or
 
 ![Surface Balance](figures/seb-spcam.png)
 
-| Domain | Insol  | SST / K | Net SW | Net LW | Sensible | Latent | SFC Bal |
-| :----: |  :---: |  :---:  |  :---:  |  :--:  | :---:  |  :--:   |  :--:  |
-|  DTP   | 1345.6 |  300.7  | +202.43 | -48.83 | -10.93 | -137.01 | +5.65  |
-|  IPW   | 1345.6 |  301.9  | +183.81 | -45.70 | -12.77 | -149.11 | -23.77 |
-|  WPW   | 1355.8 |  302.4  | +180.08 | -40.93 | -11.29 | -132.38 | -4.52  |
-|  DRY   | 1359.3 |  299.7  | +224.75 | -44.15 | -5.03  | -90.69  | +84.88 |
+| Domain | Insol | SST / K | Net SW | Net LW | Sensible | Latent | SFC Bal |
+| :-: | :----: | :---: | :-----: | :----: | :----: | :-----: | :----: |
+| DTP | 1345.6 | 300.7 | +202.43 | -48.83 | -10.93 | -137.01 | +5.65  |
+| IPW | 1345.6 | 301.9 | +183.81 | -45.70 | -12.77 | -149.11 | -23.77 |
+| WPW | 1355.8 | 302.4 | +180.08 | -40.93 | -11.29 | -132.38 | -4.52  |
+| DRY | 1359.3 | 299.7 | +224.75 | -44.15 | -5.03  | -90.69  | +84.88 |
 
 We see from the SP-CAM runs that the surface energy balance within the tropics is definitely not as high as in our SP-CAM runs.  The magnitude of the surface energy balance in the tropics and the net shortwave downwards into the ground at ~O(190) W/m2 which is close to that of reanalysis, indicates that the very high net shortwave ~O(280) W/m2 observed in small-domain RCE simulations is due to the RCE setup itself, rather that it being an artifact of SAM.
 
 It is notable however, that in our SP-CAM runs the surface energy balance of the tropical regions is negative.  However, this is likely due to the fact that the SP-CAM model was run in a perpetual mid-February insolation, which is not equinoctal, and where there is more insolation in the southern hemisphere that would account for an overall loss in surface energy balance in many tropical regions.  In fact, we do see a gradient in the surface energy balance from north to south.
+
+![Surface Balance](figures/seb-feb.png)
+
+| Domain | Insol | SST / K | Net SW | Net LW | Sensible | Latent | SFC Bal |
+| :-: | :----: | :---: | :-----: | :----: | :----: | :-----: | :-----: |
+| DTP | 1345.6 | 300.7 | +236.93 | -53.37 | -9.79  | -122.98 | +50.79  |
+| IPW | 1345.6 | 301.9 | +224.71 | -50.70 | -11.68 | -128.49 | +33.85  |
+| WPW | 1355.8 | 302.4 | +220.04 | -48.15 | -13.02 | -125.64 | +33.24  |
+| DRY | 1359.3 | 299.7 | +246.68 | -49.33 | -6.28  | -88.23  | +102.84 |
 
 ## 6. Finding the Underlying Reason for Large Surface Imbalances in RCE
 
@@ -257,7 +266,7 @@ It is notable however, that in our SP-CAM runs the surface energy balance of the
 
 Next, we attempt to see if the absence of the large-scale circulation is a part of the reason why
 
-| Domain | Insol  | SST / K | Config | Net SW | Net LW | Sensible | Latent | SFC Bal |
+| Domain | Insol | SST / K | Config | Net SW | Net LW | Sensible | Latent | SFC Bal |
 | :-: | :----: | :---: | :---: | :-----: | :----: | :----: | :----: | :-----: |
 | DTP | 1345.6 | 300.7 | 2D-1M | +253.39 | -55.28 | -9.40 | -78.89 | +109.83 |
 | IPW | 1345.6 | 301.9 | 2D-1M | +226.90 | -45.04 | -8.99 | -72.47 | +100.40 |

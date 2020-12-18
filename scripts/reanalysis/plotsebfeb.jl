@@ -26,7 +26,7 @@ function plotfluxes(
 
     lon = ds["longitude"][:]
     lat = ds["latitude"][:]
-    var = ds[varname][:] / (30*3600)
+    var = ds[varname][:] / (24*3600)
 
     long = ds[varname].attrib["long_name"]
     unit = ds[varname].attrib["units"]
@@ -110,8 +110,8 @@ function plotfluxes(
 end
 
 # compilesfceb()
-plotfluxes("ssr",100:250,100:10:250,"Reds","max")
-plotfluxes("str",-100:0.5:0,-100:10:0,"Blues_r","min")
-plotfluxes("sshf",-75:0.5:0,-75:5:0,"Blues_r","min")
-plotfluxes("slhf",-150:0,-150:10:0,"Blues_r","min")
+plotfluxes("ssr",100:250,100:10:250,"Reds","max",verbose=true)
+plotfluxes("str",-100:0.5:0,-100:10:0,"Blues_r","min",verbose=true)
+plotfluxes("sshf",-75:0.5:0,-75:5:0,"Blues_r","min",verbose=true)
+plotfluxes("slhf",-150:0,-150:10:0,"Blues_r","min",verbose=true)
 plotfluxes("seb",-200:200,-150:20:150,"RdBu_r","both",verbose=true)
