@@ -196,15 +196,15 @@ end
 
 function compilesavesfchour(varname::AbstractString)
 
-    tds = NCDataset(datadir("reanalysis/$varname/era5-TRPx0.25-$varname-1979.nc"))
+    tds = NCDataset(datadir("reanalysis/era5-TRPx0.25-sfc-1979.nc"))
     lon = tds["longitude"][:]*1; nlon = length(lon)
     lat = tds["latitude"][:]*1;  nlat = length(lat)
     var = zeros(nlon,nlat,24)
 
-    for yr = 1979 : 2019, mo = 1 : 12
-        fnc  = "era5-TRPx0.25-$varname-sfc-$(yrmo2str(Date(yr,mo))).nc"
-        yds  = NCDataset(datadir("reanalysis/$(varname)/$(fnc)"))
-        var += yds[vnc][:]*1
+    for yr = 1979 : 2019
+        fnc  = "era5-TRPx0.25-sfc-$yr.nc"
+        yds  = NCDataset(datadir("reanalysis/$(fnc)"))
+        var += yds[varname][:]*1
         close(yds)
     end
 
@@ -247,12 +247,12 @@ function compilesavesfchour(varname::AbstractString)
         "add_offset"    => offset,
         "_FillValue"    => Int16(-32767),
         "missing_value" => Int16(-32767),
-        "units"         => tds[vnc].attrib["units"],
-        "long_name"     => tds[vnc].attrib["long_name"],
+        "units"         => tds[varname].attrib["units"],
+        "long_name"     => tds[varname].attrib["long_name"],
     )
 
-    if haskey(tds[vnc].attrib,"standard_name")
-        varattribs["standard_name"] = tds[vnc].attrib["standard_name"]
+    if haskey(tds[varname].attrib,"standard_name")
+        varattribs["standard_name"] = tds[varname].attrib["standard_name"]
     end
 
     ncvar = defVar(ds,varname,Int16,("longitude","latitude","hour"),attrib = varattribs)
@@ -285,7 +285,7 @@ function compilesaveprehour(varname::AbstractString;levels::AbstractVector{<:Rea
         close(yds)
     end
 
-    var = var / 41
+    var = var / (41*12)
     var = dropdims(mean(reshape(var,nlon,nlat,nlvl,24,:),dims=5),dims=5)
 
     fnc = datadir("reanalysis/era5-TRPx0.25-$(varname)-hour.nc")
