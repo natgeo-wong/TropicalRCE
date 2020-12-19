@@ -13,7 +13,6 @@ logs/
 references/**/*.pdf
 run/
 exp/run_*
-exp/prm/*archive*
 exp/prm/*sample*
 
 ################################################################################
