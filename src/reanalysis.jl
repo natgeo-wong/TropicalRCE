@@ -277,7 +277,7 @@ end
 
 function compilesaveprehour(varname::AbstractString;levels::AbstractVector{<:Real})
 
-    tds = NCDataset(datadir("reanalysis/$varname/era5-TRPx0.25-$varname-1000hPa-1979.nc"))
+    tds = NCDataset(datadir("reanalysis/$varname/era5-TRPx0.25-$varname-197901.nc"))
     lon = tds["longitude"][:]*1; nlon = length(lon)
     lat = tds["latitude"][:]*1;  nlat = length(lat)
                                  nlvl = length(levels)
