@@ -42,7 +42,7 @@ longitude0 = 0.,
 latitude0  = 0.,
 day0       = 80.5,
 tabs_s     = 300.69,
-Szero      = 0,
+Szero      = -103.20,
 
 depth_slab_ocean = 50.,
 
