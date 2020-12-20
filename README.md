@@ -293,6 +293,10 @@ We see that there is a noticeable decrease in the net **shortwave** flux at the 
 
 ### B. Wind Shear
 
+We next attempted to see if adding vertical wind shear would help reduce the surface energy imbalance.  In a manner similar to [Blossey et al. (2010)](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2010JD014554), we nudged the average zonal winds to a sheared-wind profile, with zonal wind increasing linearly with height from 0 m/s at the surface to 5 m/s at 14 km height.  We aim to see if this would allow us to spread cloud cover with height.  Thus, instead of near-vertical cloud cover, the clouds would be sheared and therefore would be spread out more over the domain, which would block more shortwave radiation.
+
+The impact of adding vertical wind shear on the surface fluxes is shown in the table below.
+
 | Domain | Insol  | SST / K | Config | Net SW | Net LW | Sensible | Latent | SFC Bal |
 | :-: | :----: | :---: | :---: | :-----: | :----: | :----: | :----: | :-----: |
 | DTP | 1345.6 | 300.7 | 2D-1M | +274.38 | -67.39 | -10.32 | -85.91 | +110.77 |
@@ -303,6 +307,8 @@ We see that there is a noticeable decrease in the net **shortwave** flux at the 
 | IPW | 1345.6 | 301.9 | 2D-2M | +237.94 | -50.58 | -6.15  | -69.41 | +111.80 |
 | WPW | 1355.8 | 302.4 | 2D-2M | +224.07 | -44.00 | -5.83  | -63.58 | +110.67 |
 | DRY | 1359.3 | 299.7 | 2D-2M | +298.55 | -73.45 | -6.54  | -76.27 | +142.29 |
+
+We instead see that adding vertical wind shear instead serves to significantly **increase** the net shortwave radiation instead of reducing it, which is partially mitigated by small increases in the magnitude of the **longwave** and **latent** fluxes.
 
 ### C. Low/Middle Cloud Cover in RCE
 
