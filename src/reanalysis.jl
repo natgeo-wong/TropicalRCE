@@ -286,7 +286,7 @@ function compilesaveprehour(varname::AbstractString;levels::AbstractVector{<:Rea
     vnc = replace(varname,"_air"=>"")
 
     for yr = 1979 : 2019, mo = 1 : 12
-        fnc  = "era5-TRPx0.25-$varname-$(lvl)hPa-$(yrmo2str(Date(yr,mo))).nc"
+        fnc  = "era5-TRPx0.25-$varname-$(yrmo2str(Date(yr,mo))).nc"
         yds  = NCDataset(datadir("reanalysis/$(varname)/$(fnc)"))
         var += yds[vnc][:]*1
         close(yds)
